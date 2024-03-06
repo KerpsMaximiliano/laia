@@ -1,0 +1,14 @@
+<button class="w h" (click)="close()" aria-label="Close"></button>
+<div
+	[style.height.px]="height"
+	[class.slide-out]="canimation"
+	[class.slide-minout]="animation"
+	id="resizable"
+	#resizable
+	class="w pd-16 over-y slide-in"
+>
+	<div id="rsz" class="w" (touchstart)="touchstart($event)" (touchmove)="touchmove($event)">
+		<div class="br-12"></div>
+	</div>
+	<div #content></div>
+</div>

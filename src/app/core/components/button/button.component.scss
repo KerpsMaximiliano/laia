@@ -1,0 +1,28 @@
+.XR {
+	background-color: rgba(151, 71, 255, 1);
+	color: #fff;
+	min-height: 44px;
+	border-radius: 8px;
+	width: 100%;
+	font-size: 17px;
+	font-weight: 600;
+}
+
+.MINI {
+	min-width: 36px;
+	min-height: 36px;
+	display: grid;
+	place-items: center;
+}
+
+mat-icon {
+	display: grid;
+	place-items: center;
+	color: #181d17;
+	margin: 0 !important;
+}
+
+.disabled {
+	color: #000;
+	background: #e8e8e8;
+}

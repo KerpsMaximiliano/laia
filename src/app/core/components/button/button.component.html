@@ -1,0 +1,54 @@
+@if (type === 'ICON') {
+	@if (icon) {
+		@if (suffix) {
+			@if (loading) {
+				<app-loading />
+			} @else {
+				<mat-icon [style.color]="color" matSuffix aria-label="continuar" aria-hidden="false">{{ icon }}</mat-icon>
+			}
+		} @else {
+			@if (loading) {
+				<app-loading />
+			} @else {
+				<mat-icon [style.color]="color" aria-hidden="false">{{ icon }}</mat-icon>
+			}
+		}
+	} @else {
+		[ICON] Sin icono.
+	}
+} @else {
+	<button [style.color]="color" [style.background]="background" [class]="type" [class.disabled]="disabled" class="br-8">
+		@if (type === 'MINI') {
+			@if (icon) {
+				@if (badge && badge > 0) {
+					<mat-icon
+						[style.color]="color"
+						[matBadge]="badge"
+						[matBadgeOverlap]="false"
+						[matBadgeColor]="'warn'"
+						matBadgeSize="small"
+						aria-hidden="false"
+					>
+						{{ icon }}
+					</mat-icon>
+				} @else {
+					@if (loading) {
+						<app-loading />
+					} @else {
+						<mat-icon [style.color]="color">{{ icon }}</mat-icon>
+					}
+				}
+			} @else {
+				[MINI] Sin icono.
+			}
+		}
+
+		@if (type === 'XR') {
+			@if (label) {
+				{{ label }}
+			} @else {
+				Sin label.
+			}
+		}
+	</button>
+}

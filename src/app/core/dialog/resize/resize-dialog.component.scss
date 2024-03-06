@@ -1,0 +1,122 @@
+#resizable,
+#rsz,
+#rsz div {
+	position: absolute;
+	z-index: 2;
+}
+
+#resizable,
+#rsz {
+	right: 0;
+	left: 0;
+}
+
+#resizable {
+	background-color: #fff;
+	bottom: 0;
+	height: var(--vh);
+	max-height: 950px;
+	width: 100vw;
+	max-width: 450px;
+	border-top-left-radius: 12px;
+	border-top-right-radius: 12px;
+}
+
+#rsz {
+	top: 0;
+	height: 40px;
+}
+
+#rsz div {
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	background-color: #acacac;
+	width: 100px;
+	height: 5px;
+}
+
+.slide-in {
+	-webkit-animation: slide-in 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+	animation: slide-in 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+}
+
+.slide-out {
+	-webkit-animation: slide-out 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) both !important;
+	animation: slide-out 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) both !important;
+}
+
+.slide-minout {
+	-webkit-animation: slide-midout 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+	animation: slide-midout 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+@-webkit-keyframes slide-in {
+	from {
+		-webkit-transform: translateY(1000px);
+		transform: translateY(1000px);
+		opacity: 0;
+	}
+	to {
+		-webkit-transform: translateY(0);
+		transform: translateY(0);
+		opacity: 1;
+	}
+}
+
+@keyframes slide-in {
+	from {
+		-webkit-transform: translateY(1000px);
+		transform: translateY(1000px);
+		opacity: 0;
+	}
+	to {
+		-webkit-transform: translateY(0);
+		transform: translateY(0);
+		opacity: 1;
+	}
+}
+
+@-webkit-keyframes slide-out {
+	from {
+		-webkit-transform: translateY(0);
+		transform: translateY(0);
+		opacity: 1;
+	}
+	to {
+		-webkit-transform: translateY(1000px);
+		transform: translateY(1000px);
+		opacity: 0;
+	}
+}
+
+@keyframes slide-out {
+	from {
+		-webkit-transform: translateY(0);
+		transform: translateY(0);
+		opacity: 1;
+	}
+	to {
+		-webkit-transform: translateY(1000px);
+		transform: translateY(1000px);
+		opacity: 0;
+	}
+}
+
+@keyframes slide-midout {
+	from {
+		height: var(--ht);
+	}
+	to {
+		height: var(--nw);
+	}
+}
+
+@-webkit-keyframes slide-midout {
+	from {
+		height: var(--ht);
+	}
+	to {
+		height: var(--nw);
+	}
+}
