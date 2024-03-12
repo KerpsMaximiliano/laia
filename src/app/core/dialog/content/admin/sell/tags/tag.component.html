@@ -1,0 +1,28 @@
+<header>
+	<h1>Nueva Etiqueta</h1>
+</header>
+
+<main>
+	<form [formGroup]="form" class="grid">
+		<mat-form-field appearance="outline">
+			<mat-label>Etiqueta</mat-label>
+
+			<div class="flex">
+				<input type="text" matInput placeholder="Ingrese la etiqueta" formControlName="tag" />
+
+				@if (form.get('tag')?.value) {
+					<app-component-button
+						[type]="'ICON'"
+						[icon]="'delete'"
+						[suffix]="true"
+						(click)="form.get('tag')?.setValue(null)"
+					/>
+				}
+			</div>
+
+			@if (form.get('tag')?.invalid && form.get('tag')?.touched) {
+				<mat-error>{{ getErrorMessage(form.get('tag')!) }}</mat-error>
+			}
+		</mat-form-field>
+	</form>
+</main>

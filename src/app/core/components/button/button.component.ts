@@ -1,11 +1,11 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
+// * Components.
+import { LoadingComponent } from '@components/loading/loading.component';
+
 // * Material.
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatIconModule } from '@angular/material/icon';
-
-// * Shared.
-import { LoadingComponent } from '@core/components/loading/loading.component';
 
 @Component({
 	changeDetection: ChangeDetectionStrategy.OnPush,
@@ -29,11 +29,15 @@ export class ButtonComponent {
 
 type Type = 'ICON' | 'MINI' | 'XR';
 type Icon =
+	| 'abc'
 	| 'add'
 	| 'arrow_back_ios'
 	| 'arrow_circle_right'
 	| 'arrow_forward_ios'
+	| 'calendar_month'
+	| 'checklist'
 	| 'close'
+	| 'crop_16_9'
 	| 'delete'
 	| 'done_all'
 	| 'done'
@@ -45,12 +49,20 @@ type Icon =
 	| 'location_on'
 	| 'lock_open'
 	| 'logout'
+	| 'menu'
+	| 'mic'
 	| 'more_vert'
+	| 'navigate_before'
+	| 'navigate_next'
 	| 'open_in_new'
 	| 'person'
+	| 'preview_off'
+	| 'preview'
 	| 'qr_code'
 	| 'remove'
+	| 'schedule'
 	| 'settings'
 	| 'share'
 	| 'shopping_cart'
-	| 'store';
+	| 'store'
+	| 'wysiwyg';

@@ -2,13 +2,13 @@
 	@if (icon) {
 		@if (suffix) {
 			@if (loading) {
-				<app-loading />
+				<app-component-loading />
 			} @else {
 				<mat-icon [style.color]="color" matSuffix aria-label="continuar" aria-hidden="false">{{ icon }}</mat-icon>
 			}
 		} @else {
 			@if (loading) {
-				<app-loading />
+				<app-component-loading />
 			} @else {
 				<mat-icon [style.color]="color" aria-hidden="false">{{ icon }}</mat-icon>
 			}
@@ -17,7 +17,14 @@
 		[ICON] Sin icono.
 	}
 } @else {
-	<button [style.color]="color" [style.background]="background" [class]="type" [class.disabled]="disabled" class="br-8">
+	<button
+		type="button"
+		[style.color]="color"
+		[style.background]="background"
+		[class]="type"
+		[class.disabled]="disabled"
+		class="br-8"
+	>
 		@if (type === 'MINI') {
 			@if (icon) {
 				@if (badge && badge > 0) {
@@ -33,7 +40,7 @@
 					</mat-icon>
 				} @else {
 					@if (loading) {
-						<app-loading />
+						<app-component-loading />
 					} @else {
 						<mat-icon [style.color]="color">{{ icon }}</mat-icon>
 					}

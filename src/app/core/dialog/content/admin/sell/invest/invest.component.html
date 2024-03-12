@@ -1,0 +1,98 @@
+<header style="padding: 30px 0 16px 8px">
+	<h1>Nueva inversión</h1>
+</header>
+
+<main class="grid gp-16">
+	<article class="grid gp-8 bd br-4 pd-12">
+		<b>Costo de la Venta (Egresos)</b>
+		<p class="tx-visible">
+			Lleva el Control de tus Inversiones. Cada venta se reflejará en tu flujo de cajas donde sabrás los beneficios de
+			tu coamrcio.
+		</p>
+	</article>
+
+	<form [formGroup]="form" class="grid gp-30">
+		<mat-form-field appearance="outline">
+			<mat-label>Monto</mat-label>
+
+			<div class="flex">
+				@if (form.get('amount')?.value) {
+					<div matTextPrefix>$&nbsp;</div>
+				}
+
+				<input
+					type="number"
+					matInput
+					placeholder="Ingrese el monto del egreso"
+					formControlName="amount"
+					max="999999999"
+				/>
+
+				@if (form.get('amount')?.value) {
+					<app-component-button
+						[type]="'ICON'"
+						[icon]="'delete'"
+						[suffix]="true"
+						(click)="form.get('amount')?.setValue(null)"
+					/>
+				}
+			</div>
+
+			<mat-error>{{ getErrorMessage(form.get('amount')!) }}</mat-error>
+		</mat-form-field>
+
+		<mat-form-field appearance="outline">
+			<mat-label>Nombre</mat-label>
+
+			<div class="flex gp-8">
+				<input type="text" matInput placeholder="Ingrese el nombre del egreso" formControlName="title" maxlength="61" />
+
+				@if (form.get('title')?.value) {
+					<app-component-button
+						[type]="'ICON'"
+						[icon]="'delete'"
+						[suffix]="true"
+						(click)="form.get('title')?.setValue(null)"
+					/>
+				}
+			</div>
+
+			<mat-hint [align]="'end'">{{ 60 - form.get('title')?.value?.length }}</mat-hint>
+
+			<mat-error>{{ getErrorMessage(form.get('title')!) }}</mat-error>
+		</mat-form-field>
+
+		<mat-form-field appearance="outline">
+			<mat-label>Nota</mat-label>
+
+			<div class="fle gp-8">
+				<textarea
+					matInput
+					cdkTextareaAutosize
+					#autosize="cdkTextareaAutosize"
+					cdkAutosizeMinRows="10"
+					cdkAutosizeMaxRows="10"
+					placeholder="Ingrese una nota para el egreso"
+					formControlName="note"
+					maxlength="501"
+				>
+				</textarea>
+
+				@if (form.get('note')?.value) {
+					<app-component-button
+						[type]="'ICON'"
+						[icon]="'delete'"
+						[suffix]="true"
+						(click)="form.get('note')?.setValue(null)"
+					/>
+				}
+			</div>
+
+			<mat-hint [align]="'end'">{{ 500 - form.get('note')?.value?.length }}</mat-hint>
+
+			@if (form.get('note')?.invalid && form.get('note')?.touched) {
+				<mat-error>{{ getErrorMessage(form.get('note')!) }}</mat-error>
+			}
+		</mat-form-field>
+	</form>
+</main>

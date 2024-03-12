@@ -1,0 +1,63 @@
+<header class="flex bet gp-8 pd-12">
+	<div class="flex gp-8">
+		<app-component-button [type]="'MINI'" [icon]="'menu'" [color]="'#c3c3c3'" />
+		<h1>LAIA en la Industria Floral</h1>
+	</div>
+	<div class="flex gp-8">
+		<app-component-login />
+		<app-component-button [type]="'MINI'" [icon]="'share'" (click)="core.open('SHARE')" />
+	</div>
+</header>
+
+<main class="grid gp-24 pd-12 pb-44">
+	<article class="grid gp-8">
+		<div class="flex bet bd br-4 pd-12">
+			<div class="flex gp-8">
+				<app-component-button [type]="'ICON'" [icon]="'done_all'" color="#c3c3c3" />
+				<p class="disabled">ID</p>
+			</div>
+			<app-component-button [type]="'ICON'" [icon]="'mic'" [color]="'#c3c3c3'" />
+		</div>
+		<p class="tx-center tx-visible disabled">La Inteligencia Artificial para optimizar tu negocio.</p>
+	</article>
+
+	<section class="grid bd br-4">
+		<p class="pd-12" style="background-color: var(--grey-light)">¿Qué venderás?</p>
+
+		<hr />
+
+		<button type="button" class="flex bet my-8 pd-12" (click)="sell.redirect('article')">
+			Artículos Propios
+			<app-component-button [type]="'ICON'" [icon]="'navigate_next'" />
+		</button>
+
+		<hr />
+
+		<button type="button" class="flex bet my-8 pd-12 disabled">
+			Artículos de Otros
+			<app-component-button [type]="'ICON'" [icon]="'navigate_next'" [color]="'#c3c3c3'" />
+		</button>
+	</section>
+
+	<section class="bd br-4 grid">
+		<p class="pd-12 disabled" style="background-color: var(--grey-light)">¿A quien le quieres comprar?</p>
+
+		@for (item of options; track $index) {
+			<hr />
+
+			<button
+				type="button"
+				class="grid my-8 pd-12 disabled"
+				style="grid-template-columns: 1fr max-content"
+				(click)="action($index)"
+			>
+				<div class="grid gp-4 tx-left">
+					{{ item.title }}
+					<p>Venden: {{ item.sell }}</p>
+				</div>
+
+				<app-component-button [type]="'ICON'" [icon]="'navigate_next'" [color]="'#c3c3c3'" />
+			</button>
+		}
+	</section>
+</main>

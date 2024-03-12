@@ -1,0 +1,56 @@
+<main style="padding: 24px 0">
+	<section class="bd" [class.bd]="mode === 'INITIAL'">
+		@if (mode === 'INITIAL') {
+			<button class="w flex bet pd-12">
+				Compartir enlace
+				<app-component-button [type]="'ICON'" [icon]="'share'" (click)="share(false)" />
+			</button>
+
+			<hr />
+
+			<button class="w flex bet pd-12">
+				Copiar enlace
+				<app-component-button [type]="'ICON'" [icon]="'link'" (click)="mode = 'COPY'; copy()" />
+			</button>
+
+			<hr />
+
+			<button class="w flex bet pd-12">
+				Código QR
+				<app-component-button [type]="'ICON'" [icon]="'qr_code'" (click)="qr()" />
+			</button>
+		}
+
+		@if (mode === 'COPY') {
+			@defer (when mode === 'COPY') {
+				<button class="w flex bet pd-12">
+					Enlace copiado en el portapapeles
+					<app-component-button [type]="'ICON'" [icon]="'close'" (click)="close()" />
+				</button>
+			}
+		}
+
+		@if (mode === 'QR') {
+			@defer (when mode === 'QR') {
+				<article class="grid gp-16">
+					<qrcode
+						#qrCode
+						[qrdata]="qrData"
+						[width]="256"
+						[errorCorrectionLevel]="'M'"
+						class="grid"
+						style="place-items: center"
+					/>
+					<app-component-button [type]="'XR'" label="Descargar" (click)="download()" />
+					<app-component-button
+						[type]="'XR'"
+						label="Compartir Código QR"
+						color="#000"
+						background="#E8E8E8"
+						(click)="share(true)"
+					/>
+				</article>
+			}
+		}
+	</section>
+</main>

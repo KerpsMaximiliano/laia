@@ -12,7 +12,10 @@ import {
 import { Subject, takeUntil } from 'rxjs';
 
 // * Services.
-import { CoreService } from '@core/services/core.service';
+import { CoreService } from '@services/core.service';
+
+// * Sorts.
+import { IDialog } from '@sorts/dialog.sort';
 
 // * Material.
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
@@ -34,7 +37,7 @@ export class ResizeDialogComponent implements OnInit, OnDestroy {
 	public animation: boolean = false;
 
 	private readonly _ref: MatDialogRef<ResizeDialogComponent> = inject(MatDialogRef);
-	private readonly _data: { dialog: string; conf?: { option: number; logged?: boolean } } = inject(MAT_DIALOG_DATA);
+	private readonly _data: { dialog: IDialog; conf?: { option: number; logged?: boolean } } = inject(MAT_DIALOG_DATA);
 	private readonly _core: CoreService = inject(CoreService);
 	private readonly _cdr: ChangeDetectorRef = inject(ChangeDetectorRef);
 	private _subscriptions$?: Subject<void>;
@@ -45,39 +48,29 @@ export class ResizeDialogComponent implements OnInit, OnDestroy {
 	public cHeight: number = this._height();
 
 	public ngOnInit(): void {
-		if (this._data.dialog) {
-			this._subscriptions$ = new Subject<void>();
+		this._subscriptions$ = new Subject<void>();
 
-			// this._core.gHeight.pipe(takeUntil(this._subscriptions$)).subscribe((res) => {
-			// 	if (res !== 0) {
-			// 		this.height = res;
-			// 		this._cdr.markForCheck();
-			// 	}
-			// });
-			this._core.gHeight.pipe(takeUntil(this._subscriptions$)).subscribe((res) => {
-				if (res !== 0) {
-					this.resizable?.nativeElement.style.setProperty('--ht', `${this.height}px`);
-					this.resizable?.nativeElement.style.setProperty('--nw', `${res}px`);
-					this.animation = true;
-					this.height = res;
-					this._cdr.markForCheck();
+		this._core.gHeight.pipe(takeUntil(this._subscriptions$)).subscribe((res) => {
+			if (res !== 0) {
+				this.resizable?.nativeElement.style.setProperty('--ht', `${this.height}px`);
+				this.resizable?.nativeElement.style.setProperty('--nw', `${res}px`);
+				this.animation = true;
+				this.height = res;
+				this._cdr.markForCheck();
+			}
+		});
+
+		this._core
+			.component(this._data.dialog)
+			.pipe(takeUntil(this._subscriptions$))
+			.subscribe({
+				next: (res) => {
+					if (this.content) {
+						this.content.createComponent(res);
+						this._cdr.markForCheck();
+					}
 				}
 			});
-
-			// this._core
-			// 	.component(this._data.dialog)
-			// 	.pipe(takeUntil(this._subscriptions$))
-			// 	.subscribe({
-			// 		next: (res) => {
-			// 			if (this.content) {
-			// 				this.content.createComponent(res);
-			// 				this._cdr.markForCheck();
-			// 			}
-			// 		}
-			// 	});
-		} else {
-			this.close();
-		}
 	}
 
 	public touchstart(event: TouchEvent): void {
@@ -110,42 +103,23 @@ export class ResizeDialogComponent implements OnInit, OnDestroy {
 	}
 
 	private _height(): number {
-		if (this._data.dialog) {
-			switch (this._data.dialog) {
-				case 'cart':
-					if (this._data.conf) {
-						switch (this._data.conf.option) {
-							case 0:
-								if (this._data.conf.logged) {
-									return 205;
-								} else {
-									return 280;
-								}
-							case 1:
-								return 354;
-							case 2:
-								return 437;
-							case 3:
-								return 507;
-							default:
-								return 587;
-						}
-					} else {
-						return 0;
-					}
-				case 'maps':
-					return window.innerHeight - 2;
-				case 'share':
-					return 200;
-				case 'map':
-					return window.innerHeight - 2;
-				case 'voucher':
-					return 385;
-				default:
-					return 0;
-			}
-		} else {
-			return 0;
+		switch (this._data.dialog) {
+			case 'INVEST':
+				return 665;
+			case 'HASHTAG':
+				return 200;
+			case 'DELAY':
+				return 300;
+			case 'KEYWORDS':
+				return 190;
+			case 'QUESTION':
+				return 362;
+			case 'TAG':
+				return 190;
+			case 'SHARE':
+				return 210;
+			default:
+				return window.innerHeight - 2;
 		}
 	}
 }

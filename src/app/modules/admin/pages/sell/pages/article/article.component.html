@@ -1,0 +1,300 @@
+<header class="flex bet gp-8 pd-12">
+	<button type="button" class="flex gp-4" (click)="core.back()">
+		<app-component-button [type]="'ICON'" [icon]="'navigate_before'" />
+		Nuevo Artículo
+	</button>
+
+	<button type="button" class="option" style="padding: 0 12px">Demo</button>
+</header>
+
+<main class="grid gp-24 pd-12 pb-44">
+	<article class="grid br-4" [class.no-media]="art().data.medias.length === 0">
+		<div class="flex bet pd-12">
+			<p>Multimedia</p>
+			@if (art().data.medias.length > 0) {
+				<p>{{ art().data.medias.length }} / 9</p>
+			}
+		</div>
+
+		@if (art().data.medias.length === 0) {
+			<div class="grid">
+				<div class="grid br-12">
+					<app-component-button [type]="'ICON'" [icon]="'add'" />
+				</div>
+			</div>
+		} @else {
+			<div #carousel class="carousel">
+				@for (media of art().data.medias; track $index) {
+					<div>
+						<img class="img" [src]="media.url" [alt]="art().data.title ?? 'Imagen sin texto alternativo'" />
+					</div>
+				}
+			</div>
+		}
+	</article>
+
+	@if (art().data.medias.length > 1) {
+		<div class="flex cen gp-12">
+			@for (dot of art().data.medias; track $index) {
+				<button class="dot" aria-label="Dot" [class.active]="$index === index" (click)="scrollToImage($index)"></button>
+			}
+		</div>
+	}
+
+	<form [formGroup]="form" class="grid gp-30" style="margin-bottom: 4px">
+		<mat-form-field appearance="outline">
+			<mat-label>Nombre del artículo</mat-label>
+
+			<div class="fle gp-8">
+				<textarea
+					matInput
+					cdkTextareaAutosize
+					#autosize="cdkTextareaAutosize"
+					cdkAutosizeMinRows="1"
+					placeholder="Ingrese el nombre del artículo"
+					formControlName="title"
+					maxlength="121"
+				>
+				</textarea>
+
+				@if (form.get('title')?.value) {
+					<app-component-button
+						[type]="'ICON'"
+						[icon]="'delete'"
+						[suffix]="true"
+						(click)="form.get('title')?.setValue(null)"
+					/>
+				}
+			</div>
+
+			<mat-hint [align]="'end'">{{ 120 - form.get('title')?.value?.length }}</mat-hint>
+			<mat-error>{{ getErrorMessage(form.get('title')!) }}</mat-error>
+		</mat-form-field>
+
+		<mat-form-field appearance="outline">
+			<mat-label>Precio</mat-label>
+
+			<div class="flex">
+				@if (form.get('price')?.value) {
+					<div matTextPrefix>$</div>
+				}
+
+				<input
+					type="number"
+					matInput
+					placeholder="Ingrese el precio del artículo"
+					formControlName="price"
+					max="9999999999"
+				/>
+
+				@if (form.get('price')?.value) {
+					<app-component-button
+						[type]="'ICON'"
+						[icon]="'delete'"
+						[suffix]="true"
+						(click)="form.get('price')?.setValue(null)"
+					/>
+				}
+			</div>
+
+			<mat-error>
+				{{ getErrorMessage(form.get('price')!) }}
+			</mat-error>
+		</mat-form-field>
+
+		<mat-form-field appearance="outline">
+			<mat-label>Unidad de venta</mat-label>
+
+			<mat-select formControlName="tStock">
+				<mat-option [value]="'UNIT'">Por unidad</mat-option>
+				<mat-option [value]="'PACKAGE'">Por paquete</mat-option>
+			</mat-select>
+		</mat-form-field>
+
+		<mat-form-field appearance="outline">
+			<mat-label>Cantidad disponible</mat-label>
+
+			<div class="flex gp-8">
+				<input
+					type="number"
+					matInput
+					placeholder="Ingrese la cantidad disponible"
+					formControlName="stock"
+					max="9999999999"
+				/>
+
+				@if (form.get('stock')?.value) {
+					<app-component-button
+						[type]="'ICON'"
+						[icon]="'delete'"
+						[suffix]="true"
+						(click)="form.get('stock')?.setValue(null)"
+					/>
+				}
+			</div>
+
+			@if (form.get('stock')?.value === null) {
+				<mat-hint>La cantidad esta predeterminada como ilimitada.</mat-hint>
+			}
+
+			<mat-error>{{ getErrorMessage(form.get('stock')!) }}</mat-error>
+		</mat-form-field>
+	</form>
+
+	<section class="grid gp-8 bd br-4">
+		<div class="flex bet gp-8 pd-12">
+			<p>Inversión por producirlo:</p>
+
+			<button type="button" class="flex gp-8" (click)="core.open('INVEST')">
+				{{ currency(art().data.investments) }}
+				<app-component-button [type]="'ICON'" [icon]="'navigate_next'" />
+			</button>
+		</div>
+
+		<div class="flex bet gp-8 pd-12">
+			<p>Beneficio bruto:</p>
+
+			<button type="button" class="flex gp-8">
+				{{ art().data.price.type }}
+				{{ currency((art().data.price.amount ?? 0) - art().data.investments) }}
+				<app-component-button [type]="'ICON'" [icon]="'navigate_next'" />
+			</button>
+		</div>
+
+		<div class="flex bet gp-8 pd-12" style="border-top: 1px solid var(--grey-light); padding-top: 20px">
+			<p>Comisiones:</p>
+
+			<button type="button" class="flex gp-8">
+				({{ currency(art().data.commissions) }})
+				{{ currency((art().data.price.amount ?? 0) - art().data.investments - art().data.commissions) }}
+				<app-component-button [type]="'ICON'" [icon]="'navigate_next'" />
+			</button>
+		</div>
+	</section>
+
+	<section class="grid bd br-4">
+		<p class="pd-12" style="background-color: #e0e0e3; border-radius: 4px 4px 0 0">
+			Configuraciones de tu propia tienda
+		</p>
+
+		<div>
+			<button
+				type="button"
+				class="tx-left pd-12 grid gp-8 w"
+				style="grid-template-columns: 1fr max-content"
+				(click)="core.open('HASHTAG')"
+			>
+				<div class="grid gp-8">
+					<b>Hashtag</b>
+					<p class="tx-3">
+						Lo adicionas en tus redes sociales y al entrar a tu tienda lo buscan y lo encuentran directamente.
+					</p>
+				</div>
+
+				<app-component-button [type]="'ICON'" [icon]="'navigate_next'" />
+			</button>
+
+			<hr />
+
+			<button
+				type="button"
+				class="tx-left pd-12 grid gp-8 w"
+				style="grid-template-columns: 1fr max-content"
+				(click)="core.open('DELAY')"
+			>
+				<div class="grid gp-8">
+					<b>Tiempo de fabricación</b>
+					<p class="tx-3">
+						Ej: Florista tarde 45 minutos en armar el arreglo floral. Esto afecta la tanda de entrega que verá el
+						comprador (si lo activas).
+					</p>
+				</div>
+
+				<app-component-button [type]="'ICON'" [icon]="'navigate_next'" />
+			</button>
+
+			<hr />
+
+			<button
+				type="button"
+				class="tx-left pd-12 grid gp-8 w"
+				style="grid-template-columns: 1fr max-content"
+				(click)="sell.redirect('segment')"
+			>
+				<div class="grid gp-8">
+					<b>Información adicional</b>
+					<p class="tx-3">
+						Escribe más del artículo, si quieres incluye hasta imágenes para una descrpción más clara o una buena
+						historia.
+					</p>
+				</div>
+
+				<app-component-button [type]="'ICON'" [icon]="'navigate_next'" />
+			</button>
+
+			<hr />
+
+			<button
+				type="button"
+				class="tx-left pd-12 grid gp-8 w"
+				style="grid-template-columns: 1fr max-content"
+				(click)="core.open('KEYWORDS')"
+			>
+				<div class="grid gp-8">
+					<b>Palabras claves para búsquedas</b>
+					<p class="tx-3">Para que tus compradores y LAIA lo encuentren con palabras referentes.</p>
+				</div>
+
+				<app-component-button [type]="'ICON'" [icon]="'navigate_next'" />
+			</button>
+
+			<hr />
+
+			<button
+				type="button"
+				class="tx-left pd-12 grid gp-8 w"
+				style="grid-template-columns: 1fr max-content"
+				(click)="core.open('QUESTION')"
+			>
+				<div class="grid gp-8">
+					<b>Preguntas a compradores</b>
+					<p class="tx-3">
+						Generalmente usado cuando necesitas saber respuestas del comprador antes de hacer la venta del servicio o el
+						artículo que
+					</p>
+				</div>
+
+				<app-component-button [type]="'ICON'" [icon]="'navigate_next'" />
+			</button>
+
+			<hr />
+
+			<button type="button" class="tx-left pd-12 grid gp-8 w" style="grid-template-columns: 1fr max-content">
+				<div class="grid gp-8">
+					<b>Categorias</b>
+					<p class="tx-3">Agrupa y presenta artículos en tu tienda.</p>
+				</div>
+
+				<app-component-button [type]="'ICON'" [icon]="'navigate_next'" />
+			</button>
+
+			<hr />
+
+			<button
+				type="button"
+				class="tx-left pd-12 grid gp-8 w"
+				style="grid-template-columns: 1fr max-content"
+				(click)="core.open('TAG')"
+			>
+				<div class="grid gp-8">
+					<b>Etiquetas</b>
+					<p class="tx-3">
+						Presenta artículos dentro de otros artículos para vender más. Con las “etiquetas” creas hasta combos.
+					</p>
+				</div>
+
+				<app-component-button [type]="'ICON'" [icon]="'navigate_next'" />
+			</button>
+		</div>
+	</section>
+</main>

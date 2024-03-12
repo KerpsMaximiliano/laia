@@ -1,0 +1,27 @@
+@defer (when user().status === LOADED || user().status === COMPLETE) {
+	@if (user().data.logged) {
+		<button type="button" (click)="profile()">
+			@if (user().data.image) {
+				<div class="grid">
+					<img [src]="user().data.image" [alt]="user().data.email" class="br-50" />
+				</div>
+			} @else {
+				<p class="grid br-50">
+					{{
+						user().data.name
+							? user().data.name!.charAt(0)
+							: user().data.surname
+								? user().data.surname!.charAt(0)
+								: user().data.email!.charAt(0)
+					}}
+				</p>
+			}
+		</button>
+	} @else {
+		<app-component-button [type]="'MINI'" [icon]="'person'" (click)="login()" />
+	}
+} @placeholder {
+	<div class="grid">
+		<app-component-loading />
+	</div>
+}

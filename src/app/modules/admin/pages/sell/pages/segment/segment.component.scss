@@ -1,0 +1,55 @@
+@import '../../../../../../../../node_modules/@syncfusion/ej2-base/styles/material.css';
+@import '../../../../../../../../node_modules/@syncfusion/ej2-buttons/styles/material.css';
+@import '../../../../../../../../node_modules/@syncfusion/ej2-lists/styles/material.css';
+@import '../../../../../../../../node_modules/@syncfusion/ej2-popups/styles/material.css';
+@import '../../../../../../../../node_modules/@syncfusion/ej2-splitbuttons/styles/material.css';
+@import '../../../../../../../../node_modules/@syncfusion/ej2-navigations/styles/material.css';
+@import '../../../../../../../../node_modules/@syncfusion/ej2-icons/styles/material.css';
+@import '../../../../../../../../node_modules/@syncfusion/ej2-inputs/styles/material.css';
+@import '../../../../../../../../node_modules/@syncfusion/ej2-image-editor/styles/material.css';
+
+header button {
+	font-size: 17px;
+	font-weight: 600;
+	min-height: 36px;
+}
+
+img {
+	width: 100%;
+	height: auto;
+	aspect-ratio: 16/9;
+	object-fit: contain;
+	border: none;
+	outline: none;
+	outline-style: none;
+}
+
+main form article {
+	grid-template-rows: max-content 1fr;
+}
+
+.media--title {
+	background-color: var(--grey-light);
+	height: 60px;
+	border-radius: 4px 4px 0 0;
+}
+
+.media--src,
+.media--update {
+	place-items: center;
+	width: 100%;
+	max-width: calc(406px);
+	height: calc(((100vw - 24px) / 16) * 9);
+	max-height: calc((406px / 16) * 9);
+}
+
+.media--update div {
+	place-items: center;
+	background-color: var(--grey-light);
+	width: 45%;
+	height: 45%;
+}
+
+/* #image-editor_cropBtn-popup ul li:not(:last-child) {
+	display: none;
+} */

@@ -1,0 +1,47 @@
+<header style="padding: 30px 0 16px 8px">
+	<h1>Tiempo de fabricación</h1>
+</header>
+
+<main class="grid gp-24">
+	<article class="grid gp-8 bd br-4 pd-12">
+		<p class="tx-visible">
+			Las tandas que se le presentarán al Comprador será después de este tiempo y depende del tiempo de fabricación
+			configurado en cada artículo.
+		</p>
+	</article>
+
+	<form [formGroup]="form" class="grid">
+		<mat-form-field appearance="outline">
+			<mat-label>Tiempo</mat-label>
+
+			<div class="grid gp-8" style="grid-template-columns: 1fr max-content">
+				<div class="flex gp-8">
+					<input
+						type="number"
+						matInput
+						placeholder="Ingrese el tiempo"
+						formControlName="delay"
+						[max]="type === 1 ? 267840 : type === 2 ? 4464 : type === 3 ? 186 : 6"
+					/>
+
+					@if (form.get('delay')?.value) {
+						<app-component-button
+							[type]="'ICON'"
+							[icon]="'delete'"
+							[suffix]="true"
+							(click)="form.get('delay')?.setValue(null)"
+						/>
+					}
+
+					<button type="button" style="min-width: 60px" (click)="change()">
+						{{ transform(form.get('delay')?.value) }}
+					</button>
+				</div>
+			</div>
+
+			@if (form.get('delay')?.invalid && form.get('delay')?.touched) {
+				<mat-error>{{ getErrorMessage(form.get('delay')!) }}</mat-error>
+			}
+		</mat-form-field>
+	</form>
+</main>

@@ -19,7 +19,7 @@ export const APP_ROUTES: Routes = [
 	{
 		path: 'auth',
 		// eslint-disable-next-line @typescript-eslint/promise-function-async
-		loadChildren: () => import('./modules/auth/auth.routes').then((r) => r.AUTH_ROUTES)
+		loadChildren: () => import('./modules/user/user.routes').then((r) => r.USER_ROUTES)
 	},
 	{
 		path: ':slug',

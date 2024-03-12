@@ -1,0 +1,32 @@
+<header style="padding: 30px 0 16px 8px">
+	<h1>Nuevo Hashtag</h1>
+</header>
+
+<main>
+	<form [formGroup]="form">
+		<mat-form-field appearance="outline" class="w">
+			<mat-label>Hashtag</mat-label>
+
+			<div class="flex">
+				@if (form.get('hashtag')?.value) {
+					<div matTextPrefix>#</div>
+				}
+
+				<input type="text" matInput placeholder="Ingrese un hashtag" formControlName="hashtag" maxlength="21" />
+
+				@if (form.get('hashtag')?.value) {
+					<app-component-button
+						[type]="'ICON'"
+						[icon]="'delete'"
+						[suffix]="true"
+						(click)="form.get('hashtag')?.setValue(null)"
+					/>
+				}
+			</div>
+
+			<mat-hint [align]="'end'">{{ 20 - form.get('hashtag')?.value?.length }}</mat-hint>
+
+			<mat-error>{{ getErrorMessage(form.get('hashtag')!) }}</mat-error>
+		</mat-form-field>
+	</form>
+</main>

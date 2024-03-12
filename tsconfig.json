@@ -2,15 +2,27 @@
 	"compileOnSave": false,
 	"compilerOptions": {
 		"paths": {
-			"@env/*": ["src/environments/*"],
 			"@app/*": ["src/app/*"],
-			"@core/*": ["src/app/core/*"],
-			"@modules/*": ["src/app/modules/*"],
+
+			"@components/*": ["src/app/core/components/*"],
+			"@consts/*": ["src/app/core/constants/*"],
+			"@dialogs/*": ["src/app/core/dialog/*"],
+			"@functions/*": ["src/app/core/functions/*"],
+			"@interfaces/*": ["src/app/core/interfaces/*"],
+			"@pipes/*": ["src/app/core/pipes/*"],
+			"@services/*": ["src/app/core/services/*"],
+			"@sorts/*": ["src/app/core/sorts/*"],
+			"@validators/*": ["src/app/core/validators/*"],
+
+			"@user/*": ["src/app/modules/user/*"],
+
 			"@ecommerce/*": ["src/app/modules/ecommerce/*"],
+
 			"@admin/*": ["src/app/modules/admin/*"],
-			"@buy/*": ["src/app/modules/admin/buy/*"],
-			"@sell/*": ["src/app/modules/admin/sell/*"],
-			"@negotiation/*": ["src/app/modules/admin/negotation/*"]
+
+			"@buy/*": ["src/app/modules/admin/pages/buy/*"],
+			"@sell/*": ["src/app/modules/admin/pages/sell/*"],
+			"@negotiation/*": ["src/app/modules/admin/pages/negotiation/*"]
 		},
 		"baseUrl": "./",
 		"outDir": "./dist/out-tsc",

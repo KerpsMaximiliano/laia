@@ -1,0 +1,91 @@
+<header>
+	<h1>Nueva Pregunta</h1>
+</header>
+
+<main class="grid gp-24">
+	<form [formGroup]="form" class="grid">
+		<mat-form-field appearance="outline">
+			<mat-label>Pregunta</mat-label>
+
+			<div class="fle gp-8">
+				@if (form.get('question')?.value) {
+					<div matTextPrefix>¿</div>
+				}
+
+				<textarea
+					matInput
+					cdkTextareaAutosize
+					#autosize="cdkTextareaAutosize"
+					cdkAutosizeMinRows="1"
+					placeholder="Ingrese la pregunta"
+					formControlName="question"
+				>
+				</textarea>
+
+				@if (form.get('question')?.value) {
+					<div matTextPrefix class="fle" style="align-items: flex-end">?</div>
+				}
+
+				@if (form.get('question')?.value) {
+					<app-component-button
+						[type]="'ICON'"
+						[icon]="'delete'"
+						[suffix]="true"
+						(click)="form.get('question')?.setValue(null)"
+					/>
+				}
+			</div>
+
+			@if (form.get('question')?.invalid && form.get('question')?.touched) {
+				<mat-error>{{ getErrorMessage(form.get('question')!) }}</mat-error>
+			}
+		</mat-form-field>
+	</form>
+
+	<article class="grid">
+		<button type="button" class="w h grid pd-12 bd" [class.bd-active]="index === 1" (click)="index = 1; resize(true)">
+			<app-component-button [type]="'ICON'" [icon]="'abc'" [color]="index === 1 ? 'var(--violet)' : ''" />
+		</button>
+
+		<button type="button" class="w h grid pd-12 bd" [class.bd-active]="index === 2" (click)="index = 2; resize(false)">
+			<app-component-button [type]="'ICON'" [icon]="'checklist'" [color]="index === 2 ? 'var(--violet)' : ''" />
+		</button>
+
+		<button type="button" class="w h grid pd-12 bd" [class.bd-active]="index === 3" (click)="index = 3; resize(true)">
+			<app-component-button [type]="'ICON'" [icon]="'calendar_month'" [color]="index === 3 ? 'var(--violet)' : ''" />
+		</button>
+
+		<button type="button" class="w h grid pd-12 bd" [class.bd-active]="index === 4" (click)="index = 4; resize(true)">
+			<app-component-button [type]="'ICON'" [icon]="'schedule'" [color]="index === 4 ? 'var(--violet)' : ''" />
+		</button>
+	</article>
+
+	<p class="type br-4">
+		@switch (index) {
+			@case (1) {
+				El cliente podrá contestar escribiendo un texto
+			}
+			@case (2) {
+				El cliente podrá elegir entre una o varias opciones
+			}
+			@case (3) {
+				El cliente podrá elegir una fecha
+			}
+			@case (4) {
+				El cliente podrá elegir un horario
+			}
+		}
+	</p>
+
+	@if (index === 2) {
+		<div class="flex bet w">
+			<p>¿Solo puede elegir una respuesta?</p>
+			<mat-slide-toggle (click)="required = !required"></mat-slide-toggle>
+		</div>
+	}
+
+	<div class="flex bet w">
+		<p>¿La respuesta es obligatoria?</p>
+		<mat-slide-toggle (click)="required = !required"></mat-slide-toggle>
+	</div>
+</main>

@@ -14,17 +14,17 @@ export const ADMIN_ROUTES: Routes = [
 	{
 		path: 'buy',
 		// eslint-disable-next-line @typescript-eslint/promise-function-async
-		loadChildren: () => import('./buy/buy.routes').then((r) => r.BUY_ROUTES)
+		loadChildren: () => import('./pages/buy/buy.routes').then((r) => r.BUY_ROUTES)
 	},
 	{
 		path: 'sell',
 		// eslint-disable-next-line @typescript-eslint/promise-function-async
-		loadChildren: () => import('./sell/sell.routes').then((r) => r.SELL_ROUTES)
+		loadChildren: () => import('./pages/sell/sell.routes').then((r) => r.SELL_ROUTES)
 	},
 	{
-		path: 'negotation',
+		path: 'negotiation',
 		// eslint-disable-next-line @typescript-eslint/promise-function-async
-		loadChildren: () => import('./negotation/negotation.routes').then((r) => r.NEGOTATION_ROUTES)
+		loadChildren: () => import('./pages/negotiation/negotiation.routes').then((r) => r.NEGOTIATION_ROUTES)
 	},
 	{
 		path: '**',

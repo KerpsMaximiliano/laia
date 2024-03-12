@@ -1,0 +1,123 @@
+<div class="box">
+	<header class="flex bet gp-8 pd-12">
+		<button type="button" class="flex gp-4" (click)="back()">
+			<app-component-button [type]="'ICON'" [icon]="'navigate_before'" />
+			Segmento del artículo
+		</button>
+
+		@if (
+			(form.get('title')?.value && form.get('title')?.value.trim()) ||
+			(form.get('description')?.value && form.get('description')?.value.trim()) ||
+			image
+		) {
+			<app-component-button [type]="'MINI'" [icon]="'wysiwyg'" />
+		}
+	</header>
+
+	<main>
+		<ejs-imageeditor #imageEditor [toolbar]="toolbar"></ejs-imageeditor>
+	</main>
+</div>
+
+<!-- <header class="flex bet gp-8 pd-12">
+	<button type="button" class="flex gp-4" (click)="back()">
+		<app-component-button [type]="'ICON'" [icon]="'navigate_before'" />
+		Segmento del artículo
+	</button>
+
+	@if (
+		(form.get('title')?.value && form.get('title')?.value.trim()) ||
+		(form.get('description')?.value && form.get('description')?.value.trim()) ||
+		image
+	) {
+		<app-component-button [type]="'MINI'" [icon]="'wysiwyg'" />
+	}
+</header>
+
+<main class="pb-44">
+	<form [formGroup]="form" class="grid pd-12 gp-30">
+		<mat-form-field appearance="outline">
+			<mat-label>Título del segmento</mat-label>
+
+			<div class="flex">
+				<input
+					type="text"
+					matInput
+					placeholder="Ingrese el título del segmento"
+					formControlName="title"
+					maxlength="121"
+				/>
+
+				@if (form.get('title')?.value) {
+					<app-component-button
+						[type]="'ICON'"
+						[icon]="'delete'"
+						[suffix]="true"
+						(click)="form.get('title')?.setValue(null)"
+					/>
+				}
+			</div>
+
+			<mat-hint [align]="'end'">{{ 120 - form.get('title')?.value?.length }}</mat-hint>
+
+			@if (form.get('title')?.invalid && form.get('title')?.touched) {
+				<mat-error>{{ getErrorMessage(form.get('title')!) }}</mat-error>
+			}
+		</mat-form-field>
+
+		<mat-form-field appearance="outline">
+			<mat-label>Contenido del segmento</mat-label>
+
+			<div class="fle gp-8">
+				<textarea
+					matInput
+					cdkTextareaAutosize
+					#autosize="cdkTextareaAutosize"
+					cdkAutosizeMinRows="1"
+					placeholder="Ingrese el contenido del segmento"
+					formControlName="description"
+					maxlength="501"
+				>
+				</textarea>
+
+				@if (form.get('description')?.value) {
+					<app-component-button
+						[type]="'ICON'"
+						[icon]="'delete'"
+						[suffix]="true"
+						(click)="form.get('description')?.setValue(null)"
+					/>
+				}
+			</div>
+
+			<mat-hint [align]="'end'">{{ 500 - form.get('description')?.value?.length }}</mat-hint>
+
+			@if (form.get('description')?.invalid && form.get('description')?.touched) {
+				<mat-error>{{ getErrorMessage(form.get('description')!) }}</mat-error>
+			}
+		</mat-form-field>
+
+		<article class="grid br-4">
+			<div class="media--title flex bet pd-12">
+				<p>Multimedia</p>
+				@if (image) {
+					<app-component-button [type]="'MINI'" [icon]="'delete'" (click)="reset()" />
+				}
+			</div>
+
+			@if (image) {
+				<div class="media--src grid">
+					<img [src]="image" alt="Imagen representativa del segmento." />
+				</div>
+			} @else {
+				<button type="button" class="media--update grid" (click)="onClickInput()">
+					<div class="grid br-12">
+						<b>16 / 9</b>
+					</div>
+				</button>
+			}
+		</article>
+
+		<input type="file" #fileInput hidden (change)="onFileSelected($event)" accept="image/png, image/jpeg" />
+	</form>
+</main> -->
