@@ -37,6 +37,11 @@ export const SELL_ROUTES: Routes = [
 				loadComponent: () => import('./pages/segment/segment.component').then((c) => c.SegmentComponent)
 			},
 			{
+				path: 'entpr-sale',
+				// eslint-disable-next-line @typescript-eslint/promise-function-async
+				loadComponent: () => import('./pages/entpr-sale/entpr-sale.component').then((c) => c.EntprSaleComponent)
+			},
+			{
 				path: '**',
 				redirectTo: '',
 				pathMatch: 'full'

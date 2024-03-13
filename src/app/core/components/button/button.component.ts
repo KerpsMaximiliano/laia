@@ -42,6 +42,7 @@ type Icon =
 	| 'done_all'
 	| 'done'
 	| 'edit'
+	| 'folder'
 	| 'image'
 	| 'info'
 	| 'link'
@@ -65,5 +66,6 @@ type Icon =
 	| 'share'
 	| 'shopping_cart'
 	| 'store'
+	| 'storefront'
 	| 'sync'
 	| 'wysiwyg';
