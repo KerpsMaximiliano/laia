@@ -27,6 +27,11 @@ export const SELL_ROUTES: Routes = [
 				loadComponent: () => import('./pages/article/article.component').then((c) => c.ArticleComponent)
 			},
 			{
+				path: 'incentive',
+				// eslint-disable-next-line @typescript-eslint/promise-function-async
+				loadComponent: () => import('./pages/incentive/incentive.component').then((c) => c.IncentiveComponent)
+			},
+			{
 				path: 'segment',
 				// eslint-disable-next-line @typescript-eslint/promise-function-async
 				loadComponent: () => import('./pages/segment/segment.component').then((c) => c.SegmentComponent)

@@ -1,0 +1,74 @@
+<header class="flex bet gp-8 pd-12">
+	<button type="button" class="flex gp-4" (click)="core.back()">
+		<app-component-button [type]="'ICON'" [icon]="'navigate_before'" />
+		Incentivo
+	</button>
+
+	<button type="button" class="option" style="padding: 0 12px">Guardar</button>
+</header>
+
+<main class="grid gp-24 pd-12">
+	<p class="message">Puedes configurar hasta 3 incentivos para tus vendedores.</p>
+
+	<form [formGroup]="form" class="grid">
+		<mat-form-field appearance="outline">
+			<mat-label>{{ type ? 'Porcentaje del incentivo' : 'Monto del incentivo' }}</mat-label>
+
+			<div class="grid gp-8" style="grid-template-columns: 1fr max-content">
+				<div class="flex gp-8">
+					@if (form.get('incentive')?.value) {
+						<div matTextPrefix>{{ type ? '%' : '$' }}</div>
+					}
+
+					<input
+						type="number"
+						matInput
+						formControlName="incentive"
+						[placeholder]="type ? 'Ingrese el porcentaje del incentivo' : 'Ingrese el monto del incentivo'"
+					/>
+
+					@if (form.get('incentive')?.value) {
+						<app-component-button
+							[type]="'ICON'"
+							[icon]="'delete'"
+							[suffix]="true"
+							(click)="form.get('incentive')?.setValue(null)"
+						/>
+					}
+
+					@if (price !== null && price !== 0) {
+						<app-component-button [type]="'ICON'" [icon]="'sync'" (click)="type = !type" style="margin-left: 8px" />
+					}
+				</div>
+			</div>
+
+			@if (form.get('incentive')?.invalid && form.get('incentive')?.touched) {
+				<mat-error>{{ getErrorMessage(form.get('incentive')!) }}</mat-error>
+			}
+		</mat-form-field>
+	</form>
+
+	<section class="bd br-4 pd-12">
+		@for (item of information; track $index) {
+			<div class="grid gp-8 pd-12">
+				<p>{{ item }}</p>
+				<p>
+					@switch ($index) {
+						@case (0) {
+							{{ currency(price) }}
+						}
+						@case (1) {
+							{{ currency(invest) }}
+						}
+						@case (2) {
+							{{ incentive() }}
+						}
+						@case (3) {
+							{{ benefit() }}
+						}
+					}
+				</p>
+			</div>
+		}
+	</section>
+</main>

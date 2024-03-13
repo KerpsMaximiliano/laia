@@ -37,7 +37,7 @@ import { IArt } from '@sell/interfaces/sell.interface';
 import { ILogin } from '@user/interfaces/user.interface';
 
 // * Pipes.
-import { currency } from '@app/core/pipes/currency.pipe';
+import { currency } from '@pipes/currency.pipe';
 
 // * Services.
 import { SellService } from '@sell/services/sell.service';
@@ -45,6 +45,7 @@ import { CoreService } from '@services/core.service';
 
 // * Sorts.
 import { ILoading } from '@app/core/sorts/loading.sort';
+import { IDialog } from '@sorts/dialog.sort';
 
 // * Actions.
 import { ADMIN_SELL_ARTICLE_LOAD } from '@sell/state/sell.actions';
@@ -76,12 +77,65 @@ export class ArticleComponent implements OnInit, AfterViewInit, OnDestroy {
 	// eslint-disable-next-line @typescript-eslint/naming-convention
 	public readonly INITIAL: ILoading = INITIAL;
 	public readonly getErrorMessage: (control: AbstractControl<unknown, unknown>) => string = getErrorMessage;
-	public readonly currency: (value: number | undefined) => string = currency;
+	public readonly currency: (value: number | null | undefined) => string = currency;
 	public readonly core: CoreService = inject(CoreService);
 	public readonly sell: SellService = inject(SellService);
 
 	public readonly form: UntypedFormGroup = this._setForm();
 	public index: number = 0;
+	public options: {
+		title: string;
+		description: string;
+		action: 'OPEN' | 'REDIRECT';
+		redirect?: string;
+		dialog?: IDialog;
+	}[] = [
+		{
+			title: 'Hashtag',
+			description: 'Lo adicionas en tus redes sociales y al entrar a tu tienda lo buscan y lo encuentran directamente.',
+			action: 'OPEN',
+			dialog: 'HASHTAG'
+		},
+		{
+			title: 'Tiempo de fabricación',
+			description:
+				'Ej: Florista tarde 45 minutos en armar el arreglo floral. Esto afecta la tanda de entrega que verá el comprador (si lo activas).',
+			action: 'OPEN',
+			dialog: 'DELAY'
+		},
+		{
+			title: 'Información adicional',
+			description:
+				'Escribe más del artículo, si quieres incluye hasta imágenes para una descrpción más clara o una buena historia.',
+			action: 'REDIRECT',
+			redirect: 'segment'
+		},
+		{
+			title: 'Palabras claves para búsquedas',
+			description: 'Para que tus compradores y LAIA lo encuentren con palabras referentes.',
+			action: 'OPEN',
+			dialog: 'KEYWORDS'
+		},
+		{
+			title: 'Preguntas a compradores',
+			description:
+				'Generalmente usado cuando necesitas saber respuestas del comprador antes de hacer la venta del servicio o el artículo que ofreces.',
+			action: 'OPEN',
+			dialog: 'QUESTION'
+		},
+		{
+			title: 'Categorias',
+			description: 'Agrupa y presenta artículos en tu tienda.',
+			action: 'REDIRECT', // !
+			redirect: 'CATEGORIES' // !
+		},
+		{
+			title: 'Incentivos',
+			description: 'Incentiva a tu personal interno a vender para que vendas más de cualquiera de tus artículos.',
+			action: 'REDIRECT',
+			redirect: 'incentive'
+		}
+	];
 
 	// eslint-disable-next-line @ngrx/use-consistent-global-store-name
 	private readonly _store: Store<IState> = inject(Store);

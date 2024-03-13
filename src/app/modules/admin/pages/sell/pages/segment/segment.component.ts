@@ -33,7 +33,7 @@ import { ImageEditorCommand, ImageEditorComponent, ImageEditorModule } from '@sy
 
 @Component({
 	changeDetection: ChangeDetectionStrategy.OnPush,
-	selector: 'app-dialog-content-info',
+	selector: 'app-admin-sell-segment',
 	standalone: true,
 	imports: [
 		ImageEditorModule,
@@ -203,6 +203,7 @@ export class SegmentComponent implements AfterViewInit {
 		// }
 	}
 
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types
 	public onSelectionChange(args: any): void {
 		if (args.width !== args.height) {
 			this.imageEditorObj?.select('16:9');

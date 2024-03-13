@@ -1,5 +1,5 @@
-export function currency(value: number | undefined): string {
-	if (value === 0 || !value) return '$0.00';
+export function currency(value: number | null | undefined): string {
+	if (value === 0 || value === undefined || value === null) return '$0.00';
 
 	if (value > 0) {
 		const formattedValue = value.toLocaleString('en-US', {

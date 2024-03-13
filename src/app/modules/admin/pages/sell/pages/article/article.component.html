@@ -41,7 +41,7 @@
 		</div>
 	}
 
-	<form [formGroup]="form" class="grid gp-30" style="margin-bottom: 4px">
+	<form [formGroup]="form" class="grid gp-30" style="margin-bottom: 12px">
 		<mat-form-field appearance="outline">
 			<mat-label>Nombre del artículo</mat-label>
 
@@ -160,16 +160,6 @@
 				<app-component-button [type]="'ICON'" [icon]="'navigate_next'" />
 			</button>
 		</div>
-
-		<div class="flex bet gp-8 pd-12" style="border-top: 1px solid var(--grey-light); padding-top: 20px">
-			<p>Comisiones:</p>
-
-			<button type="button" class="flex gp-8">
-				({{ currency(art().data.commissions) }})
-				{{ currency((art().data.price.amount ?? 0) - art().data.investments - art().data.commissions) }}
-				<app-component-button [type]="'ICON'" [icon]="'navigate_next'" />
-			</button>
-		</div>
 	</section>
 
 	<section class="grid bd br-4">
@@ -178,123 +168,27 @@
 		</p>
 
 		<div>
-			<button
-				type="button"
-				class="tx-left pd-12 grid gp-8 w"
-				style="grid-template-columns: 1fr max-content"
-				(click)="core.open('HASHTAG')"
-			>
-				<div class="grid gp-8">
-					<b>Hashtag</b>
-					<p class="tx-3">
-						Lo adicionas en tus redes sociales y al entrar a tu tienda lo buscan y lo encuentran directamente.
-					</p>
-				</div>
+			@for (option of options; track $index) {
+				<button
+					type="button"
+					class="tx-left pd-12 grid gp-8 w"
+					style="grid-template-columns: 1fr max-content"
+					(click)="
+						option.action === 'OPEN' && option.dialog ? core.open(option.dialog) : sell.redirect(option.redirect ?? '')
+					"
+				>
+					<div class="grid gp-8">
+						<b>{{ option.title }}</b>
+						<p class="tx-3">{{ option.description }}</p>
+					</div>
 
-				<app-component-button [type]="'ICON'" [icon]="'navigate_next'" />
-			</button>
+					<app-component-button [type]="'ICON'" [icon]="'navigate_next'" />
+				</button>
 
-			<hr />
-
-			<button
-				type="button"
-				class="tx-left pd-12 grid gp-8 w"
-				style="grid-template-columns: 1fr max-content"
-				(click)="core.open('DELAY')"
-			>
-				<div class="grid gp-8">
-					<b>Tiempo de fabricación</b>
-					<p class="tx-3">
-						Ej: Florista tarde 45 minutos en armar el arreglo floral. Esto afecta la tanda de entrega que verá el
-						comprador (si lo activas).
-					</p>
-				</div>
-
-				<app-component-button [type]="'ICON'" [icon]="'navigate_next'" />
-			</button>
-
-			<hr />
-
-			<button
-				type="button"
-				class="tx-left pd-12 grid gp-8 w"
-				style="grid-template-columns: 1fr max-content"
-				(click)="sell.redirect('segment')"
-			>
-				<div class="grid gp-8">
-					<b>Información adicional</b>
-					<p class="tx-3">
-						Escribe más del artículo, si quieres incluye hasta imágenes para una descrpción más clara o una buena
-						historia.
-					</p>
-				</div>
-
-				<app-component-button [type]="'ICON'" [icon]="'navigate_next'" />
-			</button>
-
-			<hr />
-
-			<button
-				type="button"
-				class="tx-left pd-12 grid gp-8 w"
-				style="grid-template-columns: 1fr max-content"
-				(click)="core.open('KEYWORDS')"
-			>
-				<div class="grid gp-8">
-					<b>Palabras claves para búsquedas</b>
-					<p class="tx-3">Para que tus compradores y LAIA lo encuentren con palabras referentes.</p>
-				</div>
-
-				<app-component-button [type]="'ICON'" [icon]="'navigate_next'" />
-			</button>
-
-			<hr />
-
-			<button
-				type="button"
-				class="tx-left pd-12 grid gp-8 w"
-				style="grid-template-columns: 1fr max-content"
-				(click)="core.open('QUESTION')"
-			>
-				<div class="grid gp-8">
-					<b>Preguntas a compradores</b>
-					<p class="tx-3">
-						Generalmente usado cuando necesitas saber respuestas del comprador antes de hacer la venta del servicio o el
-						artículo que
-					</p>
-				</div>
-
-				<app-component-button [type]="'ICON'" [icon]="'navigate_next'" />
-			</button>
-
-			<hr />
-
-			<button type="button" class="tx-left pd-12 grid gp-8 w" style="grid-template-columns: 1fr max-content">
-				<div class="grid gp-8">
-					<b>Categorias</b>
-					<p class="tx-3">Agrupa y presenta artículos en tu tienda.</p>
-				</div>
-
-				<app-component-button [type]="'ICON'" [icon]="'navigate_next'" />
-			</button>
-
-			<hr />
-
-			<button
-				type="button"
-				class="tx-left pd-12 grid gp-8 w"
-				style="grid-template-columns: 1fr max-content"
-				(click)="core.open('TAG')"
-			>
-				<div class="grid gp-8">
-					<b>Etiquetas</b>
-					<p class="tx-3">
-						Presenta artículos dentro de otros artículos para vender más. Con las “etiquetas” creas hasta combos.
-					</p>
-				</div>
-
-				<app-component-button [type]="'ICON'" [icon]="'navigate_next'" />
-			</button>
+				@if (options.length - 1 !== $index) {
+					<hr />
+				}
+			}
 		</div>
 	</section>
 </main>

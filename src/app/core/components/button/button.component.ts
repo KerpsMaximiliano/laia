@@ -65,4 +65,5 @@ type Icon =
 	| 'share'
 	| 'shopping_cart'
 	| 'store'
+	| 'sync'
 	| 'wysiwyg';

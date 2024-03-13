@@ -13,9 +13,11 @@ import { provideServiceWorker } from '@angular/service-worker';
 import { APP_ROUTES } from '@app/app.routes';
 
 // * NgRx.
+import { provideHttpClient } from '@angular/common/http';
 import { ROOT_REDUCERS } from '@app/app.reducers';
 import { provideStore } from '@ngrx/store';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
+import { provideOAuthClient } from 'angular-oauth2-oidc';
 
 export const appConfig: ApplicationConfig = {
 	providers: [
@@ -26,6 +28,8 @@ export const appConfig: ApplicationConfig = {
 			registrationStrategy: 'registerWhenStable:30000'
 		}),
 		provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }),
-		provideStore(ROOT_REDUCERS)
+		provideStore(ROOT_REDUCERS),
+		provideOAuthClient(),
+		provideHttpClient()
 	]
 };
