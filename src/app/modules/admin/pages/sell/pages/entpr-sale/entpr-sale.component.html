@@ -7,85 +7,80 @@
 
 <main class="grid gp-24 pd-12 pb-44">
 	@for (option of options; track $index) {
-		<section class="grid bd br-8">
-			<p class="pd-12">{{ option[0].header }}</p>
-
-			@for (item of option; track $index) {
-				<hr />
-
-				<button
-					type="button"
-					class="grid pd-12 tx-left"
-					style="grid-template-columns: max-content 1fr max-content; padding: 16px"
-				>
-					@switch (item) {
-						@case (item.title === 'folder') {}
-					}
-					<app-component-button [type]="'ICON'" [icon]="'folder'" class="pd-8" />
-
-					<div
-						class="grid"
-						style="grid-template-rows: repeat(2, minmax(22.5px, max-content)); gap: 4px; padding-left: 16px"
+		@if ($index === 2) {
+			<section class="grid bd br-8">
+				<mat-accordion class="expansion-panel-pd grid gp-16">
+					<mat-expansion-panel
+						(opened)="panelOpenState = true"
+						(closed)="panelOpenState = false"
+						togglePosition="after"
+						style="box-shadow: none"
+						[expanded]="true"
+						class="expansion-panel-content"
 					>
-						<p style="color: var(--required)">{{ item.title }}</p>
-						{{ item.subtitle }}
-						<p>{{ item.content }}</p>
-					</div>
-				</button>
-			}
-		</section>
+						<mat-expansion-panel-header>
+							<mat-panel-title class="fle bet"> Métodos de pago </mat-panel-title>
+						</mat-expansion-panel-header>
+
+						<hr />
+
+						<button
+							type="button"
+							class="grid pd-12 tx-left"
+							style="grid-template-columns: max-content 1fr max-content; padding: 16px"
+						>
+							<app-component-button [type]="'ICON'" [icon]="'credit_card'" class="pd-8" />
+
+							<div
+								class="grid"
+								style="grid-template-rows: repeat(2, minmax(22.5px, max-content)); gap: 4px; padding-left: 16px"
+							>
+								<p style="color: var(--required)">{{ options[1][0].title }}</p>
+								{{ options[1][0].subtitle }}
+							</div>
+						</button>
+					</mat-expansion-panel>
+				</mat-accordion>
+			</section>
+		} @else {
+			<section class="grid bd br-8">
+				<p class="pd-12">{{ option[0].header }}</p>
+
+				@for (item of option; track $index) {
+					<hr />
+
+					<button
+						type="button"
+						class="grid pd-12 tx-left"
+						style="grid-template-columns: max-content 1fr max-content; padding: 16px"
+						(click)="redirect(item.redirect ?? '')"
+					>
+						@switch (item.icon) {
+							@case ('truck') {
+								<app-component-button [type]="'ICON'" [icon]="'local_shipping'" class="pd-8" />
+							}
+							@case ('public') {
+								<app-component-button [type]="'ICON'" [icon]="'public'" class="pd-8" />
+							}
+							@case ('imagesearch_roller') {
+								<app-component-button [type]="'ICON'" [icon]="'imagesearch_roller'" class="pd-8" />
+							}
+							@default {
+								<app-component-button [type]="'ICON'" [icon]="'folder'" class="pd-8" />
+							}
+						}
+
+						<div
+							class="grid"
+							style="grid-template-rows: repeat(2, minmax(22.5px, max-content)); gap: 4px; padding-left: 16px"
+						>
+							<p style="color: var(--required)">{{ item.title }}</p>
+							{{ item.subtitle }}
+							<p>{{ item.content }}</p>
+						</div>
+					</button>
+				}
+			</section>
+		}
 	}
-	<!-- 
-	<section class="grid bd br-8">
-		<p class="pd-12">Metodos de pago</p>
-
-		@for (item of payments; track $index) {
-			<hr />
-
-			<button
-				type="button"
-				class="grid pd-12 tx-left"
-				style="grid-template-columns: max-content 1fr max-content; padding: 16px"
-			>
-				<app-component-button [type]="'ICON'" [icon]="'folder'" class="pd-8" />
-
-				<div
-					class="grid"
-					style="grid-template-rows: repeat(2, minmax(22.5px, max-content)); gap: 4px; padding-left: 16px"
-				>
-					<p style="color: var(--required)">{{ item.title }}</p>
-					{{ item.subtitle }}
-				</div>
-			</button>
-		}
-	</section>
-
-	<section class="grid bd br-8">
-		<p class="pd-12">Personalizacion</p>
-
-		@for (item of person; track $index) {
-			<hr />
-
-			<button
-				type="button"
-				class="grid pd-12 tx-left"
-				style="grid-template-columns: max-content 1fr max-content; padding: 16px"
-			>
-				<app-component-button [type]="'ICON'" [icon]="'folder'" class="pd-8" />
-
-				<div
-					class="grid"
-					style="grid-template-rows: repeat(2, minmax(22.5px, max-content)); gap: 4px; padding-left: 16px"
-				>
-					<p style="color: var(--required)">{{ item.title }}</p>
-					{{ item.subtitle }}
-				</div>
-			</button>
-		}
-	</section> -->
-	<div class="flex bet">
-		Tienda activa
-		<!-- [checked]="checked" [disabled]="disabled" -->
-		<mat-slide-toggle aria-label="Enable - disable" />
-	</div>
 </main>

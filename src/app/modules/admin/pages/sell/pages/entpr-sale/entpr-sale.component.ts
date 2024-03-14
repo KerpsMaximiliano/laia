@@ -1,6 +1,10 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+
+// * Services.
+import { SellService } from '@sell/services/sell.service';
 
 // * Material.
+import { MatExpansionModule } from '@angular/material/expansion';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 // * Components.
@@ -11,58 +15,77 @@ import { LoginComponent } from '@components/login/login.component';
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	selector: 'app-admin-sell-entprsale',
 	standalone: true,
-	imports: [ButtonComponent, LoginComponent, MatSlideToggleModule],
+	imports: [ButtonComponent, LoginComponent, MatSlideToggleModule, MatExpansionModule],
 	templateUrl: './entpr-sale.component.html',
 	styleUrl: './entpr-sale.component.scss'
 })
 export class EntprSaleComponent {
-	public readonly options: { title: string; subtitle: string; header?: string; content?: string }[][] = [
+	public panelOpenState: boolean = false;
+	public readonly options: {
+		title: string;
+		subtitle: string;
+		expand?: boolean;
+		header?: string;
+		content?: string;
+		icon?: string;
+		redirect?: string;
+	}[][] = [
 		[
 			{
-				header: 'Entregas',
-				title: 'Tiempo de Entregas',
-				subtitle: 'Tus clientes seleccionan cuando recibir su compra.',
-				content: 'Configura tandas según tu conveniencia'
-			},
-			{
-				title: 'Lugares de Entregas',
-				subtitle: 'Según la distancia',
-				content: 'Por delivery, pickup o ambas.'
-			},
-			{
-				title: 'Para compradores particulares',
-				subtitle: '4 Métodos en uso'
-			},
-			{
-				title: 'Opcional al Comprador',
-				subtitle: 'Dedicatoria de Regalo',
-				content: 'Texto en tarjeta. QR para multimedia.'
+				header: 'Tiempo de entrega',
+				redirect: 'delivery-time',
+				title: 'Por Activar',
+				subtitle: 'Adiciona una tanda.'
 			}
 		],
 		[
 			{
-				header: 'Metodos de pago',
-				title: 'Para todos los compradores',
-				subtitle: '3 Métodos en uso'
+				header: 'Lugares de entrega',
+				redirect: 'delivery-location',
+				icon: 'truck',
+				title: 'Por Activar',
+				subtitle: 'Adiciona una Distancia'
+			}
+		],
+		[
+			{
+				expand: true,
+				header: 'Métodos de pago',
+				title: 'Por activar',
+				subtitle: 'Adiciona un método'
+			}
+		],
+		[
+			{
+				header: 'Dedicatoria de regalo',
+				title: 'Opcional al comprador',
+				subtitle: 'Virtual',
+				content: 'Texto en tarjeta. QR para multimedia'
 			},
 			{
-				title: 'Para compradores particulares',
-				subtitle: '4 Métodos en uso'
+				header: 'Dedicatoria de regalo',
+				title: 'Opcional al comprador',
+				subtitle: 'Tradicional',
+				content: 'Texto en tarjeta. QR para multimedia'
+			}
+		],
+		[
+			{
+				header: 'Confirmación de la factura',
+				title: 'Activo',
+				subtitle: 'Adiciona WhatsApp o Email'
 			}
 		],
 		[
 			{
 				header: 'Personalizacion',
-				title: 'Confirmación de la factura',
-				subtitle: 'Por WhatsApp',
-				content: '(000) 000 - 0000'
-			},
-			{
+				icon: 'public',
 				title: 'Moneda del Pais',
 				subtitle: 'Configura la moneda de los pagos',
 				content: 'Tipo de moneda. Ubicación geográfica'
 			},
 			{
+				icon: 'imagesearch_roller',
 				title: 'Próximamente',
 				subtitle: 'Color de la tienda',
 				content: 'Por defecto'
@@ -70,11 +93,10 @@ export class EntprSaleComponent {
 		]
 	];
 
-	public action(action: number): void {
-		switch (action) {
-			case 0:
-				// this.sell.redirect('sell/article');
-				break;
-		}
+	private readonly _sell: SellService = inject(SellService);
+
+	public redirect(value: string): void {
+		if (!value) return;
+		this._sell.redirect(value);
 	}
 }
