@@ -42,6 +42,17 @@ export const SELL_ROUTES: Routes = [
 				loadComponent: () => import('./pages/entpr-sale/entpr-sale.component').then((c) => c.EntprSaleComponent)
 			},
 			{
+				path: 'delivery-time',
+				// eslint-disable-next-line @typescript-eslint/promise-function-async
+				loadComponent: () => import('./pages/del-time/del-time.component').then((c) => c.DeliveryTimeComponent)
+			},
+			{
+				path: 'delivery-location',
+				// eslint-disable-next-line @typescript-eslint/promise-function-async
+				loadComponent: () =>
+					import('./pages/del-location/del-location.component').then((c) => c.DeliveryLocationComponent)
+			},
+			{
 				path: '**',
 				redirectTo: '',
 				pathMatch: 'full'
