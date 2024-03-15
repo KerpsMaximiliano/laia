@@ -1,0 +1,55 @@
+<header class="grid gp-16 pd-12">
+	<div class="flex gp-4">
+		<app-component-button [type]="'MINI'" [icon]="'navigate_before'" (click)="core.back()" />
+		Tiempo de entrega
+	</div>
+
+	<section class="grid btns" style="grid-template-columns: repeat(2, 1fr)">
+		<button class="bd" style="padding: 16px 8px" [class.bd-active]="mode === 'DIA'" (click)="select('DIA')">
+			Segun el dia
+		</button>
+
+		<button class="bd" style="padding: 16px 8px" [class.bd-active]="mode === 'FECHA'" (click)="select('FECHA')">
+			Segun la fecha
+		</button>
+	</section>
+</header>
+
+<main class="pd-12">
+	@if (mode === 'DIA') {
+		<p style="color: #a1a1a1">Días de la tanda</p>
+	}
+	<form [formGroup]="form" class="grid gp-24">
+		@if (mode === 'DIA') {
+			<mat-chip-listbox multiple="true" formControlName="days" aria-label="Seleccione un dia">
+				<mat-chip-option>Lunes</mat-chip-option>
+				<mat-chip-option>Martes</mat-chip-option>
+				<mat-chip-option>Miercoles</mat-chip-option>
+				<mat-chip-option>Jueves</mat-chip-option>
+				<mat-chip-option>Viernes</mat-chip-option>
+				<mat-chip-option>Sabado</mat-chip-option>
+				<mat-chip-option>Domingo</mat-chip-option>
+			</mat-chip-listbox>
+		} @else if (mode === 'FECHA') {
+			<button type="button" class="btn--direction flex bet pd-16 br-4">
+				Seleccione una fecha especifica *
+				<app-component-button [type]="'ICON'" [icon]="'calendar_month'" (click)="core.open('MAT-CALENDAR')" />
+			</button>
+		}
+
+		<button type="button" class="btn--direction flex bet pd-16 br-4">
+			Rango de tiempo *
+			<app-component-button [type]="'ICON'" [icon]="'schedule'" />
+		</button>
+
+		<mat-form-field appearance="outline" class="w">
+			<mat-label>Cantidad de entregas posibles</mat-label>
+			<input formControlName="amount" type="number" matInput placeholder="Ingrese la cantida de entregas posibles" />
+		</mat-form-field>
+
+		<mat-form-field appearance="outline" class="w">
+			<mat-label>Nombre de la tanda</mat-label>
+			<input formControlName="name" type="text" matInput placeholder="Ingrese el nombre de la tanda" />
+		</mat-form-field>
+	</form>
+</main>

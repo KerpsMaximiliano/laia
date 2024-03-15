@@ -1,0 +1,26 @@
+<header>
+	<h1 class="tx-visible">Selecciona el método de pago</h1>
+</header>
+
+<main class="pd-12">
+	<section class="grid bd br-4">
+		@for (payment of payments; track $index) {
+			<button type="button" class="grid pd-12 tx-left" (click)="redirect(payment.redirect)">
+				@if ($index > 2) {
+					<p style="color: var(--required)">Proximamente</p>
+				}
+
+				<div class="grid gp-8">
+					<b>{{ payment.title }}</b>
+
+					<p class="tx-visible">
+						{{ payment.subtitle }}
+					</p>
+				</div>
+			</button>
+			@if ($index !== payments.length - 1) {
+				<hr />
+			}
+		}
+	</section>
+</main>

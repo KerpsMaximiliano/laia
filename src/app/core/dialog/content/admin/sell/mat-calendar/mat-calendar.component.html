@@ -1,0 +1,12 @@
+<header>
+	<h1>Selecciona la fecha</h1>
+</header>
+
+<main>
+	<button type="button" class="btn--direction flex bet pd-16 br-4 w">
+		{{ selected ? formatDate(selected) : 'Seleccione una fecha especifica *' }}
+	</button>
+	<div>
+		<mat-calendar [(selected)]="selected"></mat-calendar>
+	</div>
+</main>

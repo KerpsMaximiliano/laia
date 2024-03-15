@@ -1,0 +1,68 @@
+<header class="flex bet gp-8 pd-12">
+	<button type="button" class="flex gp-4" (click)="core.back()">
+		<app-component-button [type]="'ICON'" [icon]="'navigate_before'" />
+		Transferencia Bancaria
+	</button>
+
+	<!-- Si se completo algnu dato en los inputs -->
+	@if (form.get('bank')?.value || form.get('cbu')?.value || form.get('aditional')?.value || form.get('slide')?.value) {
+		<button type="button" class="option" style="padding: 0 12px">Guardar</button>
+	}
+</header>
+
+<main class="pd-12">
+	<form [formGroup]="form" class="fle col gp-24">
+		<p class="tx-visible message">
+			Con esta opción, tus clientes después de pagar subirán su comprobante (screenshot) y tu tendrás que confirmar su
+			pago.
+		</p>
+
+		<mat-form-field appearance="outline" class="w">
+			<input type="text" matInput placeholder="Introduce el Banco que recibirá el dinero" formControlName="bank" />
+		</mat-form-field>
+
+		<mat-form-field appearance="outline" class="w">
+			<input type="number" matInput placeholder="Número de cuenta que recibirá tu dinero" formControlName="cbu" />
+			@if (form.get('cbu')?.invalid && form.get('cbu')?.touched) {
+				<mat-error>{{ getErrorMessage(form.get('cbu')!) }}</mat-error>
+			}
+		</mat-form-field>
+
+		<mat-form-field appearance="outline">
+			<mat-label>{{ type ? 'Porcentaje que cobras adicional' : 'Monto que cobras adicional' }}</mat-label>
+
+			<div class="grid gp-8" style="grid-template-columns: 1fr max-content">
+				<div class="flex gp-8">
+					@if (form.get('aditional')?.value) {
+						<div matTextPrefix>{{ type ? '%' : '$' }}</div>
+					}
+
+					<input
+						type="number"
+						matInput
+						formControlName="aditional"
+						[placeholder]="type ? 'Porcentaje que cobras adicional' : 'Monto que cobras adicional'"
+					/>
+
+					@if (form.get('aditional')?.value) {
+						<app-component-button
+							[type]="'ICON'"
+							[icon]="'delete'"
+							[suffix]="true"
+							(click)="form.get('aditional')?.setValue(null)"
+						/>
+					}
+
+					@if (price !== null && price !== 0) {
+						<app-component-button [type]="'ICON'" [icon]="'sync'" (click)="type = !type" style="margin-left: 8px" />
+					}
+				</div>
+			</div>
+		</mat-form-field>
+		<div class="flex bet">
+			<p>Disponible para todos los Compradores</p>
+
+			<mat-slide-toggle formControlName="slide" (click)="log()" />
+		</div>
+	</form>
+</main>

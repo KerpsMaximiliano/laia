@@ -1,0 +1,46 @@
+h1,
+main section button {
+	font-size: 17px;
+	font-weight: 600;
+}
+
+h1 {
+	line-height: normal;
+}
+
+.disabled,
+.disabled * {
+	color: #c3c3c3;
+}
+
+@media (max-width: 360px) {
+	h1 {
+		font-size: 16px;
+	}
+
+	main article p {
+		font-size: 14px;
+	}
+}
+
+mat-expansion-panel-header {
+	border-radius: 4px 4px 0 0;
+}
+
+mat-panel-title {
+	font-size: 15px;
+	margin: 0;
+}
+
+.expansion-panel-body {
+	animation: expand 2s ease-out;
+}
+
+.mat-expansion-panel-spacing {
+	margin: 0;
+}
+
+.mat-accordion .mat-expansion-panel:not(.mat-expanded),
+.mat-accordion .mat-expansion-panel:not(.mat-expansion-panel-spacing) {
+	border-radius: 4px;
+}

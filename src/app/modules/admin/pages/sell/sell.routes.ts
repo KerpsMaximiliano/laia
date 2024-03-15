@@ -30,6 +30,33 @@ export const SELL_ROUTES: Routes = [
 				loadComponent: async () => import('./pages/segment/segment.component').then((c) => c.SegmentComponent)
 			},
 			{
+				path: 'entpr-sale',
+				loadComponent: async () => import('./pages/entpr-sale/entpr-sale.component').then((c) => c.EntprSaleComponent)
+			},
+			{
+				path: 'delivery-time',
+				loadComponent: async () => import('./pages/del-time/del-time.component').then((c) => c.DeliveryTimeComponent)
+			},
+			{
+				path: 'delivery-location',
+				loadComponent: async () =>
+					import('./pages/del-location/del-location.component').then((c) => c.DeliveryLocationComponent)
+			},
+			{
+				path: 'wire-transfer',
+				loadComponent: async () =>
+					import('./pages/wire-transfer/wire-transfer.component').then((c) => c.WireTransferComponent)
+			},
+			{
+				path: 'credit-days',
+				loadComponent: async () =>
+					import('./pages/credit-days/credit-days.component').then((c) => c.CreditDaysComponent)
+			},
+			{
+				path: 'paypal',
+				loadComponent: async () => import('./pages/paypal/paypal.component').then((c) => c.PaypalComponent)
+			},
+			{
 				path: '**',
 				redirectTo: '',
 				pathMatch: 'full'
