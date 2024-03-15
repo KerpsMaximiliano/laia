@@ -1,14 +1,14 @@
 <header class="flex bet gp-8 pd-12">
-	<div class="flex gp-8">
-		<app-component-button [type]="'MINI'" [icon]="'arrow_back_ios'" [color]="'#c3c3c3'" />
-		<h1>Emprendedor: Ventas</h1>
+	<div class="flex gp-4">
+		<app-component-button [type]="'MINI'" [icon]="'navigate_before'" (click)="core.back()" />
+		Emprendedor: Ventas
 	</div>
 </header>
 
 <main class="grid gp-24 pd-12 pb-44">
 	@for (option of options; track $index) {
 		@if ($index === 2) {
-			<section class="grid bd br-8">
+			<section class="grid bd br-4">
 				<mat-accordion class="expansion-panel-pd grid gp-16">
 					<mat-expansion-panel
 						(opened)="panelOpenState = true"
@@ -28,6 +28,7 @@
 							type="button"
 							class="grid pd-12 tx-left"
 							style="grid-template-columns: max-content 1fr max-content; padding: 16px"
+							(click)="open()"
 						>
 							<app-component-button [type]="'ICON'" [icon]="'credit_card'" class="pd-8" />
 
@@ -35,16 +36,16 @@
 								class="grid"
 								style="grid-template-rows: repeat(2, minmax(22.5px, max-content)); gap: 4px; padding-left: 16px"
 							>
-								<p style="color: var(--required)">{{ options[1][0].title }}</p>
-								{{ options[1][0].subtitle }}
+								<p style="color: var(--required)">{{ options[2][0].title }}</p>
+								{{ options[2][0].subtitle }}
 							</div>
 						</button>
 					</mat-expansion-panel>
 				</mat-accordion>
 			</section>
 		} @else {
-			<section class="grid bd br-8">
-				<p class="pd-12">{{ option[0].header }}</p>
+			<section class="grid bd br-4">
+				<p class="pd-12 message">{{ option[0].header }}</p>
 
 				@for (item of option; track $index) {
 					<hr />

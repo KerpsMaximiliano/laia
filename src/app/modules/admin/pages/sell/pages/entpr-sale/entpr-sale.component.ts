@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 
 // * Services.
 import { SellService } from '@sell/services/sell.service';
+import { CoreService } from '@services/core.service';
 
 // * Material.
 import { MatExpansionModule } from '@angular/material/expansion';
@@ -93,7 +94,12 @@ export class EntprSaleComponent {
 		]
 	];
 
+	public readonly core: CoreService = inject(CoreService);
 	private readonly _sell: SellService = inject(SellService);
+
+	public open(): void {
+		this.core.open('PAYMENT');
+	}
 
 	public redirect(value: string): void {
 		if (!value) return;
