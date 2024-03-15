@@ -53,6 +53,22 @@ export const SELL_ROUTES: Routes = [
 					import('./pages/del-location/del-location.component').then((c) => c.DeliveryLocationComponent)
 			},
 			{
+				path: 'wire-transfer',
+				// eslint-disable-next-line @typescript-eslint/promise-function-async
+				loadComponent: () =>
+					import('./pages/wire-transfer/wire-transfer.component').then((c) => c.WireTransferComponent)
+			},
+			{
+				path: 'credit-days',
+				// eslint-disable-next-line @typescript-eslint/promise-function-async
+				loadComponent: () => import('./pages/credit-days/credit-days.component').then((c) => c.CreditDaysComponent)
+			},
+			{
+				path: 'paypal',
+				// eslint-disable-next-line @typescript-eslint/promise-function-async
+				loadComponent: () => import('./pages/paypal/paypal.component').then((c) => c.PaypalComponent)
+			},
+			{
 				path: '**',
 				redirectTo: '',
 				pathMatch: 'full'

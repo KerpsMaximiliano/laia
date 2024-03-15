@@ -66,8 +66,14 @@ export class ResizeDialogComponent implements OnInit, OnDestroy {
 			.subscribe({
 				next: (res) => {
 					if (this.content) {
-						this.content.createComponent(res);
+						// eslint-disable-next-line @typescript-eslint/no-explicit-any
+						const componentRef: any = this.content.createComponent(res);
 						this._cdr.markForCheck();
+						if ('close' in componentRef.instance) {
+							componentRef.instance.close.subscribe(() => {
+								this.close();
+							});
+						}
 					}
 				}
 			});
@@ -112,6 +118,10 @@ export class ResizeDialogComponent implements OnInit, OnDestroy {
 				return 300;
 			case 'KEYWORDS':
 				return 190;
+			case 'MAT-CALENDAR':
+				return 620;
+			case 'PAYMENT':
+				return 530;
 			case 'QUESTION':
 				return 362;
 			case 'TAG':

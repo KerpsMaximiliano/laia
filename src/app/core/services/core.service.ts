@@ -84,6 +84,12 @@ export class CoreService {
 					case 'KEYWORDS':
 						chunk = await import('@dialogs/content/admin/sell/keywords/keywords.component');
 						break;
+					case 'MAT-CALENDAR':
+						chunk = await import('@dialogs/content/admin/sell/mat-calendar/mat-calendar.component');
+						break;
+					case 'PAYMENT':
+						chunk = await import('@dialogs/content/admin/sell/payment/payment.component');
+						break;
 					case 'QUESTION':
 						chunk = await import('@dialogs/content/admin/sell/question/question.component');
 						break;
