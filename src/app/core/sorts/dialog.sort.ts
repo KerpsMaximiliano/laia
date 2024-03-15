@@ -7,4 +7,13 @@
 // * 																			QUESTION
 // * 																			TAG
 // * SHARED		  													SHARE
-export type IDialog = 'DELAY' | 'HASHTAG' | 'INVEST' | 'KEYWORDS' | 'QUESTION' | 'SHARE' | 'TAG';
+export type IDialog =
+	| 'DELAY'
+	| 'HASHTAG'
+	| 'INVEST'
+	| 'KEYWORDS'
+	| 'MAT-CALENDAR'
+	| 'PAYMENT'
+	| 'QUESTION'
+	| 'SHARE'
+	| 'TAG';
