@@ -1,12 +1,16 @@
-<header class="grid gp-16 pd-12">
-	<div class="flex">
-		<app-component-button [type]="'MINI'" [icon]="'arrow_back_ios'" color="var(--grey-light)" (click)="back()" />
-		<h1>Tiempo de entrega</h1>
+<header class="grid pd-12">
+	<div class="flex gp-4">
+		<app-component-button [type]="'MINI'" [icon]="'navigate_before'" (click)="core.back()" />
+		Lugar de entrega
 	</div>
 </header>
 
 <main class="pd-12">
-	<form [formGroup]="form" class="fle col gp-12">
+	<form [formGroup]="form" class="fle col gp-24">
+		<p class="tx-visible message">
+			Tienes la opción de cobrarle extra a tus compradores segun la distancia y el monto facturado
+		</p>
+
 		<mat-form-field appearance="outline" class="w">
 			<input
 				#direction

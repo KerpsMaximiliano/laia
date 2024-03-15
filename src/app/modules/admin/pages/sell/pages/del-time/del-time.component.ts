@@ -35,11 +35,7 @@ import { CoreService } from '@services/core.service';
 export class DeliveryTimeComponent {
 	public mode: 'DIA' | 'FECHA' | undefined = undefined;
 	public readonly form: UntypedFormGroup = this._setForm();
-	private readonly _core: CoreService = inject(CoreService);
-
-	public back(): void {
-		this._core.back();
-	}
+	public readonly core: CoreService = inject(CoreService);
 
 	public select(mode: 'DIA' | 'FECHA'): void {
 		this.mode = mode;

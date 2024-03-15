@@ -28,11 +28,7 @@ import { MatInputModule } from '@angular/material/input';
 export class DeliveryLocationComponent {
 	public readonly getErrorMessage: (control: AbstractControl<unknown, unknown>) => string = getErrorMessage;
 	public readonly form: UntypedFormGroup = this._setForm();
-	private readonly _core: CoreService = inject(CoreService);
-
-	public back(): void {
-		this._core.back();
-	}
+	public readonly core: CoreService = inject(CoreService);
 
 	private _setForm(): UntypedFormGroup {
 		return new UntypedFormGroup({

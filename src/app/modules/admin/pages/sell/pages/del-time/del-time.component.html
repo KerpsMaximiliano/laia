@@ -1,7 +1,7 @@
 <header class="grid gp-16 pd-12">
-	<div class="flex">
-		<app-component-button [type]="'MINI'" [icon]="'arrow_back_ios'" color="var(--grey-light)" (click)="back()" />
-		<h1>Tiempo de entrega</h1>
+	<div class="flex gp-4">
+		<app-component-button [type]="'MINI'" [icon]="'navigate_before'" (click)="core.back()" />
+		Tiempo de entrega
 	</div>
 
 	<section class="grid btns" style="grid-template-columns: repeat(2, 1fr)">
@@ -33,12 +33,12 @@
 		} @else if (mode === 'FECHA') {
 			<button type="button" class="btn--direction flex bet pd-16 br-4">
 				Seleccione una fecha especifica *
-				<app-component-button [type]="'ICON'" [icon]="'calendar_month'" />
+				<app-component-button [type]="'ICON'" [icon]="'calendar_month'" (click)="core.open('MAT-CALENDAR')" />
 			</button>
 		}
 
 		<button type="button" class="btn--direction flex bet pd-16 br-4">
-			Elige una dirección *
+			Rango de tiempo *
 			<app-component-button [type]="'ICON'" [icon]="'schedule'" />
 		</button>
 
