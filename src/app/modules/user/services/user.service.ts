@@ -1,7 +1,10 @@
 import { Injectable, inject } from '@angular/core';
 import { AuthConfig, OAuthService } from 'angular-oauth2-oidc';
 
-@Injectable({ providedIn: 'root' })
+// * View.
+import { UserComponent } from '@user/user.component';
+
+@Injectable({ providedIn: UserComponent })
 export class UserService {
 	private readonly _auth: OAuthService = inject(OAuthService);
 
@@ -11,6 +14,7 @@ export class UserService {
 			strictDiscoveryDocumentValidation: false,
 			clientId: '70333651002-suraqvkrj18f9hiqh446ufiutrfb3ofs.apps.googleusercontent.com',
 			redirectUri: window.location.origin,
+			// redirectUri: 'http://localhost:4200/admin/sell/article',
 			scope: 'openid profile email'
 		};
 
@@ -25,6 +29,10 @@ export class UserService {
 
 	public logout(): void {
 		this._auth.logOut();
+	}
+
+	public estaLogeado(): boolean {
+		return this._auth.hasValidAccessToken();
 	}
 
 	public get(): Record<string, unknown> {

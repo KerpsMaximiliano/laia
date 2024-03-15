@@ -18,6 +18,7 @@ import { IUser } from '@user/interfaces/user.interface';
 
 // * Services.
 import { CoreService } from '@services/core.service';
+import { UserService } from '@user/services/user.service';
 
 // * Sorts.
 import { ILoading } from '@sorts/loading.sort';
@@ -50,12 +51,14 @@ export class LoginComponent implements OnInit, OnDestroy {
 	public readonly LOADING: ILoading = LOADING;
 	// eslint-disable-next-line @typescript-eslint/naming-convention
 	public readonly FAILED: ILoading = FAILED;
+	public mode: 'GOOGLE' | 'INITIAL' | 'SQQ' = 'INITIAL';
 
 	public error: boolean = false;
 
 	// eslint-disable-next-line @ngrx/use-consistent-global-store-name
 	private readonly _store: Store<IState> = inject(Store);
 	private readonly _core: CoreService = inject(CoreService);
+	private readonly _user: UserService = inject(UserService);
 	private readonly _unsubscribe: Subject<void> = new Subject<void>();
 
 	private _change: string | undefined = undefined;
@@ -130,6 +133,15 @@ export class LoginComponent implements OnInit, OnDestroy {
 			const password: string | undefined = this.form.get('password')?.value;
 			const user: number | null = this.user().data.check;
 			if (user && email && password && this.form.valid) this._store.dispatch(USER_LOGIN({ user, email, password }));
+		}
+	}
+
+	public google(): void {
+		console.log(this._user.estaLogeado());
+		if (this._user.estaLogeado()) {
+			this._core.back();
+		} else {
+			this._user.login();
 		}
 	}
 

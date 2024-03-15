@@ -9,7 +9,8 @@ import { UserService } from '@user/services/user.service';
 	selector: 'app-user',
 	standalone: true,
 	imports: [RouterOutlet],
-	template: '<router-outlet />'
+	template: '<router-outlet />',
+	providers: [UserService]
 })
 export class UserComponent implements OnInit {
 	private readonly _user: UserService = inject(UserService);
