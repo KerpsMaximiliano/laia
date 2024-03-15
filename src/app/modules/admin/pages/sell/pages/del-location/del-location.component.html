@@ -1,0 +1,47 @@
+<header class="grid gp-16 pd-12">
+	<div class="flex">
+		<app-component-button [type]="'MINI'" [icon]="'arrow_back_ios'" color="var(--grey-light)" (click)="back()" />
+		<h1>Tiempo de entrega</h1>
+	</div>
+</header>
+
+<main class="pd-12">
+	<form [formGroup]="form" class="fle col gp-12">
+		<mat-form-field appearance="outline" class="w">
+			<input
+				#direction
+				type="text"
+				matInput
+				placeholder="Seleccione el punto de partida y PickUp"
+				formControlName="starting"
+			/>
+			<app-component-button matSuffix [type]="'ICON'" [icon]="'location_on'" class="pd-8" style="margin-right: 25px" />
+		</mat-form-field>
+
+		<section class="flex gp-8">
+			<mat-form-field appearance="outline" floatLabel="always">
+				<mat-label>Monto extra</mat-label>
+				<input matInput type="number" formControlName="amount" placeholder="0" />
+				<span matTextPrefix>$&nbsp;</span>
+			</mat-form-field>
+
+			<mat-form-field appearance="outline" floatLabel="always">
+				<mat-label>Cada</mat-label>
+				<input matInput type="number" placeholder="0" formControlName="eachKm" />
+				<span matTextSuffix>Km&nbsp;</span>
+			</mat-form-field>
+
+			<mat-form-field appearance="outline" floatLabel="always">
+				<mat-label>Hasta</mat-label>
+				<input matInput type="number" formControlName="untilKm" placeholder="0" />
+				<span matTextSuffix>Km&nbsp;</span>
+			</mat-form-field>
+		</section>
+
+		<mat-form-field appearance="outline" class="w">
+			<mat-label>¿Desde que monto no le cobrarás el extra?</mat-label>
+			<input matInput type="number" formControlName="limitExtraAmount" />
+			<span matTextPrefix>$&nbsp;</span>
+		</mat-form-field>
+	</form>
+</main>
