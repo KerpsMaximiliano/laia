@@ -24,7 +24,7 @@
 						type="number"
 						matInput
 						formControlName="incentive"
-						[placeholder]="type ? 'Ingrese el porcentaje del incentivo' : 'Ingrese el monto del incentivo'"
+						[placeholder]="type ? 'Ingrese el porcentaje' : 'Ingrese el monto'"
 					/>
 
 					@if (form.get('incentive')?.value) {
@@ -37,7 +37,10 @@
 					}
 
 					@if (price !== null && price !== 0) {
-						<app-component-button [type]="'ICON'" [icon]="'sync'" (click)="type = !type" style="margin-left: 8px" />
+						<button type="button" (click)="type = !type" style="margin-left: 8px">
+							{{ type ? 'Porcentaje' : 'Monto' }}
+						</button>
+						<!-- <app-component-button [type]="'ICON'" [icon]="'sync'" (click)="type = !type"  /> -->
 					}
 				</div>
 			</div>

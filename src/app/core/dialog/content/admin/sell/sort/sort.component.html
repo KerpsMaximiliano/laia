@@ -1,0 +1,14 @@
+<main style="padding: 24px 0">
+	<section class="bd">
+		@for (option of options; track $index) {
+			<button type="button" class="flex bet pd-12 w" (click)="options[$index].value = !options[$index].value">
+				{{ option.title }}
+				<app-component-button [type]="'ICON'" [icon]="'navigate_next'" [class.rot]="!option.value" />
+			</button>
+
+			@if ($index < options.length - 1) {
+				<hr />
+			}
+		}
+	</section>
+</main>

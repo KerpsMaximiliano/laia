@@ -40,7 +40,7 @@ export class ResizeDialogComponent implements OnInit, OnDestroy {
 	private readonly _data: { dialog: IDialog; conf?: { option: number; logged?: boolean } } = inject(MAT_DIALOG_DATA);
 	private readonly _core: CoreService = inject(CoreService);
 	private readonly _cdr: ChangeDetectorRef = inject(ChangeDetectorRef);
-	private _subscriptions$?: Subject<void>;
+	private _destroy$?: Subject<void>;
 
 	// eslint-disable-next-line @typescript-eslint/member-ordering
 	public height: number = this._height();
@@ -48,9 +48,9 @@ export class ResizeDialogComponent implements OnInit, OnDestroy {
 	public cHeight: number = this._height();
 
 	public ngOnInit(): void {
-		this._subscriptions$ = new Subject<void>();
+		this._destroy$ = new Subject<void>();
 
-		this._core.gHeight.pipe(takeUntil(this._subscriptions$)).subscribe((res) => {
+		this._core.gHeight.pipe(takeUntil(this._destroy$)).subscribe((res) => {
 			if (res !== 0) {
 				this.resizable?.nativeElement.style.setProperty('--ht', `${this.height}px`);
 				this.resizable?.nativeElement.style.setProperty('--nw', `${res}px`);
@@ -62,7 +62,7 @@ export class ResizeDialogComponent implements OnInit, OnDestroy {
 
 		this._core
 			.component(this._data.dialog)
-			.pipe(takeUntil(this._subscriptions$))
+			.pipe(takeUntil(this._destroy$))
 			.subscribe({
 				next: (res) => {
 					if (this.content) {
@@ -94,9 +94,9 @@ export class ResizeDialogComponent implements OnInit, OnDestroy {
 	}
 
 	public ngOnDestroy(): void {
-		if (this._subscriptions$) {
-			this._subscriptions$.next();
-			this._subscriptions$.complete();
+		if (this._destroy$) {
+			this._destroy$.next();
+			this._destroy$.complete();
 		}
 		this._core.height = 0;
 		this.canimation = false;
@@ -118,6 +118,8 @@ export class ResizeDialogComponent implements OnInit, OnDestroy {
 				return 190;
 			case 'SHARE':
 				return 210;
+			case 'SORT':
+				return 260;
 			default:
 				return window.innerHeight - 2;
 		}

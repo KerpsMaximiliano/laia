@@ -359,6 +359,10 @@ p {
 html {
 	/* --mat-tree-container-background-color: red; */
 	--mdc-dialog-container-color: transparent;
+
+	/* EXPANSIÓN */
+	--mat-expansion-header-collapsed-state-height: 48px;
+	--mat-expansion-header-expanded-state-height: 48px;
 }
 
 .expansion-panel-pd .mat-expansion-panel-content .mat-expansion-panel-body {
@@ -388,6 +392,11 @@ html {
 	padding: 16px 12px;
 	border-radius: 4px;
 	-webkit-line-clamp: inherit;
+}
+
+.disabled,
+.disabled * {
+	color: #c3c3c3;
 }
 
 /* -------------------- GOOGLE MAPS -------------------- */

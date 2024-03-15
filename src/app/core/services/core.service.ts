@@ -1,7 +1,10 @@
 import { ComponentType } from '@angular/cdk/portal';
 import { Location } from '@angular/common';
 import { Injectable, inject } from '@angular/core';
-import { BehaviorSubject, Observable, from } from 'rxjs';
+import { BehaviorSubject, Observable, from, map } from 'rxjs';
+
+// * Apollo.
+import { Apollo, gql } from 'apollo-angular';
 
 // * Routing.
 import { ActivatedRoute, Router } from '@angular/router';
@@ -18,8 +21,8 @@ export class CoreService {
 	private readonly _router: Router = inject(Router);
 	private readonly _route: ActivatedRoute = inject(ActivatedRoute);
 	private readonly _dialog: MatDialog = inject(MatDialog);
-
-	private _height: BehaviorSubject<number> = new BehaviorSubject<number>(0);
+	private readonly _apollo: Apollo = inject(Apollo);
+	private readonly _height: BehaviorSubject<number> = new BehaviorSubject<number>(0);
 
 	// eslint-disable-next-line @typescript-eslint/member-ordering
 	public gHeight: Observable<number> = this._height.asObservable();
@@ -44,6 +47,25 @@ export class CoreService {
 			void this._router.navigate([url], { relativeTo: this._route });
 			return;
 		}
+	}
+
+	public query<T>(request: string, variables?: Record<string, unknown>, cache?: boolean): Observable<T> {
+		return this._apollo
+			.query<T>({
+				query: gql(`query ${request}`),
+				variables,
+				fetchPolicy: !cache ? 'cache-first' : 'no-cache'
+			})
+			.pipe(map((res) => res.data as T));
+	}
+
+	public mutation<T>(request: string, variables?: Record<string, unknown>): Observable<T> {
+		return this._apollo
+			.mutate<T>({
+				mutation: gql(`mutation ${request}`),
+				variables
+			})
+			.pipe(map((res) => res.data as T));
 	}
 
 	public open(dialog: IDialog, conf?: { option?: number; logged: boolean }): Observable<MatDialogRef<unknown>> {
@@ -92,6 +114,9 @@ export class CoreService {
 						break;
 					case 'SHARE':
 						chunk = await import('@dialogs/content/shared/share/share.component');
+						break;
+					case 'SORT':
+						chunk = await import('@dialogs/content/admin/sell/sort/sort.component');
 						break;
 				}
 				const dialogComponent = Object.values(chunk)[0] as ComponentType<unknown>;

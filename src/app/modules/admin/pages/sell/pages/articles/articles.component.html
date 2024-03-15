@@ -1,0 +1,71 @@
+<header class="flex bet gp-8 pd-12">
+	<div class="flex gp-4">
+		<app-component-button [type]="'MINI'" [icon]="'navigate_before'" (click)="core.back()" />
+		Artículos
+	</div>
+	<div class="flex gp-4">
+		<app-component-button [type]="'MINI'" [icon]="'picture_as_pdf'" />
+		<app-component-button [type]="'MINI'" [icon]="'add'" />
+		<app-component-button [type]="'MINI'" [icon]="'filter_alt'" (click)="core.open('SORT')" />
+		<app-component-button [type]="'MINI'" [icon]="'more_vert'" (click)="core.open('SHARE')" />
+	</div>
+</header>
+
+<main class="pd-12">
+	<section class="bd br-4">
+		<button type="button" class="grid pd-12">
+			<img class="br-4" src="https://placehold.co/100x100" alt="Artículo sin imagen" />
+			<div class="gp-4 h tx-left pd-8" style="display: grid; grid-template-rows: max-content 1fr max-content">
+				<p class="required">Unidades disponibles: 1</p>
+				<p class="tx-3">ArticuloID</p>
+				<p>$100.00</p>
+			</div>
+		</button>
+
+		<hr />
+
+		<button type="button" class="grid pd-12">
+			<img class="br-4" src="https://placehold.co/100x100" alt="Artículo sin imagen" />
+			<div class="gp-4 h tx-left pd-8" style="display: grid; grid-template-rows: max-content 1fr max-content">
+				<p class="required">Paquetes disponibles: 1</p>
+				<p class="tx-3">ArticuloID</p>
+				<p>$100.00</p>
+			</div>
+		</button>
+
+		<hr />
+
+		<button type="button" class="grid pd-12">
+			<img class="br-4" src="https://placehold.co/100x100" alt="Artículo sin imagen" />
+			<div class="gp-4 h tx-left pd-8" style="display: grid; grid-template-rows: max-content 1fr max-content">
+				<p class="required">Unidades disponibles: 1</p>
+				<p class="tx-3">ArticuloID</p>
+				<p>$999,999.99</p>
+			</div>
+		</button>
+
+		<hr />
+
+		<button type="button" class="grid pd-12">
+			<img class="br-4" src="https://placehold.co/100x100" alt="Artículo sin imagen" />
+			<div class="gp-4 h tx-left pd-8" style="display: grid; grid-template-rows: max-content 1fr max-content">
+				<p class="required">Unidades disponibles: 1</p>
+				<p class="tx-3">Articulo con un título muy largo, para dispositivos mobiles pequeños</p>
+				<p>$999,999.99</p>
+			</div>
+		</button>
+
+		<hr />
+
+		<button type="button" class="grid pd-12">
+			<img class="br-4" src="https://placehold.co/100x100" alt="Artículo sin imagen" />
+			<div class="gp-4 h tx-left pd-8" style="display: grid; grid-template-rows: max-content 1fr max-content">
+				<p class="required">Unidades disponibles: 1</p>
+				<p class="tx-3">.123456789012345678901234567890123456789012345678901234</p>
+				<!-- 23456789012345678901234567890123456789 = 38 caracteres -->
+				<!-- 567890123456789012345678901 = 27 caracteres  -->
+				<p>$999,999.99</p>
+			</div>
+		</button>
+	</section>
+</main>

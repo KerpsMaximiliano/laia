@@ -7,9 +7,7 @@
  */
 export function id(id: string | undefined): number {
 	if (id) {
-		if (isNaN(Number(id))) {
-			return 0;
-		}
+		if (isNaN(Number(id))) return 0;
 		return Number(id);
 	} else {
 		return 0;

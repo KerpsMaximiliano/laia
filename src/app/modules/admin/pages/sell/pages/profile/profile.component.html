@@ -1,0 +1,130 @@
+<header class="flex bet pd-12">
+	<div class="flex gp-4">
+		<app-component-button [type]="'MINI'" [icon]="'navigate_before'" (click)="core.back()" />
+		<h1>Perfil Comercial</h1>
+	</div>
+	<button type="button" class="option" style="padding: 0 12px">Guardar</button>
+</header>
+
+<main class="pd-12">
+	<article class="grid w">
+		<div class="grid br-50">
+			<app-component-button [type]="'ICON'" [icon]="'add'" [color]="'var(--grey)'" />
+		</div>
+	</article>
+
+	<form [formGroup]="form" class="grid gp-30">
+		<mat-form-field appearance="outline">
+			<mat-label>Nombre Comercial</mat-label>
+
+			<div class="flex gp-8">
+				<input
+					matInput
+					type="text"
+					formControlName="title"
+					placeholder="Ingrese el nombre comercial"
+					required
+					minlength="1"
+					maxlength="30"
+				/>
+
+				@if (form.get('title')?.value) {
+					<app-component-button
+						[type]="'ICON'"
+						[icon]="'delete'"
+						[suffix]="true"
+						(click)="form.get('title')?.setValue(null)"
+					/>
+				}
+			</div>
+
+			<mat-error>{{ getErrorMessage(form.get('title')!) }}</mat-error>
+		</mat-form-field>
+
+		<button type="button" class="btn--direction flex bet pd-16 br-4">
+			{{ address ?? 'Elige una dirección *' }}
+			<app-component-button [type]="'ICON'" [icon]="address ? 'map' : 'location_on'" [color]="'#9e9e9e'" />
+		</button>
+
+		<mat-form-field appearance="outline">
+			<mat-label>Teléfono</mat-label>
+
+			<div class="flex">
+				<input
+					matInput
+					type="number"
+					formControlName="phone"
+					placeholder="Ingrese un número de teléfono"
+					required
+					minlength="5"
+					maxlength="16"
+				/>
+
+				@if (form.get('phone')?.value) {
+					<app-component-button
+						[type]="'ICON'"
+						[icon]="'delete'"
+						[suffix]="true"
+						(click)="form.get('phone')?.setValue(null)"
+					/>
+				}
+			</div>
+
+			<mat-error>{{ getErrorMessage(form.get('phone')!) }}</mat-error>
+		</mat-form-field>
+
+		<mat-form-field appearance="outline">
+			<mat-select placeholder="¿Dónde te promocionamos?" required>
+				<mat-option>En la industria floral...</mat-option>
+				<mat-option>En Santo Domingo, RD</mat-option>
+			</mat-select>
+		</mat-form-field>
+
+		<mat-form-field appearance="outline">
+			<mat-label>Página web</mat-label>
+
+			<div class="fle gp-8">
+				<input matInput type="text" formControlName="web" placeholder="Ingrese su página web" maxlength="256" />
+
+				@if (form.get('web')?.value) {
+					<app-component-button
+						[type]="'ICON'"
+						[icon]="'delete'"
+						[suffix]="true"
+						(click)="form.get('web')?.setValue(null)"
+					/>
+				}
+			</div>
+
+			<mat-error>{{ getErrorMessage(form.get('web')!) }}</mat-error>
+		</mat-form-field>
+
+		<mat-form-field appearance="outline">
+			<mat-label>Promesa a Compradores</mat-label>
+
+			<div class="fle gp-8">
+				<textarea
+					matInput
+					cdkTextareaAutosize
+					#autosize="cdkTextareaAutosize"
+					cdkAutosizeMinRows="1"
+					placeholder="Introduce lo que prometes"
+					formControlName="description"
+					maxlength="501"
+				>
+				</textarea>
+
+				@if (form.get('description')?.value) {
+					<app-component-button
+						[type]="'ICON'"
+						[icon]="'delete'"
+						[suffix]="true"
+						(click)="form.get('description')?.setValue(null)"
+					/>
+				}
+			</div>
+
+			<mat-error>{{ getErrorMessage(form.get('description')!) }}</mat-error>
+		</mat-form-field>
+	</form>
+</main>

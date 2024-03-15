@@ -4,11 +4,12 @@ import {
 	Component,
 	ElementRef,
 	NgZone,
+	OnDestroy,
 	ViewChild,
 	ViewEncapsulation,
 	inject
 } from '@angular/core';
-import { take } from 'rxjs';
+import { Subject, take, takeUntil } from 'rxjs';
 
 // * CDK.
 import { CdkTextareaAutosize, TextFieldModule } from '@angular/cdk/text-field';
@@ -48,7 +49,7 @@ import { ImageEditorCommand, ImageEditorComponent, ImageEditorModule } from '@sy
 	// eslint-disable-next-line @angular-eslint/use-component-view-encapsulation
 	encapsulation: ViewEncapsulation.None
 })
-export class SegmentComponent implements AfterViewInit {
+export class SegmentComponent implements AfterViewInit, OnDestroy {
 	@ViewChild('fileInput') public input?: ElementRef<HTMLInputElement>;
 	@ViewChild('autosize') public autosize?: CdkTextareaAutosize;
 
@@ -175,6 +176,7 @@ export class SegmentComponent implements AfterViewInit {
 	private readonly _zone: NgZone = inject(NgZone);
 	// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
 	private _blob: any;
+	private readonly _destroy$: Subject<void> = new Subject<void>();
 
 	public ngAfterViewInit(): void {
 		this._resize();
@@ -224,6 +226,11 @@ export class SegmentComponent implements AfterViewInit {
 		this._core.back();
 	}
 
+	public ngOnDestroy(): void {
+		this._destroy$.next();
+		this._destroy$.complete();
+	}
+
 	private _setForm(): UntypedFormGroup {
 		return new UntypedFormGroup({
 			title: new UntypedFormControl(null, [Validators.maxLength(120), notOnlySpaces()]),
@@ -232,7 +239,7 @@ export class SegmentComponent implements AfterViewInit {
 	}
 
 	private _resize(): void {
-		this.form.controls['description'].valueChanges.subscribe(() => {
+		this.form.controls['description'].valueChanges.pipe(takeUntil(this._destroy$)).subscribe(() => {
 			this._zone.onStable.pipe(take(1)).subscribe(() => this.autosize?.resizeToFitContent(true));
 		});
 	}

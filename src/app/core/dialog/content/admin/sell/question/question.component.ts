@@ -1,5 +1,5 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, NgZone, ViewChild, inject } from '@angular/core';
-import { take } from 'rxjs';
+import { AfterViewInit, ChangeDetectionStrategy, Component, NgZone, OnDestroy, ViewChild, inject } from '@angular/core';
+import { Subject, take, takeUntil } from 'rxjs';
 
 // * CDK.
 import { CdkTextareaAutosize, TextFieldModule } from '@angular/cdk/text-field';
@@ -36,7 +36,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 	templateUrl: './question.component.html',
 	styleUrl: './question.component.scss'
 })
-export class QuestionComponent implements AfterViewInit {
+export class QuestionComponent implements AfterViewInit, OnDestroy {
 	@ViewChild('autosize') public autosize?: CdkTextareaAutosize;
 
 	public readonly getErrorMessage: (control: AbstractControl<unknown, unknown>) => string = getErrorMessage;
@@ -47,7 +47,7 @@ export class QuestionComponent implements AfterViewInit {
 
 	private readonly _zone: NgZone = inject(NgZone);
 	private readonly _core: CoreService = inject(CoreService);
-
+	private readonly _destroy$: Subject<void> = new Subject<void>();
 	private _height: number = 362;
 
 	public ngAfterViewInit(): void {
@@ -70,6 +70,11 @@ export class QuestionComponent implements AfterViewInit {
 		}
 	}
 
+	public ngOnDestroy(): void {
+		this._destroy$.next();
+		this._destroy$.complete();
+	}
+
 	private _setForm(): UntypedFormGroup {
 		return new UntypedFormGroup({
 			question: new UntypedFormControl(null, notOnlySpaces())
@@ -78,7 +83,10 @@ export class QuestionComponent implements AfterViewInit {
 
 	private _resize(): void {
 		this.form.controls['question'].valueChanges.subscribe(() => {
-			this._zone.onStable.pipe(take(1)).subscribe(() => this.autosize?.resizeToFitContent(true));
+			this._zone.onStable
+				.pipe(take(1))
+				.pipe(takeUntil(this._destroy$))
+				.subscribe(() => this.autosize?.resizeToFitContent(true));
 		});
 	}
 }

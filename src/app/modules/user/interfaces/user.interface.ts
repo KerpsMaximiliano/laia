@@ -10,6 +10,7 @@ export interface IUser {
 	name: string | null;
 	surname: string | null;
 	phone: number | null;
+	check: number | null;
 }
 
 // ! AUX.

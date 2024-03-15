@@ -13,7 +13,7 @@ import {
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { take } from 'rxjs';
+import { Subject, take, takeUntil } from 'rxjs';
 
 // * CDK.
 import { CdkTextareaAutosize, TextFieldModule } from '@angular/cdk/text-field';
@@ -33,7 +33,7 @@ import { id } from '@functions/id.function';
 // * Interfaces.
 import { ILoadableEntity } from '@interfaces/load.interface';
 import { IState } from '@interfaces/state.interface';
-import { IArt } from '@sell/interfaces/sell.interface';
+import { IArticle } from '@sell/interfaces/sell.interface';
 import { ILogin } from '@user/interfaces/user.interface';
 
 // * Pipes.
@@ -48,7 +48,6 @@ import { ILoading } from '@app/core/sorts/loading.sort';
 import { IDialog } from '@sorts/dialog.sort';
 
 // * Actions.
-import { ADMIN_SELL_ARTICLE_LOAD } from '@sell/state/sell.actions';
 
 // * Validators.
 import { getErrorMessage, notOnlySpaces } from '@validators/character.validators';
@@ -64,7 +63,7 @@ import { MatSelectModule } from '@angular/material/select';
 
 @Component({
 	changeDetection: ChangeDetectionStrategy.OnPush,
-	selector: 'app-admin-buy-article',
+	selector: 'app-admin-sell-article',
 	standalone: true,
 	imports: [TextFieldModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatSelectModule, ButtonComponent],
 	templateUrl: './article.component.html',
@@ -80,26 +79,30 @@ export class ArticleComponent implements OnInit, AfterViewInit, OnDestroy {
 	public readonly currency: (value: number | null | undefined) => string = currency;
 	public readonly core: CoreService = inject(CoreService);
 	public readonly sell: SellService = inject(SellService);
-
 	public readonly form: UntypedFormGroup = this._setForm();
+
+	public article?: Signal<ILoadableEntity<IArticle>>;
 	public index: number = 0;
 	public options: {
 		title: string;
 		description: string;
-		action: 'OPEN' | 'REDIRECT';
+		status: boolean;
+		action: 'OPEN' | 'REDIRECT' | undefined;
 		redirect?: string;
 		dialog?: IDialog;
 	}[] = [
 		{
 			title: 'Hashtag',
 			description: 'Lo adicionas en tus redes sociales y al entrar a tu tienda lo buscan y lo encuentran directamente.',
+			status: true,
 			action: 'OPEN',
 			dialog: 'HASHTAG'
 		},
 		{
-			title: 'Tiempo de fabricación',
+			title: 'Tiempo de Fabricación',
 			description:
 				'Ej: Florista tarde 45 minutos en armar el arreglo floral. Esto afecta la tanda de entrega que verá el comprador (si lo activas).',
+			status: true,
 			action: 'OPEN',
 			dialog: 'DELAY'
 		},
@@ -107,33 +110,56 @@ export class ArticleComponent implements OnInit, AfterViewInit, OnDestroy {
 			title: 'Información adicional',
 			description:
 				'Escribe más del artículo, si quieres incluye hasta imágenes para una descrpción más clara o una buena historia.',
+			status: true,
 			action: 'REDIRECT',
 			redirect: 'segment'
 		},
 		{
 			title: 'Palabras claves para búsquedas',
 			description: 'Para que tus compradores y LAIA lo encuentren con palabras referentes.',
+			status: true,
 			action: 'OPEN',
 			dialog: 'KEYWORDS'
 		},
 		{
-			title: 'Preguntas a compradores',
+			title: 'Preguntas a Compradores',
 			description:
 				'Generalmente usado cuando necesitas saber respuestas del comprador antes de hacer la venta del servicio o el artículo que ofreces.',
+			status: true,
 			action: 'OPEN',
 			dialog: 'QUESTION'
 		},
 		{
 			title: 'Categorias',
 			description: 'Agrupa y presenta artículos en tu tienda.',
-			action: 'REDIRECT', // !
-			redirect: 'CATEGORIES' // !
+			status: true,
+			action: undefined
 		},
 		{
 			title: 'Incentivos',
 			description: 'Incentiva a tu personal interno a vender para que vendas más de cualquiera de tus artículos.',
-			action: 'REDIRECT',
-			redirect: 'incentive'
+			status: false,
+			action: undefined
+		},
+		{
+			title: 'Catálogos',
+			description:
+				'Creálos con precios ajustables como playlists para aumentar tu alcance y visibilidad a cambio de comisiones.',
+			status: false,
+			action: undefined
+		},
+		{
+			title: 'Premia a Compradores',
+			description: 'Asigna la cantidad de puntos que se ganan los compradores y premiálos cuando alcancen tu meta.',
+			status: false,
+			action: undefined
+		},
+		{
+			title: 'Reservas',
+			description:
+				'Destina un tiempo específico para brindar el servicio de este Artículo. Conecta su propio Google Calendar para la gestión.',
+			status: false,
+			action: undefined
 		}
 	];
 
@@ -143,36 +169,39 @@ export class ArticleComponent implements OnInit, AfterViewInit, OnDestroy {
 	private readonly _route: ActivatedRoute = inject(ActivatedRoute);
 	private readonly _cdr: ChangeDetectorRef = inject(ChangeDetectorRef);
 
-	private readonly _id: (id: string | undefined) => number = id;
-
-	// eslint-disable-next-line @typescript-eslint/member-ordering
-	public readonly art: Signal<ILoadableEntity<IArt>> = this._store.selectSignal(
-		selectAdminSellArt(this._id(this._route.snapshot.params['id']))
-	);
 	// eslint-disable-next-line @typescript-eslint/member-ordering
 	public readonly user: Signal<ILogin> = this._store.selectSignal(selectLogin);
+	private readonly _id: number = id(this._route.snapshot.params['id']);
+	private readonly _destroy$: Subject<void> = new Subject<void>();
 
 	private _elements: NodeListOf<HTMLElement> | undefined = undefined;
 	private _listener: (() => void) | undefined;
 	private _rendered: boolean = false;
 
 	public ngOnInit(): void {
-		if (this.user().logged) {
-			const id: number = this._id(this._route.snapshot.params['id']);
-			if (id !== 0 && this.art().status === this.INITIAL) {
-				this._store.dispatch(ADMIN_SELL_ARTICLE_LOAD({ id }));
-			}
-		}
+		if (this._id !== this._route.snapshot.params['id'])
+			this.article = this._store.selectSignal(selectAdminSellArt(this._id));
 
-		this.form.get('title')?.setValue(this.art().data.title);
-		this.form.get('price')?.setValue(this.art().data.price.amount);
-		this.form.get('stock')?.setValue(this.art().data.stock.quantity);
-		this.form.get('tStock')?.setValue(this.art().data.stock.type);
+		// if (this.user().logged) {
+		// 	const id: number = this._id(this._route.snapshot.params['id']);
+		// 	if (id !== 0 && this.art().status === this.INITIAL) {
+		// 		this._store.dispatch(ADMIN_SELL_ARTICLE_LOAD({ id }));
+		// 	}
+		// }
+
+		// this.form.get('title')?.setValue(this.art().data.title);
+		// this.form.get('price')?.setValue(this.art().data.price.amount);
+		// this.form.get('stock')?.setValue(this.art().data.stock.quantity);
+		// this.form.get('tStock')?.setValue(this.art().data.stock.type);
 	}
 
 	public ngAfterViewInit(): void {
 		this._resize();
 		this._listen();
+	}
+
+	public save(): void {
+		console.log('save');
 	}
 
 	public scrollToImage(index: number): void {
@@ -181,8 +210,18 @@ export class ArticleComponent implements OnInit, AfterViewInit, OnDestroy {
 		this._elements[index].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
 	}
 
+	public create(): void {
+		if (this.form.valid) {
+			console.log('create');
+		} else {
+			this.form.markAllAsTouched();
+		}
+	}
+
 	public ngOnDestroy(): void {
 		if (this._listener) this.carousel?.nativeElement.removeEventListener('scroll', this._listener);
+		this._destroy$.next();
+		this._destroy$.complete();
 	}
 
 	private _scroll(): void {
@@ -215,7 +254,7 @@ export class ArticleComponent implements OnInit, AfterViewInit, OnDestroy {
 	}
 
 	private _resize(): void {
-		this.form.controls['title'].valueChanges.subscribe(() => {
+		this.form.controls['title'].valueChanges.pipe(takeUntil(this._destroy$)).subscribe(() => {
 			this._zone.onStable.pipe(take(1)).subscribe(() => this.autosize?.resizeToFitContent(true));
 		});
 	}

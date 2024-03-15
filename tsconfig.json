@@ -3,6 +3,7 @@
 	"compilerOptions": {
 		"paths": {
 			"@app/*": ["src/app/*"],
+			"@env/*": ["src/environment/*"],
 
 			"@components/*": ["src/app/core/components/*"],
 			"@consts/*": ["src/app/core/constants/*"],
