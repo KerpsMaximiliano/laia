@@ -1,0 +1,58 @@
+<header class="grid pd-12">
+	<div class="flex gp-4">
+		<app-component-button [type]="'MINI'" [icon]="'navigate_before'" (click)="core.back()" />
+		Crédito
+	</div>
+</header>
+
+<main class="pd-12">
+	<form [formGroup]="form" class="fle col gp-24">
+		<p class="tx-visible message">
+			Con esta opción, tus clientes después de pagar subirán su comprobante (screenshot) y tu tendrás que confirmar su
+			pago.
+		</p>
+
+		<mat-form-field appearance="outline" class="w">
+			<mat-label>Cantidad de plazo en días</mat-label>
+			<input type="number" matInput placeholder="Cantidad de plazo en días" formControlName="days" />
+			<span matTextSuffix>Dias&nbsp;</span>
+		</mat-form-field>
+
+		<mat-form-field appearance="outline">
+			<mat-label>{{ type ? 'Porcentaje del adicional' : 'Monto del adicional' }}</mat-label>
+
+			<div class="grid gp-8" style="grid-template-columns: 1fr max-content">
+				<div class="flex gp-8">
+					@if (form.get('aditional')?.value) {
+						<div matTextPrefix>{{ type ? '%' : '$' }}</div>
+					}
+
+					<input
+						type="number"
+						matInput
+						formControlName="aditional"
+						[placeholder]="type ? 'Porcentaje que cobraras adicional' : 'Mono del adicional'"
+					/>
+
+					@if (form.get('aditional')?.value) {
+						<app-component-button
+							[type]="'ICON'"
+							[icon]="'delete'"
+							[suffix]="true"
+							(click)="form.get('aditional')?.setValue(null)"
+						/>
+					}
+
+					@if (price !== null && price !== 0) {
+						<app-component-button [type]="'ICON'" [icon]="'sync'" (click)="type = !type" style="margin-left: 8px" />
+					}
+				</div>
+			</div>
+		</mat-form-field>
+		<div class="flex bet">
+			<p>Disponible para todos los Compradores</p>
+
+			<mat-slide-toggle formControlName="slide" (click)="log()" />
+		</div>
+	</form>
+</main>
