@@ -166,8 +166,6 @@ export class ArticleComponent implements OnInit, AfterViewInit, OnDestroy {
 	private readonly _route: ActivatedRoute = inject(ActivatedRoute);
 	private readonly _cdr: ChangeDetectorRef = inject(ChangeDetectorRef);
 
-	// eslint-disable-next-line @typescript-eslint/member-ordering
-	public readonly user: Signal<ILogin> = this._store.selectSignal(selectLogin);
 	private readonly _id: number = id(this._route.snapshot.params['id']);
 	private readonly _destroy$: Subject<void> = new Subject<void>();
 
@@ -175,7 +173,22 @@ export class ArticleComponent implements OnInit, AfterViewInit, OnDestroy {
 	private _listener: (() => void) | undefined;
 	private _rendered: boolean = false;
 
+	// eslint-disable-next-line @typescript-eslint/member-ordering
+	public readonly user: Signal<ILogin> = this._store.selectSignal(selectLogin);
+
 	public ngOnInit(): void {
+		switch (this._id) {
+			case -1: // CREATE.
+				console.log('create');
+				return;
+			case 0: // ERROR.
+				console.log('error');
+				return;
+			default: // READ | UPDATE.
+				console.log('read');
+				return;
+		}
+
 		if (this._id !== this._route.snapshot.params['id']) this.article = this._store.selectSignal(selectAdminSellArt(this._id));
 
 		// if (this.user().logged) {

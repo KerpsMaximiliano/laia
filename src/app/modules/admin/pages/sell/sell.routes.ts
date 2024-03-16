@@ -14,6 +14,10 @@ export const SELL_ROUTES: Routes = [
 				loadComponent: async () => import('./pages/article/article.component').then((c) => c.ArticleComponent)
 			},
 			{
+				path: 'article/:id',
+				loadComponent: async () => import('./pages/article/article.component').then((c) => c.ArticleComponent)
+			},
+			{
 				path: 'articles',
 				loadComponent: async () => import('./pages/articles/articles.component').then((c) => c.ArticlesComponent)
 			},
@@ -39,18 +43,15 @@ export const SELL_ROUTES: Routes = [
 			},
 			{
 				path: 'delivery-location',
-				loadComponent: async () =>
-					import('./pages/del-location/del-location.component').then((c) => c.DeliveryLocationComponent)
+				loadComponent: async () => import('./pages/del-location/del-location.component').then((c) => c.DeliveryLocationComponent)
 			},
 			{
 				path: 'wire-transfer',
-				loadComponent: async () =>
-					import('./pages/wire-transfer/wire-transfer.component').then((c) => c.WireTransferComponent)
+				loadComponent: async () => import('./pages/wire-transfer/wire-transfer.component').then((c) => c.WireTransferComponent)
 			},
 			{
 				path: 'credit-days',
-				loadComponent: async () =>
-					import('./pages/credit-days/credit-days.component').then((c) => c.CreditDaysComponent)
+				loadComponent: async () => import('./pages/credit-days/credit-days.component').then((c) => c.CreditDaysComponent)
 			},
 			{
 				path: 'paypal',
