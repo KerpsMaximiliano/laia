@@ -1,71 +1,57 @@
-<header class="flex bet gp-8 pd-12">
-	<div class="flex gp-4">
-		<app-component-button [type]="'MINI'" [icon]="'navigate_before'" (click)="core.back()" />
-		Artículos
-	</div>
-	<div class="flex gp-4">
-		<app-component-button [type]="'MINI'" [icon]="'picture_as_pdf'" />
-		<app-component-button [type]="'MINI'" [icon]="'add'" />
-		<app-component-button [type]="'MINI'" [icon]="'filter_alt'" (click)="core.open('SORT')" />
-		<app-component-button [type]="'MINI'" [icon]="'more_vert'" (click)="core.open('SHARE')" />
-	</div>
-</header>
+<div [class.box]="articles().status === initial">
+	<header class="flex bet gp-8 pd-12">
+		<div class="flex gp-4">
+			<app-component-button [type]="'MINI'" [icon]="'navigate_before'" (click)="core.back()" />
+			Artículos
+		</div>
+		<div class="flex gp-4">
+			<app-component-button [type]="'MINI'" [icon]="'picture_as_pdf'" />
+			<app-component-button [type]="'MINI'" [icon]="'add'" />
+			<app-component-button [type]="'MINI'" [icon]="'filter_alt'" (click)="core.open('SORT')" />
+			<app-component-button [type]="'MINI'" [icon]="'more_vert'" (click)="core.open('SHARE')" />
+		</div>
+	</header>
 
-<main class="pd-12">
-	<section class="bd br-4">
-		<button type="button" class="grid pd-12">
-			<img class="br-4" src="https://placehold.co/100x100" alt="Artículo sin imagen" />
-			<div class="gp-4 h tx-left pd-8" style="display: grid; grid-template-rows: max-content 1fr max-content">
-				<p class="required">Unidades disponibles: 1</p>
-				<p class="tx-3">ArticuloID</p>
-				<p>$100.00</p>
-			</div>
-		</button>
+	<main class="pd-12">
+		@defer (when articles().status !== initial) {
+			<section class="bd br-4">
+				@for (article of articles().items; track $index) {
+					<button type="button" class="grid pd-12">
+						@if (article.media) {
+							<div #content_image class="br-12 skeleton-loader">
+								@if (article.media.type === 'IMAGE') {
+									<img
+										#img
+										style="display: none"
+										class="br-4"
+										[src]="article.media.url"
+										[alt]="article.title ?? 'Imagen sin texto alternativo.'"
+										(load)="loadImage(content_image, img)"
+									/>
+								} @else {
+									<div class="no-image br-12 grid">Sin imagen</div>
+								}
+							</div>
+						}
 
-		<hr />
+						<div class="gp-4 h tx-left pd-8" style="display: grid; grid-template-rows: max-content 1fr max-content">
+							<p class="required">
+								{{ article.stock.type === 'UNIT' ? 'Unidades' : 'Paquetes' }}: {{ article.stock.quantity ?? 'ilimitadas' }}
+							</p>
 
-		<button type="button" class="grid pd-12">
-			<img class="br-4" src="https://placehold.co/100x100" alt="Artículo sin imagen" />
-			<div class="gp-4 h tx-left pd-8" style="display: grid; grid-template-rows: max-content 1fr max-content">
-				<p class="required">Paquetes disponibles: 1</p>
-				<p class="tx-3">ArticuloID</p>
-				<p>$100.00</p>
-			</div>
-		</button>
+							<p class="tx-3">{{ article.title }}</p>
 
-		<hr />
+							<p>{{ currency(article.price.amount) }}</p>
+						</div>
+					</button>
 
-		<button type="button" class="grid pd-12">
-			<img class="br-4" src="https://placehold.co/100x100" alt="Artículo sin imagen" />
-			<div class="gp-4 h tx-left pd-8" style="display: grid; grid-template-rows: max-content 1fr max-content">
-				<p class="required">Unidades disponibles: 1</p>
-				<p class="tx-3">ArticuloID</p>
-				<p>$999,999.99</p>
-			</div>
-		</button>
-
-		<hr />
-
-		<button type="button" class="grid pd-12">
-			<img class="br-4" src="https://placehold.co/100x100" alt="Artículo sin imagen" />
-			<div class="gp-4 h tx-left pd-8" style="display: grid; grid-template-rows: max-content 1fr max-content">
-				<p class="required">Unidades disponibles: 1</p>
-				<p class="tx-3">Articulo con un título muy largo, para dispositivos mobiles pequeños</p>
-				<p>$999,999.99</p>
-			</div>
-		</button>
-
-		<hr />
-
-		<button type="button" class="grid pd-12">
-			<img class="br-4" src="https://placehold.co/100x100" alt="Artículo sin imagen" />
-			<div class="gp-4 h tx-left pd-8" style="display: grid; grid-template-rows: max-content 1fr max-content">
-				<p class="required">Unidades disponibles: 1</p>
-				<p class="tx-3">.123456789012345678901234567890123456789012345678901234</p>
-				<!-- 23456789012345678901234567890123456789 = 38 caracteres -->
-				<!-- 567890123456789012345678901 = 27 caracteres  -->
-				<p>$999,999.99</p>
-			</div>
-		</button>
-	</section>
-</main>
+					@if ($index < articles().items.length - 1) {
+						<hr />
+					}
+				}
+			</section>
+		} @placeholder {
+			<app-component-loading [transform]="'2'" />
+		}
+	</main>
+</div>

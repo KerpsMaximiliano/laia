@@ -10,7 +10,7 @@ export interface ISell {
 
 export interface IArticle {
 	id: number;
-	medias: { url: string; type: 'IMAGE' | 'VIDEO' }[];
+	medias: { url: string; type: 'IMAGE' | 'VIDEO' }[] | null;
 	title: string | null;
 	price: { amount: number | null; type: 'USD' };
 	stock: { quantity: number | null; type: 'PACKAGE' | 'UNIT' };
@@ -39,9 +39,11 @@ interface IQuestion {
 	required: boolean;
 }
 
-// interface IInvest {
-// 	id: number | null;
-// 	amount: number;
-// 	title: string | null;
-// 	note: string | null;
-// }
+// ! AUX.
+export interface IArt {
+	id: number;
+	title: string | null;
+	media: { url: string; type: 'IMAGE' | 'VIDEO' } | null;
+	price: { amount: number | null; type: 'USD' };
+	stock: { quantity: number | null; type: 'PACKAGE' | 'UNIT' };
+}

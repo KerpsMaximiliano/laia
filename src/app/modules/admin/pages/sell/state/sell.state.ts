@@ -54,6 +54,7 @@ export const article: ILoadableEntity<IArticle> = {
 export const ADMIN_SELL_STATE: ISell = {
 	articles: {
 		status: INITIAL,
-		items: [article]
+		// items: [article]
+		items: []
 	}
 };

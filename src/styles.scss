@@ -225,6 +225,11 @@ p {
 	align-items: center;
 }
 
+.grid-place {
+	display: grid;
+	place-items: center;
+}
+
 .flex {
 	display: flex;
 	align-items: center;
@@ -400,6 +405,7 @@ html {
 }
 
 /* -------------------- GOOGLE MAPS -------------------- */
+
 .gmnoprint {
 	display: none;
 }

@@ -73,8 +73,7 @@ export class ArticleComponent implements OnInit, AfterViewInit, OnDestroy {
 	@ViewChild('autosize') public autosize?: CdkTextareaAutosize;
 	@ViewChild('carousel', { static: false }) public carousel?: ElementRef;
 
-	// eslint-disable-next-line @typescript-eslint/naming-convention
-	public readonly INITIAL: ILoading = INITIAL;
+	public readonly initial: ILoading = INITIAL;
 	public readonly getErrorMessage: (control: AbstractControl<unknown, unknown>) => string = getErrorMessage;
 	public readonly currency: (value: number | null | undefined) => string = currency;
 	public readonly core: CoreService = inject(CoreService);
@@ -108,8 +107,7 @@ export class ArticleComponent implements OnInit, AfterViewInit, OnDestroy {
 		},
 		{
 			title: 'Información adicional',
-			description:
-				'Escribe más del artículo, si quieres incluye hasta imágenes para una descrpción más clara o una buena historia.',
+			description: 'Escribe más del artículo, si quieres incluye hasta imágenes para una descrpción más clara o una buena historia.',
 			status: true,
 			action: 'REDIRECT',
 			redirect: 'segment'
@@ -143,8 +141,7 @@ export class ArticleComponent implements OnInit, AfterViewInit, OnDestroy {
 		},
 		{
 			title: 'Catálogos',
-			description:
-				'Creálos con precios ajustables como playlists para aumentar tu alcance y visibilidad a cambio de comisiones.',
+			description: 'Creálos con precios ajustables como playlists para aumentar tu alcance y visibilidad a cambio de comisiones.',
 			status: false,
 			action: undefined
 		},
@@ -179,8 +176,7 @@ export class ArticleComponent implements OnInit, AfterViewInit, OnDestroy {
 	private _rendered: boolean = false;
 
 	public ngOnInit(): void {
-		if (this._id !== this._route.snapshot.params['id'])
-			this.article = this._store.selectSignal(selectAdminSellArt(this._id));
+		if (this._id !== this._route.snapshot.params['id']) this.article = this._store.selectSignal(selectAdminSellArt(this._id));
 
 		// if (this.user().logged) {
 		// 	const id: number = this._id(this._route.snapshot.params['id']);

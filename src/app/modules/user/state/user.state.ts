@@ -9,7 +9,7 @@ import { IUser } from '@user/interfaces/user.interface';
 export const USER_STATE: ILoadableEntity<IUser> = {
 	status: INITIAL,
 	data: {
-		id: 2,
+		id: 0,
 		email: null,
 		image: null,
 		logged: false,

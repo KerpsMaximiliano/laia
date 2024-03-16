@@ -1,12 +1,27 @@
-import { Action, ActionReducer, createReducer } from '@ngrx/store';
+import { createReducer, on } from '@ngrx/store';
 
 // * STATE - Const.
 import { ADMIN_SELL_STATE } from './sell.state';
 
+// * Consts.
+import { LOADED } from '@consts/load.const';
+
 // * Interfaces.
 import { ISell } from '@sell/interfaces/sell.interface';
 
-export const ADMIN_SELL_REDUCERS: ActionReducer<ISell, Action> = createReducer(
+// * Actions.
+import { ADMIN_SELL_ARTICLES_LOAD, ADMIN_SELL_ARTICLES_LOADED } from './sell.actions';
+
+export const ADMIN_SELL_REDUCERS = createReducer(
 	// * INITIAL STATE.
-	ADMIN_SELL_STATE
+	ADMIN_SELL_STATE,
+	on(ADMIN_SELL_ARTICLES_LOAD, (state): ISell => state),
+	on(ADMIN_SELL_ARTICLES_LOADED, (state, { articles }): ISell => {
+		return {
+			articles: {
+				status: LOADED,
+				items: [...state.articles.items, ...articles]
+			}
+		};
+	})
 );
