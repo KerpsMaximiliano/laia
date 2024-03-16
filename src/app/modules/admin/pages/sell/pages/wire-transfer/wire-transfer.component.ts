@@ -11,7 +11,7 @@ import { ButtonComponent } from '@components/button/button.component';
 import { LoadingComponent } from '@components/loading/loading.component';
 
 // * Validators.
-import { getErrorMessage } from '@validators/character.validators';
+import { getErrorMessage, notOnlySpaces } from '@validators/character.validators';
 
 // * Material.
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -41,7 +41,7 @@ export class WireTransferComponent {
 
 	private _setForm(): UntypedFormGroup {
 		return new UntypedFormGroup({
-			bank: new UntypedFormControl(null),
+			bank: new UntypedFormControl(null, [notOnlySpaces()]),
 			cbu: new UntypedFormControl(null, [Validators.maxLength(64)]),
 			aditional: new UntypedFormControl(null),
 			slide: new UntypedFormControl(null)

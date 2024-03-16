@@ -17,12 +17,13 @@
 			pago.
 		</p>
 
-		<mat-form-field appearance="outline" class="w">
+		<mat-form-field appearance="outline">
 			<input type="text" matInput placeholder="Introduce el Banco que recibirá el dinero" formControlName="bank" />
 		</mat-form-field>
 
-		<mat-form-field appearance="outline" class="w">
+		<mat-form-field appearance="outline">
 			<input type="number" matInput placeholder="Número de cuenta que recibirá tu dinero" formControlName="cbu" />
+
 			@if (form.get('cbu')?.invalid && form.get('cbu')?.touched) {
 				<mat-error>{{ getErrorMessage(form.get('cbu')!) }}</mat-error>
 			}
@@ -31,32 +32,30 @@
 		<mat-form-field appearance="outline">
 			<mat-label>{{ type ? 'Porcentaje que cobras adicional' : 'Monto que cobras adicional' }}</mat-label>
 
-			<div class="grid gp-8" style="grid-template-columns: 1fr max-content">
-				<div class="flex gp-8">
-					@if (form.get('aditional')?.value) {
-						<div matTextPrefix>{{ type ? '%' : '$' }}</div>
-					}
+			<div class="flex gp-8">
+				@if (form.get('aditional')?.value) {
+					<div matTextPrefix>{{ type ? '%' : '$' }}</div>
+				}
 
-					<input
-						type="number"
-						matInput
-						formControlName="aditional"
-						[placeholder]="type ? 'Porcentaje que cobras adicional' : 'Monto que cobras adicional'"
+				<input
+					type="number"
+					matInput
+					formControlName="aditional"
+					[placeholder]="type ? 'Porcentaje que cobras adicional' : 'Monto que cobras adicional'"
+				/>
+
+				@if (form.get('aditional')?.value) {
+					<app-component-button
+						[type]="'ICON'"
+						[icon]="'delete'"
+						[suffix]="true"
+						(click)="form.get('aditional')?.setValue(null)"
 					/>
+				}
 
-					@if (form.get('aditional')?.value) {
-						<app-component-button
-							[type]="'ICON'"
-							[icon]="'delete'"
-							[suffix]="true"
-							(click)="form.get('aditional')?.setValue(null)"
-						/>
-					}
-
-					@if (price !== null && price !== 0) {
-						<app-component-button [type]="'ICON'" [icon]="'sync'" (click)="type = !type" style="margin-left: 8px" />
-					}
-				</div>
+				@if (price !== null && price !== 0) {
+					<app-component-button [type]="'ICON'" [icon]="'sync'" (click)="type = !type" style="margin-left: 8px" />
+				}
 			</div>
 		</mat-form-field>
 		<div class="flex bet">

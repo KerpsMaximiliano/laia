@@ -1,8 +1,5 @@
-h1,
-main section button {
-	font-size: 17px;
-	font-weight: 600;
-}
+/* h1,
+
 
 h1 {
 	line-height: normal;
@@ -11,19 +8,21 @@ h1 {
 .disabled,
 .disabled * {
 	color: #c3c3c3;
+} */
+
+h1 {
+	font-size: 17px;
+	font-weight: 600;
+	line-height: normal;
 }
 
-@media (max-width: 360px) {
-	h1 {
-		font-size: 16px;
-	}
-
-	main article p {
-		font-size: 14px;
-	}
+main section button {
+	font-size: 17px;
+	font-weight: 600;
 }
 
 mat-expansion-panel-header {
+	background-color: var(--grey-light);
 	border-radius: 4px 4px 0 0;
 }
 
@@ -43,4 +42,21 @@ mat-panel-title {
 .mat-accordion .mat-expansion-panel:not(.mat-expanded),
 .mat-accordion .mat-expansion-panel:not(.mat-expansion-panel-spacing) {
 	border-radius: 4px;
+}
+
+.section--title {
+	background-color: var(--grey-light);
+	height: 48px;
+}
+
+.date {
+	width: 24px;
+	height: 24px;
+	border-radius: 50%;
+	background-color: rgb(33, 81, 224);
+	color: white;
+	display: grid;
+	place-items: center;
+	font-weight: 600;
+	/* line-height: normal; */
 }

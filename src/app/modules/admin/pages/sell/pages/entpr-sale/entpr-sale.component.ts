@@ -4,13 +4,16 @@ import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { SellService } from '@sell/services/sell.service';
 import { CoreService } from '@services/core.service';
 
-// * Material.
-import { MatExpansionModule } from '@angular/material/expansion';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+// * Sorts.
+import { IDays } from '@sorts/calendar.sort';
 
 // * Components.
 import { ButtonComponent } from '@components/button/button.component';
 import { LoginComponent } from '@components/login/login.component';
+
+// * Material.
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 @Component({
 	changeDetection: ChangeDetectionStrategy.OnPush,
@@ -22,6 +25,11 @@ import { LoginComponent } from '@components/login/login.component';
 })
 export class EntprSaleComponent {
 	public panelOpenState: boolean = false;
+
+	public readonly manufacturing: { title: string; from: string; to: string; inDays: IDays }[] = [];
+	public readonly addresses: { direction: string; amount: string; range: string }[] = [];
+	public readonly payments: { title: string; type: 'ALL' | 'SELECT'; cvu: string; amount: string }[] = [];
+
 	public readonly options: {
 		title: string;
 		subtitle: string;
