@@ -1,4 +1,4 @@
-// * STATE - Const.
+// * Consts.
 import { INITIAL } from '@consts/load.const';
 
 // * Interfaces.

@@ -35,11 +35,31 @@ export class CoreService {
 		this._height.next(height);
 	}
 
+	public get(key: string): string | undefined {
+		return localStorage.getItem(key) ?? undefined;
+	}
+
+	public set(key: string, value: number | string): void {
+		localStorage.setItem(key, `${value}`);
+	}
+
 	public back(): void {
 		this._location.back();
 	}
 
+	public origin(): void {
+		if (this.get('origin')) {
+			void this._router.navigate([this.get('origin')]);
+			return;
+		} else {
+			void this._router.navigate(['']);
+			return;
+		}
+	}
+
 	public redirect(url: string, id?: number | string): void {
+		if (url === 'auth') this.set('origin', window.location.pathname);
+
 		if (id) {
 			void this._router.navigate([`${url}/${id}`], { relativeTo: this._route });
 			return;
@@ -72,8 +92,8 @@ export class CoreService {
 		return from(
 			(async (): Promise<MatDialogRef<unknown>> => {
 				const chunk = await import('@dialogs/resize/resize-dialog.component');
-				const dialogComponent = Object.values(chunk)[0] as ComponentType<unknown>;
-				return this._dialog.open(dialogComponent, {
+				const component = Object.values(chunk)[0] as ComponentType<unknown>;
+				return this._dialog.open(component, {
 					position: { bottom: '0%' },
 					width: '100%',
 					maxWidth: '450px',
@@ -125,8 +145,8 @@ export class CoreService {
 						chunk = await import('@dialogs/content/admin/sell/sort/sort.component');
 						break;
 				}
-				const dialogComponent = Object.values(chunk)[0] as ComponentType<unknown>;
-				return dialogComponent;
+				const component = Object.values(chunk)[0] as ComponentType<unknown>;
+				return component;
 			})()
 		);
 	}

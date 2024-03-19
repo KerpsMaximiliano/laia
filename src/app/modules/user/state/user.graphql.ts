@@ -1,12 +1,15 @@
 // ! ------------------------------ QUERIES ------------------------------
 
-// * USER CHECK.
-export const QUERY_USER_CHECK: string = `CUserE($user: Int!, $email: String!){cUserE(userId: $user, email: $email)}`;
+// * SQQ CHECK.
+export const QUERY_SQQ_CHECK: string = `SqqCheck($email: String!){sqqCheck(email: $email){status userId userName userLastName}}`;
 
-// * USER LOGIN.
-export const QUERY_USER_LOGIN: string = `LUser($user: Int!, $email: String!, $password: String!){lUser(userId: $user, email: $email, password: $password){name phone image first operationStatus}}`;
+// * SQQ LOGIN.
+export const QUERY_SQQ_LOGIN: string = `SqqLogin($user: Int!, $password: String!){sqqLogin(userId: $user, password: $password){phone image status}}`;
+
+// * GOOGLE AUTH.
+export const QUERY_GOOGLE_AUTH: string = `SqqGoogle($email: String!){sqqGoogle(email: $email){id first}}`;
 
 // ! ------------------------------ MUTATIONS ------------------------------
 
 // * USER INFO.
-export const MUTATION_USER_INFO: string = `UUser($user: Int!, $name: String, $surname: String, $phone: String, $password: String){uUser(userId: $user, lastName: $surname, name: $name, phone: $phone, password: $password)}`;
+export const MUTATION_USER_INFO: string = `UUser($user: Int!, $password: String, $phone: String, $name: String, $surname: String){uUser(userId: $user, password: $password, phone: $phone, name: $name, lastName: $surname)}`;

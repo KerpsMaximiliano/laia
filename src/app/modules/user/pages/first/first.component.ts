@@ -13,13 +13,14 @@ import { IState } from '@interfaces/state.interface';
 import { IUser } from '@user/interfaces/user.interface';
 
 // * Services.
+import { AuthService } from '@services/auth.service';
 import { CoreService } from '@services/core.service';
 
 // * Validators.
 import { getErrorMessage, isNumeric, notOnlySpaces } from '@validators/character.validators';
 
 // * Actions.
-import { USER_INFO } from '@user/state/user.actions';
+import { USER_INFO_UPDATE } from '@user/state/user.actions';
 
 // * Selectors.
 import { selectUser } from '@user/state/user.selectors';
@@ -27,8 +28,6 @@ import { selectUser } from '@user/state/user.selectors';
 // * Material.
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-
-// * Shared.
 
 @Component({
 	changeDetection: ChangeDetectionStrategy.OnPush,
@@ -45,20 +44,25 @@ export class FirstComponent implements OnInit {
 
 	// eslint-disable-next-line @ngrx/use-consistent-global-store-name
 	private readonly _store: Store<IState> = inject(Store);
+	private readonly _auth: AuthService = inject(AuthService);
 
 	// eslint-disable-next-line @typescript-eslint/member-ordering
 	public user: Signal<ILoadableEntity<IUser>> = this._store.selectSignal(selectUser);
 
 	public ngOnInit(): void {
-		// if (!this.user().data.logged || this.user().data.check !== 0 || this.user().data.check === null) {
-		// 	this.core.redirect('');
-		// }
-		// ! Fix this.
-		console.log('FirstComponent => OnInit');
+		if (!this.user().data.logged || this.user().data.check !== 0 || this.user().data.check === null) {
+			this.core.back();
+			return;
+		}
+
+		if (this._auth.status()) {
+			const data = this._auth.get();
+			this.form.get('name')?.setValue(data['given_name']);
+			this.form.get('surname')?.setValue(data['family_name']);
+		}
 	}
 
 	public save(): void {
-		// ! Fix this.
 		if (this.form.valid) {
 			if (
 				this.form.get('name')?.value ||
@@ -67,17 +71,17 @@ export class FirstComponent implements OnInit {
 				this.form.get('password')?.value
 			) {
 				this._store.dispatch(
-					USER_INFO({
+					USER_INFO_UPDATE({
+						id: this.user().data.id,
 						name: this.form.get('name')?.value,
 						surname: this.form.get('surname')?.value,
 						phone: this.form.get('phone')?.value,
 						password: this.form.get('password')?.value
 					})
 				);
-				this.core.back();
 			}
 		} else {
-			console.log('no valido', this.form.valid);
+			this.form.markAllAsTouched();
 		}
 	}
 

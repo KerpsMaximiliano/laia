@@ -54,6 +54,7 @@ type Icon =
 	| 'location_on'
 	| 'lock_open'
 	| 'logout'
+	| 'mail'
 	| 'map'
 	| 'menu'
 	| 'mic'

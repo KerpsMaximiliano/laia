@@ -14,6 +14,10 @@ export const USER_ROUTES: Routes = [
 				loadComponent: async () => import('./pages/first/first.component').then((c) => c.FirstComponent)
 			},
 			{
+				path: 'redirect',
+				loadComponent: async () => import('./pages/redirect/redirect.component').then((c) => c.RedirectComponent)
+			},
+			{
 				path: '**',
 				redirectTo: 'login',
 				pathMatch: 'full'
