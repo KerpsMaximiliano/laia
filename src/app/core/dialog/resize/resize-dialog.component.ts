@@ -118,7 +118,7 @@ export class ResizeDialogComponent implements OnInit, OnDestroy {
 				return 300;
 			case 'KEYWORDS':
 				return 190;
-			case 'MAT-CALENDAR':
+			case 'CALENDAR':
 				return 620;
 			case 'PAYMENT':
 				return 530;
@@ -130,6 +130,8 @@ export class ResizeDialogComponent implements OnInit, OnDestroy {
 				return 210;
 			case 'SORT':
 				return 260;
+			case 'TIME-RANGE':
+				return 350;
 			default:
 				return window.innerHeight - 2;
 		}

@@ -8,13 +8,14 @@
 // * 																			TAG
 // * SHARED		  													SHARE
 export type IDialog =
+	| 'CALENDAR'
 	| 'DELAY'
 	| 'HASHTAG'
 	| 'INVEST'
 	| 'KEYWORDS'
-	| 'MAT-CALENDAR'
 	| 'PAYMENT'
 	| 'QUESTION'
 	| 'SHARE'
 	| 'SORT'
-	| 'TAG';
+	| 'TAG'
+	| 'TIME-RANGE';

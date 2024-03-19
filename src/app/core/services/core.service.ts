@@ -94,6 +94,9 @@ export class CoreService {
 				// eslint-disable-next-line @typescript-eslint/init-declarations, @typescript-eslint/no-explicit-any
 				let chunk: any;
 				switch (content) {
+					case 'CALENDAR':
+						chunk = await import('@app/core/dialog/content/admin/sell/calendar/calendar.component');
+						break;
 					case 'INVEST':
 						chunk = await import('@dialogs/content/admin/sell/invest/invest.component');
 						break;
@@ -105,9 +108,6 @@ export class CoreService {
 						break;
 					case 'KEYWORDS':
 						chunk = await import('@dialogs/content/admin/sell/keywords/keywords.component');
-						break;
-					case 'MAT-CALENDAR':
-						chunk = await import('@dialogs/content/admin/sell/mat-calendar/mat-calendar.component');
 						break;
 					case 'PAYMENT':
 						chunk = await import('@dialogs/content/admin/sell/payment/payment.component');
@@ -123,6 +123,9 @@ export class CoreService {
 						break;
 					case 'SORT':
 						chunk = await import('@dialogs/content/admin/sell/sort/sort.component');
+						break;
+					case 'TIME-RANGE':
+						chunk = await import('@dialogs/content/admin/sell/time-range/time-range.component');
 						break;
 				}
 				const dialogComponent = Object.values(chunk)[0] as ComponentType<unknown>;

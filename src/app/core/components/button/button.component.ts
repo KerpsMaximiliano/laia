@@ -46,6 +46,7 @@ type Icon =
 	| 'edit'
 	| 'filter_alt'
 	| 'folder'
+	| 'groups'
 	| 'image'
 	| 'imagesearch_roller'
 	| 'info'

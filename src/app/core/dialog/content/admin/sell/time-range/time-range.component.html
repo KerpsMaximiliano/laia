@@ -1,0 +1,85 @@
+<header>
+	<h1>Elegi el rango</h1>
+</header>
+
+<main>
+	<form [formGroup]="form">
+		Desde
+		<div class="flex gp-16">
+			<mat-form-field appearance="outline">
+				<mat-label>Horas</mat-label>
+				<input
+					matInput
+					type="number"
+					formControlName="sinceHour"
+					(input)="updateValue(sinceHourInput, 11)"
+					#sinceHourInput
+					style="font-size: 24px"
+					max="2"
+				/>
+			</mat-form-field>
+
+			<p style="font-size: 53px; padding: 6px">:</p>
+
+			<mat-form-field appearance="outline">
+				<mat-label>Minutos</mat-label>
+				<input
+					matInput
+					type="number"
+					formControlName="sinceMin"
+					(input)="updateValue(sinceMinInput, 59)"
+					#sinceMinInput
+					style="font-size: 24px"
+					max="2"
+				/>
+			</mat-form-field>
+
+			<section class="grid btns">
+				<button class="bd" style="padding: 8px 10px" [class]="modeTo === 'PM' ? 'active' : 'no-active'" (click)="modeTo = 'PM'">PM</button>
+
+				<button class="bd" style="padding: 8px 10px" [class]="modeTo === 'AM' ? 'active' : 'no-active'" (click)="modeTo = 'AM'">AM</button>
+			</section>
+		</div>
+
+		Hasta
+		<div class="flex gp-16">
+			<mat-form-field appearance="outline">
+				<mat-label>Horas</mat-label>
+				<input
+					matInput
+					type="number"
+					formControlName="untilHour"
+					(input)="updateValue(untilHourInput, 11)"
+					#untilHourInput
+					style="font-size: 24px"
+					max="2"
+				/>
+			</mat-form-field>
+
+			<p style="font-size: 53px; padding: 6px">:</p>
+
+			<mat-form-field appearance="outline">
+				<mat-label>Minutos</mat-label>
+				<input
+					matInput
+					type="number"
+					formControlName="untilMin"
+					(input)="updateValue(untilMinInput, 59)"
+					#untilMinInput
+					style="font-size: 24px"
+					max="2"
+				/>
+			</mat-form-field>
+
+			<section class="grid btns">
+				<button class="bd" style="padding: 8px 10px" [class]="modeFrom === 'PM' ? 'active' : 'no-active'" (click)="modeFrom = 'PM'">
+					PM
+				</button>
+
+				<button class="bd" style="padding: 8px 10px" [class]="modeFrom === 'AM' ? 'active' : 'no-active'" (click)="modeFrom = 'AM'">
+					AM
+				</button>
+			</section>
+		</div>
+	</form>
+</main>
