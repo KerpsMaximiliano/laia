@@ -1,6 +1,9 @@
 import { provideHttpClient } from '@angular/common/http';
 import { ApplicationConfig, isDevMode } from '@angular/core';
 
+// * SSR.
+import { provideClientHydration } from '@angular/platform-browser';
+
 // * Animations.
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
@@ -41,6 +44,7 @@ export const appConfig: ApplicationConfig = {
 		provideServiceWorker('ngsw-worker.js', {
 			enabled: !isDevMode(),
 			registrationStrategy: 'registerWhenStable:30000'
-		})
+		}),
+		provideClientHydration()
 	]
 };
