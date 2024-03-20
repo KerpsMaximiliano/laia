@@ -67,6 +67,8 @@ export class LoginComponent implements OnInit, OnDestroy {
 	public user: Signal<ILoadableEntity<IUser>> = this._store.selectSignal(selectUser);
 
 	public ngOnInit(): void {
+		this.auth.init();
+
 		if (this.core.get('user')) {
 			this.core.back();
 			return;
