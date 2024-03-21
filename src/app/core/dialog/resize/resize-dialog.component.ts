@@ -54,6 +54,7 @@ export class ResizeDialogComponent implements OnInit, OnDestroy {
 			if (res !== 0) {
 				this.resizable?.nativeElement.style.setProperty('--ht', `${this.height}px`);
 				this.resizable?.nativeElement.style.setProperty('--nw', `${res}px`);
+
 				this.animation = true;
 				this.height = res;
 				this._cdr.markForCheck();

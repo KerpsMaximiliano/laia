@@ -20,7 +20,7 @@ import { MatSlideToggle } from '@angular/material/slide-toggle';
 
 @Component({
 	changeDetection: ChangeDetectionStrategy.OnPush,
-	selector: 'app-dialog-content-wire-transfer',
+	selector: 'app-admin-sell-wire-transfer',
 	standalone: true,
 	imports: [ReactiveFormsModule, MatFormFieldModule, MatInputModule, ButtonComponent, LoadingComponent, MatSlideToggle],
 	templateUrl: './wire-transfer.component.html',
@@ -34,10 +34,6 @@ export class WireTransferComponent {
 	public price: number | null = 312;
 
 	public readonly core: CoreService = inject(CoreService);
-
-	public log(): void {
-		console.log(this.form.get('slide')?.value);
-	}
 
 	private _setForm(): UntypedFormGroup {
 		return new UntypedFormGroup({

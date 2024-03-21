@@ -21,23 +21,16 @@ import { CoreService } from '@services/core.service';
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	selector: 'app-admin-sell-deltime',
 	standalone: true,
-	imports: [
-		ButtonComponent,
-		MatExpansionModule,
-		MatChipsModule,
-		MatFormFieldModule,
-		ReactiveFormsModule,
-		MatInputModule
-	],
+	imports: [ButtonComponent, MatExpansionModule, MatChipsModule, MatFormFieldModule, ReactiveFormsModule, MatInputModule],
 	templateUrl: './del-time.component.html',
 	styleUrl: './del-time.component.scss'
 })
 export class DeliveryTimeComponent {
-	public mode: 'DIA' | 'FECHA' | undefined = undefined;
+	public mode: 'DATE' | 'DAY' = 'DAY';
 	public readonly form: UntypedFormGroup = this._setForm();
 	public readonly core: CoreService = inject(CoreService);
 
-	public select(mode: 'DIA' | 'FECHA'): void {
+	public select(mode: 'DATE' | 'DAY'): void {
 		this.mode = mode;
 	}
 

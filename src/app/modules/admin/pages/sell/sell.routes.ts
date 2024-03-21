@@ -39,22 +39,23 @@ export const SELL_ROUTES: Routes = [
 			},
 			{
 				path: 'delivery-location',
-				loadComponent: async () =>
-					import('./pages/del-location/del-location.component').then((c) => c.DeliveryLocationComponent)
+				loadComponent: async () => import('./pages/del-location/del-location.component').then((c) => c.DeliveryLocationComponent)
 			},
 			{
 				path: 'wire-transfer',
-				loadComponent: async () =>
-					import('./pages/wire-transfer/wire-transfer.component').then((c) => c.WireTransferComponent)
-			},
-			{
-				path: 'credit-days',
-				loadComponent: async () =>
-					import('./pages/credit-days/credit-days.component').then((c) => c.CreditDaysComponent)
+				loadComponent: async () => import('./pages/wire-transfer/wire-transfer.component').then((c) => c.WireTransferComponent)
 			},
 			{
 				path: 'paypal',
 				loadComponent: async () => import('./pages/paypal/paypal.component').then((c) => c.PaypalComponent)
+			},
+			{
+				path: 'miniatures',
+				loadComponent: async () => import('./pages/miniatures/miniatures.component').then((c) => c.MiniaturesComponent)
+			},
+			{
+				path: 'order',
+				loadComponent: async () => import('./pages/order/order.component').then((c) => c.OrderComponent)
 			},
 			{
 				path: '**',

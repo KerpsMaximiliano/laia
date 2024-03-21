@@ -5,22 +5,18 @@
 	</div>
 
 	<section class="grid btns" style="grid-template-columns: repeat(2, 1fr)">
-		<button class="bd" style="padding: 16px 8px" [class.bd-active]="mode === 'DIA'" (click)="select('DIA')">
-			Segun el dia
-		</button>
+		<button class="bd" style="padding: 16px 8px" [class.bd-active]="mode === 'DAY'" (click)="select('DAY')">Segun el dia</button>
 
-		<button class="bd" style="padding: 16px 8px" [class.bd-active]="mode === 'FECHA'" (click)="select('FECHA')">
-			Segun la fecha
-		</button>
+		<button class="bd" style="padding: 16px 8px" [class.bd-active]="mode === 'DATE'" (click)="select('DATE')">Segun la fecha</button>
 	</section>
 </header>
 
 <main class="pd-12">
-	@if (mode === 'DIA') {
+	@if (mode === 'DAY') {
 		<p style="color: #a1a1a1">Días de la tanda</p>
 	}
 	<form [formGroup]="form" class="grid gp-24">
-		@if (mode === 'DIA') {
+		@if (mode === 'DAY') {
 			<mat-chip-listbox multiple="true" formControlName="days" aria-label="Seleccione un dia">
 				<mat-chip-option>Lunes</mat-chip-option>
 				<mat-chip-option>Martes</mat-chip-option>
@@ -30,24 +26,24 @@
 				<mat-chip-option>Sabado</mat-chip-option>
 				<mat-chip-option>Domingo</mat-chip-option>
 			</mat-chip-listbox>
-		} @else if (mode === 'FECHA') {
-			<button type="button" class="btn--direction flex bet pd-16 br-4">
+		} @else if (mode === 'DATE') {
+			<button type="button" class="btn--direction flex bet pd-16 br-4" (click)="core.open('CALENDAR')">
 				Seleccione una fecha especifica *
-				<app-component-button [type]="'ICON'" [icon]="'calendar_month'" (click)="core.open('MAT-CALENDAR')" />
+				<app-component-button [type]="'ICON'" [icon]="'calendar_month'" />
 			</button>
 		}
 
-		<button type="button" class="btn--direction flex bet pd-16 br-4">
+		<button type="button" class="btn--direction flex bet pd-16 br-4" (click)="core.open('TIME-RANGE')">
 			Rango de tiempo *
 			<app-component-button [type]="'ICON'" [icon]="'schedule'" />
 		</button>
 
-		<mat-form-field appearance="outline" class="w">
+		<mat-form-field appearance="outline">
 			<mat-label>Cantidad de entregas posibles</mat-label>
 			<input formControlName="amount" type="number" matInput placeholder="Ingrese la cantida de entregas posibles" />
 		</mat-form-field>
 
-		<mat-form-field appearance="outline" class="w">
+		<mat-form-field appearance="outline">
 			<mat-label>Nombre de la tanda</mat-label>
 			<input formControlName="name" type="text" matInput placeholder="Ingrese el nombre de la tanda" />
 		</mat-form-field>

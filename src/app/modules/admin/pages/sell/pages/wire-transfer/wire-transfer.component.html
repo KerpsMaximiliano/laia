@@ -4,7 +4,6 @@
 		Transferencia Bancaria
 	</button>
 
-	<!-- Si se completo algnu dato en los inputs -->
 	@if (form.get('bank')?.value || form.get('cbu')?.value || form.get('aditional')?.value || form.get('slide')?.value) {
 		<button type="button" class="option" style="padding: 0 12px">Guardar</button>
 	}
@@ -13,15 +12,16 @@
 <main class="pd-12">
 	<form [formGroup]="form" class="fle col gp-24">
 		<p class="tx-visible message">
-			Con esta opción, tus clientes después de pagar subirán su comprobante (screenshot) y tu tendrás que confirmar su
-			pago.
+			Con esta opción, tus clientes después de pagar subirán su comprobante (screenshot) y tu tendrás que confirmar su pago.
 		</p>
 
 		<mat-form-field appearance="outline">
-			<input type="text" matInput placeholder="Introduce el Banco que recibirá el dinero" formControlName="bank" />
+			<mat-label>Nombre del banco que recibirá el dinero</mat-label>
+			<input type="text" matInput placeholder="Nombre del banco que recibirá el dinero" formControlName="bank" />
 		</mat-form-field>
 
 		<mat-form-field appearance="outline">
+			<mat-label>Número de cuenta que recibirá tu dinero</mat-label>
 			<input type="number" matInput placeholder="Número de cuenta que recibirá tu dinero" formControlName="cbu" />
 
 			@if (form.get('cbu')?.invalid && form.get('cbu')?.touched) {
@@ -45,12 +45,7 @@
 				/>
 
 				@if (form.get('aditional')?.value) {
-					<app-component-button
-						[type]="'ICON'"
-						[icon]="'delete'"
-						[suffix]="true"
-						(click)="form.get('aditional')?.setValue(null)"
-					/>
+					<app-component-button [type]="'ICON'" [icon]="'delete'" [suffix]="true" (click)="form.get('aditional')?.setValue(null)" />
 				}
 
 				@if (price !== null && price !== 0) {
@@ -61,7 +56,14 @@
 		<div class="flex bet">
 			<p>Disponible para todos los Compradores</p>
 
-			<mat-slide-toggle formControlName="slide" (click)="log()" />
+			<mat-slide-toggle formControlName="slide" />
 		</div>
+		@if (form.get('slide')?.value) {
+			<p class="tx-visible message fle">
+				Comparte el link de acceso para adicionar un comprador particular.
+
+				<app-component-button [type]="'ICON'" [icon]="'groups'" style="margin-left: 12px" />
+			</p>
+		}
 	</form>
 </main>
