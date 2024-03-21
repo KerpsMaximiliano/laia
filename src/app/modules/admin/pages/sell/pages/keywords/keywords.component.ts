@@ -1,4 +1,14 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild, inject } from '@angular/core';
+import {
+	ChangeDetectionStrategy,
+	ChangeDetectorRef,
+	Component,
+	ElementRef,
+	OnDestroy,
+	OnInit,
+	Signal,
+	ViewChild,
+	inject
+} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Subject, debounceTime, filter, take, takeUntil } from 'rxjs';
@@ -21,6 +31,8 @@ import { id } from '@functions/id.function';
 
 // * Interfaces.
 import { IState } from '@interfaces/state.interface';
+import { IArticle } from '@sell/interfaces/sell.interface';
+import { ILogin } from '@user/interfaces/user.interface';
 
 // * Services.
 import { CoreService } from '@services/core.service';
@@ -30,6 +42,13 @@ import { ILoading } from '@sorts/loading.sort';
 
 // * Selectors.
 import { selectAdminSellArticleInfo } from '@sell/state/sell.selectors';
+import { selectLogin } from '@user/state/user.selectors';
+
+// * GraphQl.
+import { WATCH_ADMIN_SELL_ARTICLE_KEYWORDS } from '@sell/state/sell.graphql';
+
+// * Response.
+import { IKeywordsWatchResponse } from '@sell/state/sell.response';
 
 // * Material.
 import { MatAutocompleteModule, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
@@ -62,6 +81,7 @@ export class KeywordsComponent implements OnInit, OnDestroy {
 	private readonly _destroy$: Subject<void> = new Subject<void>();
 	private readonly _id: (id: string | undefined) => number = id;
 	private readonly _initial: ILoading = INITIAL;
+	private readonly _user: Signal<ILogin> = this._store.selectSignal(selectLogin);
 
 	private _value: string | undefined;
 
@@ -70,52 +90,47 @@ export class KeywordsComponent implements OnInit, OnDestroy {
 
 		if (this._id(this._route.snapshot.params['id']) > 0) {
 			// * LOAD KEYWORDS.
+
+			this.form
+				.get('keywords')
+				?.valueChanges.pipe(
+					takeUntil(this._destroy$),
+					debounceTime(300),
+					filter((value) => value !== null && value !== undefined && value !== this._value)
+				)
+				.subscribe((value: string) => {
+					this._value = value;
+					this.loading = true;
+					this._cdr.markForCheck();
+					this.core
+						.query<IKeywordsWatchResponse['data']>(WATCH_ADMIN_SELL_ARTICLE_KEYWORDS, { user: 15, keyword: value })
+						.pipe(takeUntil(this._destroy$))
+						.subscribe({
+							next: (res) => {
+								this.suggestions = res.wAdminSellKeyWords.map((keyword: string) => keyword);
+								this.loading = false;
+								this._cdr.markForCheck();
+							},
+							error: () => {
+								this.loading = false;
+								this._cdr.markForCheck();
+							},
+							complete: () => {
+								this.loading = false;
+								this._cdr.markForCheck();
+							}
+						});
+				});
 		}
 
 		this._store
 			.select(selectAdminSellArticleInfo({ id: this._id(this._route.snapshot.params['id']), prop: 'keywords' }))
 			.pipe(
 				take(1),
-				filter((keywords) => keywords?.status !== this._initial)
+				filter((keywords) => keywords !== null && keywords.status !== this._initial)
 			)
-			.subscribe((keywords) => {
-				this.keywords = keywords?.items ?? [];
-			});
-
-		this.form
-			.get('keywords')
-			?.valueChanges.pipe(
-				takeUntil(this._destroy$),
-				debounceTime(300),
-				filter((value) => value !== null && value !== undefined && value !== this._value)
-			)
-			.subscribe((value: string) => {
-				this._value = value;
-				this.loading = true;
-				this._cdr.markForCheck();
-				// this.core
-				// 	.query<IKeywordsWatchResponse['data']>(WATCH_ADMIN_SELL_ARTICLE_KEYWORDS, { user: 15, keyword: value })
-				// 	.pipe(takeUntil(this._destroy$))
-				// 	.subscribe({
-				// 		next: (res) => {
-				// 			this.suggestions = res.wAdminSellKeyWords.map((keyword) => {
-				// 				return {
-				// 					id: keyword.id,
-				// 					keyword: keyword.word
-				// 				};
-				// 			});
-				// 			this.loading = false;
-				// 			this._cdr.markForCheck();
-				// 		},
-				// 		error: () => {
-				// 			this.loading = false;
-				// 			this._cdr.markForCheck();
-				// 		},
-				// 		complete: () => {
-				// 			this.loading = false;
-				// 			this._cdr.markForCheck();
-				// 		}
-				// 	});
+			.subscribe((keywords: IArticle['keywords'] | null) => {
+				if (keywords) this.keywords = [...keywords.items];
 			});
 	}
 
@@ -137,6 +152,7 @@ export class KeywordsComponent implements OnInit, OnDestroy {
 			this.keywords.push(event.option.viewValue);
 			this.input.nativeElement.value = '';
 			this.form.get('keywords')?.setValue(null);
+			this._cdr.markForCheck();
 		}
 	}
 

@@ -123,9 +123,6 @@ export class CoreService {
 					case 'DELAY':
 						chunk = await import('@dialogs/content/admin/sell/delay/delay.component');
 						break;
-					case 'KEYWORDS':
-						chunk = await import('@dialogs/content/admin/sell/keywords/keywords.component');
-						break;
 					case 'MAT-CALENDAR':
 						chunk = await import('@dialogs/content/admin/sell/mat-calendar/mat-calendar.component');
 						break;

@@ -3,18 +3,7 @@
 // * ADMIN			SELL					ARTICLE			DELAY
 // * 																			HASHTAG
 // * 																			INVEST
-// * 																			KEYWORDS
 // * 																			QUESTION
 // * 																			TAG
 // * SHARED		  													SHARE
-export type IDialog =
-	| 'DELAY'
-	| 'HASHTAG'
-	| 'INVEST'
-	| 'KEYWORDS'
-	| 'MAT-CALENDAR'
-	| 'PAYMENT'
-	| 'QUESTION'
-	| 'SHARE'
-	| 'SORT'
-	| 'TAG';
+export type IDialog = 'DELAY' | 'HASHTAG' | 'INVEST' | 'MAT-CALENDAR' | 'PAYMENT' | 'QUESTION' | 'SHARE' | 'SORT' | 'TAG';

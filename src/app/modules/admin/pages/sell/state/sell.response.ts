@@ -11,10 +11,5 @@ interface IArticles {
 	typeOfPrice: 'USD';
 }
 
-interface IKeyword {
-	id: number;
-	word: string;
-}
-
-export type IKeywordsWatchResponse = IResponse<{ wAdminSellKeyWords: IKeyword[] }>;
+export type IKeywordsWatchResponse = IResponse<{ wAdminSellKeyWords: string[] }>;
 export type IArticlesResponse = IResponse<{ products: IArticles[] }>;

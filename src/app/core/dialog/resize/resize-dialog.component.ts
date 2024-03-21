@@ -113,8 +113,6 @@ export class ResizeDialogComponent implements OnInit, OnDestroy {
 				return 200;
 			case 'DELAY':
 				return 300;
-			case 'KEYWORDS':
-				return 190;
 			case 'MAT-CALENDAR':
 				return 620;
 			case 'PAYMENT':
