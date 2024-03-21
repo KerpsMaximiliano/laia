@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, Signal, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Subject } from 'rxjs';
@@ -23,6 +23,9 @@ import { IState } from '@interfaces/state.interface';
 // * Validators.
 import { getErrorMessage, isAlpha } from '@validators/character.validators';
 
+// * Selectors.
+import { selectAdminSellArticleInfo } from '@sell/state/sell.selectors';
+
 // * Material.
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -39,6 +42,7 @@ export class HashtagComponent implements OnInit, OnDestroy {
 	public readonly getErrorMessage: (control: AbstractControl<unknown, unknown>) => string = getErrorMessage;
 	public readonly form: UntypedFormGroup = this._setForm();
 	public err: boolean = false;
+	public hashtag?: Signal<string | null>;
 
 	// eslint-disable-next-line @ngrx/use-consistent-global-store-name
 	private readonly _store: Store<IState> = inject(Store);
@@ -47,13 +51,14 @@ export class HashtagComponent implements OnInit, OnDestroy {
 	private readonly _id: (id: string | undefined) => number = id;
 	private readonly _destroy$: Subject<void> = new Subject<void>();
 
-	// eslint-disable-next-line @typescript-eslint/member-ordering
-	// public readonly hashtag: Signal<ILoadableEntity<string | null>> = this._store.selectSignal(
-	// 	selectAdminSellArticleHashtag(this._id(this._route.snapshot.params['id']))
-	// );
-
 	public ngOnInit(): void {
-		console.log('hola');
+		if (this._id(this._route.snapshot.params['id']) === 0) return;
+
+		this.hashtag = this._store.selectSignal(
+			selectAdminSellArticleInfo({ id: this._id(this._route.snapshot.params['id']), prop: 'hashtag' })
+		);
+
+		this.form.get('hashtag')?.setValue(this.hashtag());
 
 		// if (this.hashtag().status === LOADING) {
 		// 	this._store.dispatch(ADMIN_SELL_ARTICLE_HASHTAG_LOAD({ id: this._id(this._route.snapshot.params['id']) }));

@@ -15,12 +15,7 @@
 				<input type="text" matInput placeholder="Ingrese un hashtag" formControlName="hashtag" maxlength="21" />
 
 				@if (form.get('hashtag')?.value) {
-					<app-component-button
-						[type]="'ICON'"
-						[icon]="'delete'"
-						[suffix]="true"
-						(click)="form.get('hashtag')?.setValue(null)"
-					/>
+					<app-component-button [type]="'ICON'" [icon]="'delete'" [suffix]="true" (click)="form.get('hashtag')?.setValue(null)" />
 				}
 			</div>
 

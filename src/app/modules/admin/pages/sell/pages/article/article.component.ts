@@ -45,7 +45,6 @@ import { CoreService } from '@services/core.service';
 
 // * Sorts.
 import { ILoading } from '@app/core/sorts/loading.sort';
-import { IDialog } from '@sorts/dialog.sort';
 
 // * Actions.
 
@@ -53,7 +52,7 @@ import { IDialog } from '@sorts/dialog.sort';
 import { getErrorMessage, notOnlySpaces } from '@validators/character.validators';
 
 // * Selectors.
-import { selectAdminSellArt } from '@sell/state/sell.selectors';
+import { selectAdminSellArticle } from '@sell/state/sell.selectors';
 import { selectLogin } from '@user/state/user.selectors';
 
 // * Material.
@@ -85,78 +84,27 @@ export class ArticleComponent implements OnInit, AfterViewInit, OnDestroy {
 	public options: {
 		title: string;
 		description: string;
-		status: boolean;
-		action: 'OPEN' | 'REDIRECT' | undefined;
-		redirect?: string;
-		dialog?: IDialog;
 	}[] = [
 		{
-			title: 'Hashtag',
-			description: 'Lo adicionas en tus redes sociales y al entrar a tu tienda lo buscan y lo encuentran directamente.',
-			status: true,
-			action: 'OPEN',
-			dialog: 'HASHTAG'
-		},
-		{
-			title: 'Tiempo de Fabricación',
-			description:
-				'Ej: Florista tarde 45 minutos en armar el arreglo floral. Esto afecta la tanda de entrega que verá el comprador (si lo activas).',
-			status: true,
-			action: 'OPEN',
-			dialog: 'DELAY'
-		},
-		{
-			title: 'Información adicional',
-			description: 'Escribe más del artículo, si quieres incluye hasta imágenes para una descrpción más clara o una buena historia.',
-			status: true,
-			action: 'REDIRECT',
-			redirect: 'segment'
-		},
-		{
-			title: 'Palabras claves para búsquedas',
-			description: 'Para que tus compradores y LAIA lo encuentren con palabras referentes.',
-			status: true,
-			action: 'OPEN',
-			dialog: 'KEYWORDS'
-		},
-		{
-			title: 'Preguntas a Compradores',
-			description:
-				'Generalmente usado cuando necesitas saber respuestas del comprador antes de hacer la venta del servicio o el artículo que ofreces.',
-			status: true,
-			action: 'OPEN',
-			dialog: 'QUESTION'
-		},
-		{
 			title: 'Categorias',
-			description: 'Agrupa y presenta artículos en tu tienda.',
-			status: true,
-			action: undefined
+			description: 'Agrupa y presenta artículos en tu tienda.'
 		},
 		{
 			title: 'Incentivos',
-			description: 'Incentiva a tu personal interno a vender para que vendas más de cualquiera de tus artículos.',
-			status: false,
-			action: undefined
+			description: 'Incentiva a tu personal interno a vender para que vendas más de cualquiera de tus artículos.'
 		},
 		{
 			title: 'Catálogos',
-			description: 'Creálos con precios ajustables como playlists para aumentar tu alcance y visibilidad a cambio de comisiones.',
-			status: false,
-			action: undefined
+			description: 'Creálos con precios ajustables como playlists para aumentar tu alcance y visibilidad a cambio de comisiones.'
 		},
 		{
-			title: 'Premia a Compradores',
-			description: 'Asigna la cantidad de puntos que se ganan los compradores y premiálos cuando alcancen tu meta.',
-			status: false,
-			action: undefined
+			title: 'Premia a compradores',
+			description: 'Asigna la cantidad de puntos que se ganan los compradores y premiálos cuando alcancen tu meta.'
 		},
 		{
 			title: 'Reservas',
 			description:
-				'Destina un tiempo específico para brindar el servicio de este Artículo. Conecta su propio Google Calendar para la gestión.',
-			status: false,
-			action: undefined
+				'Destina un tiempo específico para brindar el servicio de este Artículo. Conecta su propio Google Calendar para la gestión.'
 		}
 	];
 
@@ -165,8 +113,7 @@ export class ArticleComponent implements OnInit, AfterViewInit, OnDestroy {
 	private readonly _zone: NgZone = inject(NgZone);
 	private readonly _route: ActivatedRoute = inject(ActivatedRoute);
 	private readonly _cdr: ChangeDetectorRef = inject(ChangeDetectorRef);
-
-	private readonly _id: number = id(this._route.snapshot.params['id']);
+	private readonly _id: (id: string | undefined) => number = id;
 	private readonly _destroy$: Subject<void> = new Subject<void>();
 
 	private _elements: NodeListOf<HTMLElement> | undefined = undefined;
@@ -177,31 +124,25 @@ export class ArticleComponent implements OnInit, AfterViewInit, OnDestroy {
 	public readonly user: Signal<ILogin> = this._store.selectSignal(selectLogin);
 
 	public ngOnInit(): void {
-		switch (this._id) {
-			case -1: // CREATE.
-				console.log('create');
-				return;
-			case 0: // ERROR.
-				console.log('error');
-				return;
-			default: // READ | UPDATE.
-				console.log('read');
-				return;
-		}
-
-		if (this._id !== this._route.snapshot.params['id']) this.article = this._store.selectSignal(selectAdminSellArt(this._id));
-
-		// if (this.user().logged) {
-		// 	const id: number = this._id(this._route.snapshot.params['id']);
-		// 	if (id !== 0 && this.art().status === this.INITIAL) {
-		// 		this._store.dispatch(ADMIN_SELL_ARTICLE_LOAD({ id }));
-		// 	}
+		if (this._id(this._route.snapshot.params['id']) === 0) return;
+		// switch () {
+		// 	case -1: // CREATE.
+		// 		console.log('create');
+		// 		break;
+		// 	case 0: // ERROR.
+		// 		console.log('error => ARTICULO NO ENCONTRADO');
+		// 		return;
+		// 	default: // READ | UPDATE.
+		// 		console.log('read => LOAD ARTICLE | LOAD ARTICLE DETAIL | ARTICULO NO ENCONTRADO');
+		// 		break;
 		// }
 
-		// this.form.get('title')?.setValue(this.art().data.title);
-		// this.form.get('price')?.setValue(this.art().data.price.amount);
-		// this.form.get('stock')?.setValue(this.art().data.stock.quantity);
-		// this.form.get('tStock')?.setValue(this.art().data.stock.type);
+		this.article = this._store.selectSignal(selectAdminSellArticle(this._id(this._route.snapshot.params['id'])));
+
+		this.form.get('title')?.setValue(this.article().data.title);
+		this.form.get('price')?.setValue(this.article().data.price.amount);
+		this.form.get('stock')?.setValue(this.article().data.stock.quantity);
+		this.form.get('tStock')?.setValue(this.article().data.stock.type);
 	}
 
 	public ngAfterViewInit(): void {

@@ -11,12 +11,7 @@
 				<input type="text" matInput placeholder="Ingrese la etiqueta" formControlName="tag" />
 
 				@if (form.get('tag')?.value) {
-					<app-component-button
-						[type]="'ICON'"
-						[icon]="'delete'"
-						[suffix]="true"
-						(click)="form.get('tag')?.setValue(null)"
-					/>
+					<app-component-button [type]="'ICON'" [icon]="'delete'" [suffix]="true" (click)="form.get('tag')?.setValue(null)" />
 				}
 			</div>
 

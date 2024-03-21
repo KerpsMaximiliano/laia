@@ -35,6 +35,7 @@ type Icon =
 	| 'arrow_circle_right'
 	| 'arrow_forward_ios'
 	| 'calendar_month'
+	| 'cancel'
 	| 'checklist'
 	| 'close'
 	| 'credit_card'

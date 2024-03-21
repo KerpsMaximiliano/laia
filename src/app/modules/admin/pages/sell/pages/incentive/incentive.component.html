@@ -14,35 +14,22 @@
 		<mat-form-field appearance="outline">
 			<mat-label>{{ type ? 'Porcentaje del incentivo' : 'Monto del incentivo' }}</mat-label>
 
-			<div class="grid gp-8" style="grid-template-columns: 1fr max-content">
-				<div class="flex gp-8">
-					@if (form.get('incentive')?.value) {
-						<div matTextPrefix>{{ type ? '%' : '$' }}</div>
-					}
+			<div class="flex gp-8">
+				@if (form.get('incentive')?.value) {
+					<div matTextPrefix>{{ type ? '%' : '$' }}</div>
+				}
 
-					<input
-						type="number"
-						matInput
-						formControlName="incentive"
-						[placeholder]="type ? 'Ingrese el porcentaje' : 'Ingrese el monto'"
-					/>
+				<input type="number" matInput formControlName="incentive" [placeholder]="type ? 'Ingrese el porcentaje' : 'Ingrese el monto'" />
 
-					@if (form.get('incentive')?.value) {
-						<app-component-button
-							[type]="'ICON'"
-							[icon]="'delete'"
-							[suffix]="true"
-							(click)="form.get('incentive')?.setValue(null)"
-						/>
-					}
+				@if (form.get('incentive')?.value) {
+					<app-component-button [type]="'ICON'" [icon]="'delete'" [suffix]="true" (click)="form.get('incentive')?.setValue(null)" />
+				}
 
-					@if (price !== null && price !== 0) {
-						<button type="button" (click)="type = !type" style="margin-left: 8px">
-							{{ type ? 'Porcentaje' : 'Monto' }}
-						</button>
-						<!-- <app-component-button [type]="'ICON'" [icon]="'sync'" (click)="type = !type"  /> -->
-					}
-				</div>
+				@if (price !== null && price !== 0) {
+					<button type="button" (click)="type = !type" style="margin-left: 8px; min-width: 80px">
+						{{ type ? 'Porcentaje' : 'Monto' }}
+					</button>
+				}
 			</div>
 
 			@if (form.get('incentive')?.invalid && form.get('incentive')?.touched) {

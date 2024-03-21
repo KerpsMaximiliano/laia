@@ -1,4 +1,4 @@
-<!-- <header class="flex bet gp-8 pd-12">
+<header class="flex bet gp-8 pd-12">
 	<div class="flex gp-4">
 		<app-component-button [type]="'MINI'" [icon]="'navigate_before'" (click)="core.back()" />
 		Nuevo Artículo
@@ -9,7 +9,7 @@
 
 @if (article) {
 	<main class="grid gp-24 pd-12 pb-44">
-		<article class="grid br-4" [class.no-media]="article().data.medias.length === 0">
+		<!-- <article class="grid br-4" [class.no-media]="article().data.medias.length === 0">
 			<div class="flex bet pd-12">
 				<p>Multimedia</p>
 				@if (article().data.medias.length > 0) {
@@ -37,15 +37,10 @@
 		@if (article().data.medias.length > 1) {
 			<div class="flex cen gp-12">
 				@for (dot of article().data.medias; track $index) {
-					<button
-						class="dot"
-						aria-label="Dot"
-						[class.active]="$index === index"
-						(click)="scrollToImage($index)"
-					></button>
+					<button class="dot" aria-label="Dot" [class.active]="$index === index" (click)="scrollToImage($index)"></button>
 				}
 			</div>
-		}
+		} -->
 
 		<form [formGroup]="form" class="grid gp-30" style="margin-bottom: 12px">
 			<mat-form-field appearance="outline">
@@ -64,12 +59,7 @@
 					</textarea>
 
 					@if (form.get('title')?.value) {
-						<app-component-button
-							[type]="'ICON'"
-							[icon]="'delete'"
-							[suffix]="true"
-							(click)="form.get('title')?.setValue(null)"
-						/>
+						<app-component-button [type]="'ICON'" [icon]="'delete'" [suffix]="true" (click)="form.get('title')?.setValue(null)" />
 					}
 				</div>
 
@@ -85,21 +75,10 @@
 						<div matTextPrefix>$</div>
 					}
 
-					<input
-						type="number"
-						matInput
-						placeholder="Ingrese el precio del artículo"
-						formControlName="price"
-						max="9999999999"
-					/>
+					<input type="number" matInput placeholder="Ingrese el precio del artículo" formControlName="price" max="9999999999" />
 
 					@if (form.get('price')?.value) {
-						<app-component-button
-							[type]="'ICON'"
-							[icon]="'delete'"
-							[suffix]="true"
-							(click)="form.get('price')?.setValue(null)"
-						/>
+						<app-component-button [type]="'ICON'" [icon]="'delete'" [suffix]="true" (click)="form.get('price')?.setValue(null)" />
 					}
 				</div>
 
@@ -121,21 +100,10 @@
 				<mat-label>Cantidad disponible</mat-label>
 
 				<div class="flex gp-8">
-					<input
-						type="number"
-						matInput
-						placeholder="Ingrese la cantidad disponible"
-						formControlName="stock"
-						max="9999999999"
-					/>
+					<input type="number" matInput placeholder="Ingrese la cantidad disponible" formControlName="stock" max="9999999999" />
 
 					@if (form.get('stock')?.value) {
-						<app-component-button
-							[type]="'ICON'"
-							[icon]="'delete'"
-							[suffix]="true"
-							(click)="form.get('stock')?.setValue(null)"
-						/>
+						<app-component-button [type]="'ICON'" [icon]="'delete'" [suffix]="true" (click)="form.get('stock')?.setValue(null)" />
 					}
 				</div>
 
@@ -152,7 +120,7 @@
 				<p>Inversión por producirlo:</p>
 
 				<button type="button" class="flex gp-8" (click)="core.open('INVEST')">
-					{{ currency(article().data.investments) }}
+					{{ currency(article().data.investments.total) }}
 					<app-component-button [type]="'ICON'" [icon]="'navigate_next'" />
 				</button>
 			</div>
@@ -161,33 +129,105 @@
 				<p>Beneficio bruto:</p>
 
 				<button type="button" class="flex gp-8">
-					{{ article().data.price.type }}
-					{{ currency((article().data.price.amount ?? 0) - article().data.investments) }}
+					{{ article().data.price.type }} {{ currency((article().data.price.amount ?? 0) - article().data.investments.total) }}
 				</button>
 			</div>
 		</section>
 
 		<section class="grid bd br-4">
-			<p class="pd-12" style="background-color: #e0e0e3; border-radius: 4px 4px 0 0">
-				Configuraciones de tu propia tienda
-			</p>
+			<p class="pd-12" style="background-color: #e0e0e3; border-radius: 4px 4px 0 0">Configuraciones de tu propia tienda</p>
 
 			<div>
+				<button type="button" class="tx-left pd-12 fle col gp-8 w" (click)="core.open('HASHTAG')">
+					<b>Hashtag</b>
+					<p class="tx-3">
+						{{
+							article().data.hashtag
+								? '#' + article().data.hashtag
+								: 'Lo adicionas en tus redes sociales y al entrar a tu tienda lo buscan y lo encuentran directamente.'
+						}}
+					</p>
+				</button>
+
+				<hr />
+
+				<button type="button" class="tx-left pd-12 fle col gp-8 w" (click)="core.open('DELAY')">
+					<b>Tiempo de fabricación</b>
+					<p class="tx-3">
+						{{
+							article().data.manufacturing.time
+								? article().data.manufacturing.type === 'MINUTE'
+									? article().data.manufacturing.time! > 1
+										? article().data.manufacturing.time + ' Minutos.'
+										: article().data.manufacturing.time + ' Minuto.'
+									: article().data.manufacturing.type === 'HOUR'
+										? article().data.manufacturing.time! > 1
+											? article().data.manufacturing.time + ' Horas.'
+											: article().data.manufacturing.time + ' Hora.'
+										: article().data.manufacturing.type === 'DAY'
+											? article().data.manufacturing.time! > 1
+												? article().data.manufacturing.time + ' Días.'
+												: article().data.manufacturing.time + ' Día.'
+											: article().data.manufacturing.time! > 1
+												? article().data.manufacturing.time + ' Meses.'
+												: article().data.manufacturing.time + ' Mes.'
+								: 'Ej: Florista tarde 45minutos en armar el arreglo floral. Esto afecta la tanda de entrega que verá el comprador (si lo activas).'
+						}}
+					</p>
+				</button>
+
+				<hr />
+
+				<button
+					type="button"
+					class="tx-left pd-12 fle col gp-8 w"
+					(click)="sell.redirect(article().data.segments.count > 0 ? 'segments' : 'segment')"
+				>
+					<b>Información adicional</b>
+					<p class="tx-3">
+						{{
+							article().data.segments.count > 0
+								? article().data.segments.count + ' Segmentos'
+								: 'Escribe más del artículo, si quieres incluye hasta imágenes para una descrpción más clara o una buena historia.'
+						}}
+					</p>
+				</button>
+
+				<hr />
+
+				<button
+					type="button"
+					class="tx-left pd-12 fle col gp-8 w"
+					(click)="sell.redirect('keywords', article().data.id === 0 ? '' : article().data.id)"
+				>
+					<b>Palabras claves para búsquedas</b>
+					<p class="tx-3">
+						{{
+							article().data.keywords.count > 0
+								? article().data.keywords.count + ' Palabras claves'
+								: 'Para que tus compradores y LAIA lo encuentren con palabras referentes.'
+						}}
+					</p>
+				</button>
+
+				<hr />
+
+				<button type="button" class="tx-left pd-12 fle col gp-8 w" (click)="core.open('QUESTION')">
+					<b>Preguntas a compradores</b>
+					<p class="tx-3">
+						{{
+							article().data.questions.count > 0
+								? article().data.questions.count + ' Preguntas'
+								: 'Generalmente usado cuando necesitas saber respuestas del comprador antes de hacer la venta del servicio o el artículo que ofreces.'
+						}}
+					</p>
+				</button>
+
+				<hr />
+
 				@for (option of options; track $index) {
-					<button
-						type="button"
-						class="tx-left pd-12 fle col gp-8"
-						(click)="
-							option.action
-								? option.action === 'OPEN' && option.dialog
-									? core.open(option.dialog)
-									: sell.redirect(option.redirect ?? '')
-								: null
-						"
-					>
-						@if (!option.status) {
-							<p style="color: var(--required)">Próximamente</p>
-						}
+					<button type="button" class="tx-left pd-12 fle col gp-8 w">
+						<p style="color: var(--required)">Próximamente</p>
 						<b>{{ option.title }}</b>
 						<p class="tx-3">{{ option.description }}</p>
 					</button>
@@ -199,4 +239,4 @@
 			</div>
 		</section>
 	</main>
-} -->
+}

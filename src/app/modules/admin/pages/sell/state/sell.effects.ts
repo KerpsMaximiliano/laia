@@ -2,18 +2,21 @@ import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, exhaustMap, map, of } from 'rxjs';
 
+// * Consts.
+import { LOADED, LOADING } from '@consts/load.const';
+
 // * Interfaces.
 import { IArticlesResponse } from './sell.response';
 
 // * Services.
 import { CoreService } from '@services/core.service';
 
+import { ILoading } from '@sorts/loading.sort';
+
 // * Actions.
 import { ADMIN_SELL_ARTICLES_LOAD, ADMIN_SELL_ARTICLES_LOADED } from './sell.actions';
 
 // * Graphql.
-import { LOADED, LOADING } from '../../../../../core/constants/load.const';
-import { ILoading } from '../../../../../core/sorts/loading.sort';
 import { QUERY_ADMIN_SELL_ARTICLES } from './sell.graphql';
 
 @Injectable({ providedIn: 'root' })
@@ -42,10 +45,9 @@ export class SellEffects {
 											price: { amount: article.price, type: 'USD' },
 											stock: { quantity: article.stock, type: article.typeOfSale },
 											title: article.title,
-											categories: { status: this._loading, items: [], count: 0 },
-											commissions: 0,
+											commissions: { status: this._loading, items: [], total: 0 },
 											hashtag: null,
-											investments: 0,
+											investments: { status: this._loading, items: [], total: 0 },
 											keywords: { status: this._loading, items: [], count: 0 },
 											manufacturing: { time: null, type: 'MINUTE' },
 											medias: article.frontPage ? [{ url: article.frontPage, type: 'IMAGE' }] : [],
