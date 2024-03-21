@@ -1,0 +1,40 @@
+<div class="box">
+	<header class="flex bet gp-4">
+		<div class="flex gp-4">
+			<app-component-button [type]="'MINI'" [icon]="'navigate_before'" (click)="back()" />
+			<h1>Ordenamiento</h1>
+		</div>
+		<!-- Agregar condicion al if && asc => Dependiendo si por defecto es asc o desc -->
+		@if (change) {
+			<button type="button" class="option" style="padding: 0 12px">Ver</button>
+		}
+	</header>
+
+	<main class="flex col gp-24 pd-12 example-list">
+		<section class="grid bd br-4 w">
+			<button type="button" class="flex bet pd-12" (click)="check('asc')">
+				Ascendente
+				<input type="radio" class="my-12" style="accent-color: #9747ff; width: 15px; height: 15px" [checked]="asc" />
+			</button>
+
+			<hr />
+
+			<button type="button" class="flex bet pd-12" (click)="check()">
+				Descendente
+				<input type="radio" class="my-12" style="accent-color: #9747ff; width: 15px; height: 15px" [checked]="desc" />
+			</button>
+		</section>
+
+		<section class="grid bd br-4 w" cdkDropList (cdkDropListDropped)="drop($event)">
+			@for (item of initialOptions; track $index) {
+				<button type="button" class="flex bet pd-12 bw" cdkDrag>
+					{{ item }}
+					<app-component-button [type]="'MINI'" [icon]="'drag_indicator'" cdkDragHandle />
+				</button>
+				@if (initialOptions.length - 1 !== $index) {
+					<hr />
+				}
+			}
+		</section>
+	</main>
+</div>
