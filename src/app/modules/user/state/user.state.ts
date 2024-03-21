@@ -1,5 +1,5 @@
-// * STATE - Const.
-import { INITIAL } from '@consts/load.const';
+// * Consts.
+import { LOADED } from '@consts/load.const';
 
 // * Interfaces.
 import { ILoadableEntity } from '@interfaces/load.interface';
@@ -7,7 +7,7 @@ import { IUser } from '@user/interfaces/user.interface';
 
 // * USER INITIAL STATE.
 export const USER_STATE: ILoadableEntity<IUser> = {
-	status: INITIAL,
+	status: LOADED,
 	data: {
 		id: 0,
 		email: null,

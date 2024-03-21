@@ -6,6 +6,7 @@ import { ILoading } from '@sorts/loading.sort';
 
 export interface ISell {
 	articles: ILoadableEntities<ILoadableEntity<IArticle>>;
+	article: ILoadableEntity<IArticle>;
 }
 
 export interface IArticle {
@@ -14,14 +15,26 @@ export interface IArticle {
 	title: string | null;
 	price: { amount: number | null; type: 'USD' };
 	stock: { quantity: number | null; type: 'PACKAGE' | 'UNIT' };
-	investments: number;
-	commissions: number;
+	investments: { status: ILoading; items: IInvest[]; total: number };
+	commissions: { status: ILoading; items: ICommission[]; total: number };
 	hashtag: string | null;
 	manufacturing: { time: number | null; type: 'DAY' | 'HOUR' | 'MINUTE' | 'MONTH' };
 	segments: { status: ILoading; items: ISegment[]; count: number };
-	keywords: { status: ILoading; items: { id: number; keyword: string }[]; count: number };
+	keywords: { status: ILoading; items: string[]; count: number };
 	questions: { status: ILoading; items: IQuestion[]; count: number };
-	categories: { status: ILoading; items: { id: number; category: string }[]; count: number };
+}
+
+interface IInvest {
+	id: number;
+	amount: number | null;
+	title: string | null;
+	note: string | null;
+}
+
+interface ICommission {
+	id: number;
+	amount: number | null;
+	type: 'AMOUNT' | 'PERCENT';
 }
 
 interface ISegment {
@@ -37,6 +50,7 @@ interface IQuestion {
 	type: 'CALENDAR' | 'MULTIPLE' | 'TEXT' | 'TIME';
 	limit: number;
 	required: boolean;
+	options: string[];
 }
 
 // ! AUX.

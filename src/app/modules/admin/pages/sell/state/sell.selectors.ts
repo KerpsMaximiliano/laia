@@ -23,15 +23,32 @@ export const selectAdminSellArticles = (state: IState): ILoadableEntities<IArt> 
 };
 
 // * ARTICLE.
-export const selectAdminSellArt = (id: number): MemoizedSelector<IState, ILoadableEntity<IArticle>> =>
+export const selectAdminSellArticle = (id: number): MemoizedSelector<IState, ILoadableEntity<IArticle>> =>
 	createSelector(STATE, (state: IState): ILoadableEntity<IArticle> => {
-		if (id === 0) return state.admin.sell.articles.items[0];
+		if (id === -1) return state.admin.sell.article;
 
 		const index: number = state.admin.sell.articles.items.findIndex((article: ILoadableEntity<IArticle>) => article.data.id === id);
 
-		if (index === -1) return state.admin.sell.articles.items[0];
+		if (index === -1) return state.admin.sell.article;
 
 		const articles: ILoadableEntity<IArticle>[] = [...state.admin.sell.articles.items];
 
 		return articles[index];
+	});
+
+// * ARTICLE INFO.
+export const selectAdminSellArticleInfo = <K extends keyof IArticle>(data: {
+	id: number;
+	prop: K;
+}): MemoizedSelector<IState, IArticle[K] | null> =>
+	createSelector(STATE, (state: IState): IArticle[K] | null => {
+		if (data.id === -1) return state.admin.sell.article.data[data.prop];
+
+		const index: number = state.admin.sell.articles.items.findIndex((article: ILoadableEntity<IArticle>) => article.data.id === data.id);
+
+		if (index === -1) return state.admin.sell.article.data[data.prop];
+
+		const articles: ILoadableEntity<IArticle>[] = [...state.admin.sell.articles.items];
+
+		return articles[index].data[data.prop];
 	});

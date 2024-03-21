@@ -9,7 +9,7 @@ export interface IUser {
 	image: string | null;
 	name: string | null;
 	surname: string | null;
-	phone: number | null;
+	phone: string | null;
 	check: number | null;
 }
 

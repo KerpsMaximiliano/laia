@@ -1,3 +1,4 @@
+import { ComponentType } from '@angular/cdk/portal';
 import {
 	ChangeDetectionStrategy,
 	ChangeDetectorRef,
@@ -40,7 +41,7 @@ export class ResizeDialogComponent implements OnInit, OnDestroy {
 	private readonly _data: { dialog: IDialog; conf?: { option: number; logged?: boolean } } = inject(MAT_DIALOG_DATA);
 	private readonly _core: CoreService = inject(CoreService);
 	private readonly _cdr: ChangeDetectorRef = inject(ChangeDetectorRef);
-	private _destroy$?: Subject<void>;
+	private readonly _destroy$: Subject<void> = new Subject<void>();
 
 	// eslint-disable-next-line @typescript-eslint/member-ordering
 	public height: number = this._height();
@@ -48,24 +49,11 @@ export class ResizeDialogComponent implements OnInit, OnDestroy {
 	public cHeight: number = this._height();
 
 	public ngOnInit(): void {
-		this._destroy$ = new Subject<void>();
-
-		this._core.gHeight.pipe(takeUntil(this._destroy$)).subscribe((res) => {
-			if (res !== 0) {
-				this.resizable?.nativeElement.style.setProperty('--ht', `${this.height}px`);
-				this.resizable?.nativeElement.style.setProperty('--nw', `${res}px`);
-
-				this.animation = true;
-				this.height = res;
-				this._cdr.markForCheck();
-			}
-		});
-
 		this._core
 			.component(this._data.dialog)
 			.pipe(takeUntil(this._destroy$))
 			.subscribe({
-				next: (res) => {
+				next: (res: ComponentType<unknown>) => {
 					if (this.content) {
 						// eslint-disable-next-line @typescript-eslint/no-explicit-any
 						const componentRef: any = this.content.createComponent(res);
@@ -78,6 +66,16 @@ export class ResizeDialogComponent implements OnInit, OnDestroy {
 					}
 				}
 			});
+
+		this._core.gHeight.pipe(takeUntil(this._destroy$)).subscribe((res) => {
+			if (res !== 0) {
+				this.resizable?.nativeElement.style.setProperty('--ht', `${this.height}px`);
+				this.resizable?.nativeElement.style.setProperty('--nw', `${res}px`);
+				this.animation = true;
+				this.height = res;
+				this._cdr.markForCheck();
+			}
+		});
 	}
 
 	public touchstart(event: TouchEvent): void {
@@ -101,10 +99,8 @@ export class ResizeDialogComponent implements OnInit, OnDestroy {
 	}
 
 	public ngOnDestroy(): void {
-		if (this._destroy$) {
-			this._destroy$.next();
-			this._destroy$.complete();
-		}
+		this._destroy$.next();
+		this._destroy$.complete();
 		this._core.height = 0;
 		this.canimation = false;
 	}
@@ -131,8 +127,6 @@ export class ResizeDialogComponent implements OnInit, OnDestroy {
 				return 210;
 			case 'SORT':
 				return 260;
-			case 'TIME-RANGE':
-				return 350;
 			default:
 				return window.innerHeight - 2;
 		}

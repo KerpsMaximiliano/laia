@@ -1,23 +1,17 @@
 import { IResponse } from '@interfaces/response.interface';
 
-interface IUser {
-	id: number;
-	name: string | null;
-	email: string | null;
-	password: string | null;
-	phone: string | null;
-	image: string | null;
-	first: number;
-	operationStatus: number;
+interface ISQQCheck {
+	status: number;
+	userId: number;
+	userName: string | null;
+	userLastName: string | null;
 }
 
-interface IUserLogin {
-	name: string | null;
+interface ISQQLogin {
 	phone: string | null;
 	image: string | null;
-	first: number;
-	operationStatus: number;
+	status: number;
 }
 
-export type IUserCheckResponse = IResponse<{ lUser: IUser }>;
-export type IUserLoginResponse = IResponse<{ lUser: IUserLogin }>;
+export type ISQQCheckResponse = IResponse<{ sqqCheck: ISQQCheck }>;
+export type ISQQLoginResponse = IResponse<{ sqqLogin: ISQQLogin }>;

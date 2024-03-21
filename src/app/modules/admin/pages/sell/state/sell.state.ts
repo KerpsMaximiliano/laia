@@ -11,31 +11,47 @@ export const article: ILoadableEntity<IArticle> = {
 	data: {
 		id: 0,
 		medias: [],
-		title: null,
+		title: 'Producto uno', // null,
 		price: {
-			amount: null,
+			amount: 999999.99, // null,
 			type: 'USD'
 		},
 		stock: {
-			quantity: null,
+			quantity: 1, // null,
 			type: 'UNIT'
 		},
-		investments: 0,
-		commissions: 0,
-		categories: {
+		investments: {
 			status: LOADED,
-			count: 0,
-			items: []
+			items: [
+				{
+					id: 0,
+					amount: 999999.99, // null,
+					title: 'Inversión uno', // null,
+					note: 'Nota uno' // null
+				}
+			],
+			total: 0
 		},
-		hashtag: null,
+		commissions: {
+			status: LOADED,
+			items: [
+				{
+					id: 0,
+					amount: 999999.99, // null,
+					type: 'AMOUNT'
+				}
+			],
+			total: 0
+		},
+		hashtag: 'Hola', // null,
 		keywords: {
 			status: LOADED,
-			count: 0,
-			items: []
+			count: 1,
+			items: ['hola']
 		},
 		manufacturing: {
-			time: null,
-			type: 'MINUTE'
+			time: 3,
+			type: 'DAY'
 		},
 		questions: {
 			status: LOADED,
@@ -54,7 +70,7 @@ export const article: ILoadableEntity<IArticle> = {
 export const ADMIN_SELL_STATE: ISell = {
 	articles: {
 		status: INITIAL,
-		// items: [article]
 		items: []
-	}
+	},
+	article: article
 };

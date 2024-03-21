@@ -69,8 +69,7 @@ export class HomeComponent {
 		},
 		{
 			title: 'Ventas *',
-			description:
-				'Configura los parámetros de tus entregas, donde te pagarán y el WhatsApp para que te confirmen su compra.',
+			description: 'Configura los parámetros de tus entregas, donde te pagarán y el WhatsApp para que te confirmen su compra.',
 			status: true
 		},
 		{
@@ -85,8 +84,7 @@ export class HomeComponent {
 		},
 		{
 			title: 'Catálogos',
-			description:
-				'Créalos con precios ajustables como playlists para aumentar tu alcance y visibilidad a cambio de comisiones.',
+			description: 'Créalos con precios ajustables como playlists para aumentar tu alcance y visibilidad a cambio de comisiones.',
 			status: false
 		},
 		{

@@ -18,6 +18,7 @@ export const ADMIN_SELL_REDUCERS = createReducer(
 	on(ADMIN_SELL_ARTICLES_LOAD, (state): ISell => state),
 	on(ADMIN_SELL_ARTICLES_LOADED, (state, { articles }): ISell => {
 		return {
+			...state,
 			articles: {
 				status: LOADED,
 				items: [...state.articles.items, ...articles]

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, afterNextRender } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
 @Component({
@@ -9,14 +9,24 @@ import { RouterOutlet } from '@angular/router';
 	template: '<router-outlet />'
 })
 export class AppComponent implements OnInit {
-	public ngOnInit(): void {
-		window.addEventListener('resize', () => {
-			this._viewport();
+	public constructor() {
+		afterNextRender(() => {
+			window.addEventListener('resize', () => {
+				this._viewport();
+				document.documentElement.style.setProperty('--vh', `${window.innerHeight}px`);
+			});
+			document.documentElement.style.setProperty('--vh', `${window.innerHeight}px`);
 		});
+	}
+
+	public ngOnInit(): void {
+		// window.addEventListener('resize', () => {
+		// 	this._viewport();
+		// });
 		this._viewport();
 	}
 
 	private _viewport(): void {
-		document.documentElement.style.setProperty('--vh', `${window.innerHeight}px`);
+		// document.documentElement.style.setProperty('--vh', `${window.innerHeight}px`);
 	}
 }

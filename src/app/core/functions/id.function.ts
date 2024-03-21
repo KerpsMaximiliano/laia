@@ -1,15 +1,13 @@
 /**
  * Retorna un valor numerico.
- * 0: No existe el parametro ID o no es valido.
+ * -1: No existe el parametro ID.
+ * 0: No existe el ID.
  * x: Existe el parametro ID y es valido.
  * @private
  * @returns Number;
  */
 export function id(id: string | undefined): number {
-	if (id) {
-		if (isNaN(Number(id))) return 0;
-		return Number(id);
-	} else {
-		return 0;
-	}
+	if (!id) return -1; // No existe el parametro ID.
+	if (isNaN(Number(id))) return 0; // No es un valor numerico.
+	return Number(id); // Es un valor numerico.
 }

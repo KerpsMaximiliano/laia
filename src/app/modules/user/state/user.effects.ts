@@ -3,115 +3,92 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, exhaustMap, map, of } from 'rxjs';
 
 // * Interfaces.
-import { IResponse } from '@interfaces/response.interface';
-import { IUserLoginResponse } from './user.response';
+import { ISQQCheckResponse, ISQQLoginResponse } from './user.response';
 
 // * Services.
 import { CoreService } from '@services/core.service';
 
 // * Actions.
-import {
-	USER_CHECK,
-	USER_CHECKED,
-	USER_INFO,
-	USER_INFO_SUCCESS,
-	USER_LOGIN,
-	USER_LOGIN_ERROR,
-	USER_LOGIN_SUCCESS
-} from './user.actions';
+import { SQQ_CHECK, SQQ_CHECKED, SQQ_LOGIN, SQQ_LOGIN_ERROR, SQQ_LOGIN_SUCCESS, USER_INFO_UPDATE, USER_INFO_UPDATED } from './user.actions';
 
 // * Graphql.
-import { MUTATION_USER_INFO, QUERY_USER_CHECK, QUERY_USER_LOGIN } from './user.graphql';
+import { MUTATION_USER_INFO, QUERY_SQQ_CHECK, QUERY_SQQ_LOGIN } from './user.graphql';
 
 @Injectable({ providedIn: 'root' })
 export class UserEffects {
 	private readonly _actions$: Actions = inject(Actions);
 	private readonly _core: CoreService = inject(CoreService);
 
-	// ! USER CHECK.
+	// ! SQQ Check.
 	// eslint-disable-next-line @typescript-eslint/member-ordering
-	public readonly userCheck$ = createEffect(() => {
+	public readonly sqqCheck$ = createEffect(() => {
 		return this._actions$.pipe(
-			ofType(USER_CHECK),
-			exhaustMap((action) => {
-				const user: number | undefined = localStorage.getItem('user')
-					? Number(localStorage.getItem('user'))
-					: undefined;
-				if (user) {
-					return this._core
-						.query<IResponse<{ cUserE: number }>['data']>(QUERY_USER_CHECK, { user, email: action.email }, true)
-						.pipe(
-							map((res) => {
-								if (res.cUserE === 0) localStorage.setItem('email', String(action.email));
-								return USER_CHECKED({ check: res.cUserE, logged: res.cUserE === 0 });
-							}),
-							catchError(() => of({ type: '[ERROR_ECOMMERCE_USER_CHECK]: QUERY_USER_CHECK' }))
-						);
-				} else {
-					return of({ type: '[ERROR_ECOMMERCE_USER_CHECK]: USER_NOT_FOUND' });
-				}
-			})
+			ofType(SQQ_CHECK),
+			exhaustMap((action) =>
+				this._core.query<ISQQCheckResponse['data']>(QUERY_SQQ_CHECK, { email: action.email }).pipe(
+					map((res) => {
+						if (res.sqqCheck.status === 0) this._core.redirect('auth/first');
+						if (res.sqqCheck.status === 1 && action.google) this._core.origin();
+						if (res.sqqCheck.status === 0 || (res.sqqCheck.status === 1 && action.google)) this._core.set('user', res.sqqCheck.userId);
+						return SQQ_CHECKED({
+							id: res.sqqCheck.userId,
+							email: action.email,
+							name: res.sqqCheck.userName,
+							surname: res.sqqCheck.userLastName,
+							check: res.sqqCheck.status,
+							logged: res.sqqCheck.status === 0 || action.google
+						});
+					}),
+					catchError(() => of({ type: '[ERROR_USER_CHECK]: QUERY_SQQ_CHECK' }))
+				)
+			)
 		);
 	});
 
-	// ! USER LOGIN.
+	// ! SQQ Login.
 	// eslint-disable-next-line @typescript-eslint/member-ordering
-	public readonly userLogin$ = createEffect(() => {
+	public readonly sqqLogin$ = createEffect(() => {
 		return this._actions$.pipe(
-			ofType(USER_LOGIN),
-			exhaustMap((action) => {
-				let user: number | undefined = localStorage.getItem('user') ? Number(localStorage.getItem('user')) : undefined;
-				if (user) {
-					if (action.user !== 1) user = action.user;
-					return this._core
-						.query<
-							IUserLoginResponse['data']
-						>(QUERY_USER_LOGIN, { user, email: action.email, password: action.password }, false)
-						.pipe(
-							map((res) => {
-								if (res.lUser.operationStatus === 1) {
-									localStorage.setItem('user', String(action.user));
-									localStorage.setItem('email', action.email);
-									// this._core.state.ecommerce.user = action.user;
-									return USER_LOGIN_SUCCESS({ email: action.email });
-								} else {
-									return USER_LOGIN_ERROR({ err: 1 });
-								}
-							}),
-							catchError(() => of({ type: '[ERROR_ECOMMERCE_USER_LOGIN]: QUERY_USER_LOGIN' }))
-						);
-				} else {
-					return of({ type: '[ERROR_ECOMMERCE_USER_LOGIN]: USER_NOT_FOUND' });
-				}
-			})
+			ofType(SQQ_LOGIN),
+			exhaustMap((action) =>
+				this._core.query<ISQQLoginResponse['data']>(QUERY_SQQ_LOGIN, { user: action.user, password: action.password }).pipe(
+					map((res) => {
+						if (res.sqqLogin.status === 1) {
+							this._core.origin();
+							this._core.set('user', action.user);
+							return SQQ_LOGIN_SUCCESS({ phone: res.sqqLogin.phone, image: res.sqqLogin.image });
+						} else {
+							return SQQ_LOGIN_ERROR();
+						}
+					}),
+					catchError(() => of({ type: '[ERROR_USER_LOGIN]: QUERY_SQQ_LOGIN' }))
+				)
+			)
 		);
 	});
 
-	// ! USER INFO.
+	// ! USER INFO UPDATE.
 	// eslint-disable-next-line @typescript-eslint/member-ordering
-	public readonly updateUserInfo$ = createEffect(() => {
+	public readonly userInfoUpdate$ = createEffect(() => {
 		return this._actions$.pipe(
-			ofType(USER_INFO),
-			exhaustMap((action) => {
-				// const user: number | undefined = this._core.state.ecommerce.user;
-				const user: number | undefined = undefined;
-				if (user) {
-					return this._core
-						.mutation(MUTATION_USER_INFO, {
-							user,
-							name: action.name,
-							surname: action.surname,
-							phone: action.phone,
-							password: action.password
-						})
-						.pipe(
-							map(() => USER_INFO_SUCCESS({ name: action.name, surname: action.surname, phone: action.phone })),
-							catchError(() => of({ type: '[ERROR_ECOMMERCE_USER_INFO]: MUTATION_USER_INFO' }))
-						);
-				} else {
-					return of({ type: '[ERROR_ECOMMERCE_USER_INFO]: USER_NOT_FOUND' });
-				}
-			})
+			ofType(USER_INFO_UPDATE),
+			exhaustMap((action) =>
+				this._core
+					.mutation(MUTATION_USER_INFO, {
+						user: action.id,
+						password: action.password,
+						phone: action.phone,
+						name: action.name,
+						surname: action.surname
+					})
+					.pipe(
+						map(() => {
+							this._core.origin();
+							return USER_INFO_UPDATED({ name: action.name, surname: action.surname, phone: action.phone });
+						}),
+						catchError(() => of({ type: '[ERROR_USER_INFO_UPDATE]: MUTATION_USER_INFO' }))
+					)
+			)
 		);
 	});
 }

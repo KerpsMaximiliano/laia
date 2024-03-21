@@ -1,7 +1,12 @@
+button {
+	background-color: var(--violet);
+	width: 36px;
+	height: 36px;
+}
+
 p {
 	font-size: 17px;
 	font-weight: 600;
-	background-color: var(--violet);
 	color: var(--white);
 	text-transform: uppercase;
 }
@@ -9,16 +14,4 @@ p {
 img {
 	aspect-ratio: 1/1;
 	object-fit: cover;
-}
-
-img,
-div,
-p {
-	width: 36px;
-	height: 36px;
-}
-
-div,
-p {
-	place-items: center;
 }

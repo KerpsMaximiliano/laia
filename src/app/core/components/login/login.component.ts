@@ -31,10 +31,8 @@ import { selectUser } from '@user/state/user.selectors';
 	styleUrl: './login.component.scss'
 })
 export class LoginComponent {
-	// eslint-disable-next-line @typescript-eslint/naming-convention
-	public readonly LOADED: ILoading = LOADED;
-	// eslint-disable-next-line @typescript-eslint/naming-convention
-	public readonly COMPLETE: ILoading = COMPLETE;
+	public readonly loaded: ILoading = LOADED;
+	public readonly complete: ILoading = COMPLETE;
 
 	// eslint-disable-next-line @ngrx/use-consistent-global-store-name
 	private readonly _store: Store<IState> = inject(Store);

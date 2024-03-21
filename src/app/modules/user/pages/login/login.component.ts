@@ -17,14 +17,14 @@ import { IState } from '@interfaces/state.interface';
 import { IUser } from '@user/interfaces/user.interface';
 
 // * Services.
+import { AuthService } from '@services/auth.service';
 import { CoreService } from '@services/core.service';
-import { UserService } from '@user/services/user.service';
 
 // * Sorts.
 import { ILoading } from '@sorts/loading.sort';
 
 // * Actions.
-import { USER_CHECK, USER_LOGIN, USER_RESTORE } from '@user/state/user.actions';
+import { SQQ_CHECK, SQQ_LOGIN, SQQ_RESET } from '@user/state/user.actions';
 
 // * Selectors.
 import { selectUser } from '@user/state/user.selectors';
@@ -45,21 +45,21 @@ import { MatInputModule } from '@angular/material/input';
 	styleUrl: './login.component.scss'
 })
 export class LoginComponent implements OnInit, OnDestroy {
-	public form: UntypedFormGroup = this._setForm();
+	public readonly core: CoreService = inject(CoreService);
+	public readonly auth: AuthService = inject(AuthService);
+	public readonly form: UntypedFormGroup = this._setForm();
 	public readonly getErrorMessage: (control: AbstractControl<unknown, unknown>) => string = getErrorMessage;
 	// eslint-disable-next-line @typescript-eslint/naming-convention
-	public readonly LOADING: ILoading = LOADING;
+	public readonly loading: ILoading = LOADING;
 	// eslint-disable-next-line @typescript-eslint/naming-convention
-	public readonly FAILED: ILoading = FAILED;
-	public mode: 'GOOGLE' | 'INITIAL' | 'SQQ' = 'INITIAL';
+	public readonly failed: ILoading = FAILED;
+	public mode: 'INITIAL' | 'SQQ' = 'INITIAL';
 
 	public error: boolean = false;
 
 	// eslint-disable-next-line @ngrx/use-consistent-global-store-name
 	private readonly _store: Store<IState> = inject(Store);
-	private readonly _core: CoreService = inject(CoreService);
-	private readonly _user: UserService = inject(UserService);
-	private readonly _unsubscribe: Subject<void> = new Subject<void>();
+	private readonly _destroy$: Subject<void> = new Subject<void>();
 
 	private _change: string | undefined = undefined;
 
@@ -67,36 +67,28 @@ export class LoginComponent implements OnInit, OnDestroy {
 	public user: Signal<ILoadableEntity<IUser>> = this._store.selectSignal(selectUser);
 
 	public ngOnInit(): void {
-		// if (this.user().data.id === 0) {
-		// 	this._core.redirect('');
-		// 	return;
-		// }
+		this.auth.init();
+
+		if (this.core.get('user')) {
+			this.core.back();
+			return;
+		}
 
 		this._store
 			.select(selectUser)
 			.pipe(
-				takeUntil(this._unsubscribe),
+				takeUntil(this._destroy$),
 				tap((user) => {
-					if (user.data.check === 0) {
-						this._core.redirect('auth/first');
-						return;
-					}
-
-					if (user.data.logged) {
-						this._core.back();
-						return;
-					}
-
-					if (user.status === this.LOADING) {
-						this.form.get('mail')?.disable();
+					if (user.status === this.loading) {
+						this.form.get('email')?.disable();
 						this.form.get('password')?.disable();
 						return;
 					} else {
-						this.form.get('mail')?.enable();
+						this.form.get('email')?.enable();
 						this.form.get('password')?.enable();
 					}
 
-					if (user.status === this.FAILED) {
+					if (user.status === this.failed) {
 						this.form.get('password')?.setErrors({ invalid: true });
 						this.error = true;
 
@@ -109,15 +101,15 @@ export class LoginComponent implements OnInit, OnDestroy {
 			.subscribe();
 
 		this.form
-			.get('mail')
+			.get('email')
 			?.valueChanges.pipe(
-				takeUntil(this._unsubscribe),
+				takeUntil(this._destroy$),
 				filter((res) => res !== this._change)
 			)
 			.subscribe((res) => {
 				if (this._change) {
 					if (this._change !== res && this.user().data.check) {
-						this._store.dispatch(USER_RESTORE());
+						this._store.dispatch(SQQ_RESET());
 					}
 				}
 				this._change = res;
@@ -126,45 +118,31 @@ export class LoginComponent implements OnInit, OnDestroy {
 
 	public login(type: 'CHECK' | 'LOGIN'): void {
 		if (type === 'CHECK') {
-			const email: string | undefined = this.form.get('mail')?.value;
-			if (email && this.form.get('mail')?.valid) this._store.dispatch(USER_CHECK({ email: email }));
+			const email: string | undefined = this.form.get('email')?.value;
+			if (email && this.form.get('mail')?.valid) this._store.dispatch(SQQ_CHECK({ email: email, google: false }));
 		} else {
-			const email: string | undefined = this.form.get('mail')?.value;
+			const user: number | null = this.user().data.id;
 			const password: string | undefined = this.form.get('password')?.value;
-			const user: number | null = this.user().data.check;
-			if (user && email && password && this.form.valid) this._store.dispatch(USER_LOGIN({ user, email, password }));
+			if (user && password && this.form.valid) {
+				this._store.dispatch(SQQ_LOGIN({ user, password }));
+			} else {
+				this.form.markAllAsTouched();
+			}
 		}
-	}
-
-	public google(): void {
-		console.log(this._user.estaLogeado());
-		if (this._user.estaLogeado()) {
-			this._core.back();
-		} else {
-			this._user.login();
-		}
-	}
-
-	public back(): void {
-		if (this.user().status === this.LOADING) return;
-		this._core.back();
 	}
 
 	public ngOnDestroy(): void {
-		this._unsubscribe.next();
-		this._unsubscribe.complete();
+		this._destroy$.next();
+		this._destroy$.complete();
 	}
 
 	private _setForm(): UntypedFormGroup {
 		return new UntypedFormGroup({
-			mail: new UntypedFormControl(
+			email: new UntypedFormControl(
 				null,
 				Validators.compose([Validators.required, Validators.minLength(3), Validators.email, notOnlySpaces()])
 			),
-			password: new UntypedFormControl(
-				null,
-				Validators.compose([Validators.required, Validators.minLength(6), notOnlySpaces()])
-			)
+			password: new UntypedFormControl(null, Validators.compose([Validators.required, Validators.minLength(6), notOnlySpaces()]))
 		});
 	}
 }

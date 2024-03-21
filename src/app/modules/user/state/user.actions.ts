@@ -1,40 +1,21 @@
 import { createAction, props } from '@ngrx/store';
 
-// * USER RESET.
-export const USER_RESTORE = createAction('[Ecommerce] Restore User');
-
-// * USER CHECK.
-export const USER_CHECK = createAction('[Ecommerce] User Check', props<{ email: string }>());
-export const USER_CHECKED = createAction('[Ecommerce] User Checked', props<{ check: number; logged: boolean }>());
-
-// * USER LOGIN.
-export const USER_LOGIN = createAction(
-	'[Ecommerce] User Login',
-	props<{ user: number; email: string; password: string }>()
-);
-export const USER_LOGIN_SUCCESS = createAction('[Ecommerce] User Success', props<{ email: string }>());
-export const USER_LOGIN_ERROR = createAction('[Ecommerce] User Error', props<{ err: number }>());
-
-// * USER INFO.
-export const USER_INFO = createAction(
-	'[Ecommerce] User Info',
-	props<{ name?: string; surname?: string; phone?: string; password?: string }>()
-);
-export const USER_INFO_SUCCESS = createAction(
-	'[Ecommerce] User Info Success',
-	props<{ name?: string; surname?: string; phone?: string }>()
+// * SQQ CHECK.
+export const SQQ_CHECK = createAction('[Ecommerce] Sqq Check', props<{ email: string; google: boolean }>());
+export const SQQ_CHECKED = createAction(
+	'[Ecommerce] Sqq Checked',
+	props<{ id: number; email: string; name: string | null; surname: string | null; check: number; logged: boolean }>()
 );
 
-// * USER LOGOUT.
-export const USER_LOGOUT = createAction('[Ecommerce] User Logout');
-export const USER_LOGOUT_SUCCESS = createAction('[Ecommerce] User Logout Success');
+// * SQQ LOGIN.
+export const SQQ_LOGIN = createAction('[Ecommerce] Sqq Login', props<{ user: number; password: string }>());
+export const SQQ_LOGIN_SUCCESS = createAction('[Ecommerce] Sqq Login Success', props<{ phone: string | null; image: string | null }>());
+export const SQQ_LOGIN_ERROR = createAction('[Ecommerce] Sqq Login Error');
+export const SQQ_RESET = createAction('[Ecommerce] Sqq Reset');
 
-/**
- * 1. Usuario ingresa a auth/login.
- * 2. Usuario ingresa su correo electrónico.
- * 3. Comprobamos correo electrónico.
- * 4.1. Si el correo electrónico no existe, inicia sesión.
- * 4.2. Si el correo electrónico existe, solicitamos credenciales.
- * 5.1. Usuario ingresa su contraseña (correcta), redirigimos a la ruta desde donde provino.
- * 5.2. Usuario ingresa su contraseña (incorrecta), alertamos y solicitamos nuevamente la contraseña.
- */
+// * USER UPDATE.
+export const USER_INFO_UPDATE = createAction(
+	'[Ecommerce] Sqq Update',
+	props<{ id: number; name: string; surname: string; phone: string; password: string }>()
+);
+export const USER_INFO_UPDATED = createAction('[Ecommerce] Sqq Updated', props<{ name?: string; surname?: string; phone?: string }>());

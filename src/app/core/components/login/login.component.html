@@ -1,12 +1,10 @@
-@defer (when user().status === LOADED || user().status === COMPLETE) {
+@defer (when user().status === loaded || user().status === complete) {
 	@if (user().data.logged) {
-		<button type="button" (click)="profile()">
+		<button type="button" (click)="profile()" class="br-50 grid-place">
 			@if (user().data.image) {
-				<div class="grid">
-					<img [src]="user().data.image" [alt]="user().data.email" class="br-50" />
-				</div>
+				<img [src]="user().data.image" [alt]="user().data.email" class="br-50 w h" />
 			} @else {
-				<p class="grid br-50">
+				<p>
 					{{
 						user().data.name
 							? user().data.name!.charAt(0)
@@ -21,7 +19,7 @@
 		<app-component-button [type]="'MINI'" [icon]="'person'" (click)="login()" />
 	}
 } @placeholder {
-	<div class="grid">
+	<div class="grid-place">
 		<app-component-loading />
 	</div>
 }

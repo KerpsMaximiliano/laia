@@ -13,7 +13,4 @@ export function apolloOptionsFactory(): ApolloClientOptions<unknown> {
 	return { link: httpLink.create({ uri: environment.api }), cache: new InMemoryCache() };
 }
 
-export const GRAPHQL_PROVIDER: ApplicationConfig['providers'] = [
-	Apollo,
-	{ provide: APOLLO_OPTIONS, useFactory: apolloOptionsFactory }
-];
+export const GRAPHQL_PROVIDER: ApplicationConfig['providers'] = [Apollo, { provide: APOLLO_OPTIONS, useFactory: apolloOptionsFactory }];

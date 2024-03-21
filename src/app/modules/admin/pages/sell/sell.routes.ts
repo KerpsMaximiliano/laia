@@ -14,8 +14,20 @@ export const SELL_ROUTES: Routes = [
 				loadComponent: async () => import('./pages/article/article.component').then((c) => c.ArticleComponent)
 			},
 			{
+				path: 'article/:id',
+				loadComponent: async () => import('./pages/article/article.component').then((c) => c.ArticleComponent)
+			},
+			{
 				path: 'articles',
 				loadComponent: async () => import('./pages/articles/articles.component').then((c) => c.ArticlesComponent)
+			},
+			{
+				path: 'keywords',
+				loadComponent: async () => import('./pages/keywords/keywords.component').then((c) => c.KeywordsComponent)
+			},
+			{
+				path: 'keywords/:id',
+				loadComponent: async () => import('./pages/keywords/keywords.component').then((c) => c.KeywordsComponent)
 			},
 			{
 				path: 'incentive',

@@ -1,0 +1,52 @@
+<header class="flex pd-12">
+	<button type="button" class="flex gp-4" (click)="core.back()">
+		<app-component-button [type]="'ICON'" [icon]="'navigate_before'" />
+		Palabras Claves
+	</button>
+</header>
+
+<main style="padding: 24px 12px">
+	<form [formGroup]="form" class="grid">
+		<mat-form-field appearance="outline">
+			<mat-label>Palabras claves</mat-label>
+
+			<mat-chip-grid #chipGrid aria-label="Selección de palabras claves" style="margin: 8px 0" [class.none]="keywords.length === 0">
+				@for (keyword of keywords; track keyword) {
+					<mat-chip-row (removed)="remove(keyword)">
+						{{ keyword }}
+
+						<button type="button" matChipRemove [attr.aria-label]="'remove ' + keyword">
+							<app-component-button [type]="'ICON'" [icon]="'cancel'" />
+						</button>
+					</mat-chip-row>
+				}
+			</mat-chip-grid>
+
+			<div class="flex">
+				<input
+					#input
+					placeholder="Ingrese palabras clave"
+					formControlName="keywords"
+					[matChipInputFor]="chipGrid"
+					[matAutocomplete]="auto"
+					[matChipInputSeparatorKeyCodes]="keys"
+					(matChipInputTokenEnd)="add($event)"
+					style="margin: 0"
+					maxlength="24"
+				/>
+
+				@if (loading) {
+					<app-component-button [type]="'ICON'" [icon]="'close'" [suffix]="true" [loading]="true" />
+				}
+			</div>
+
+			<mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+				@for (suggestion of suggestions; track suggestion) {
+					<mat-option [value]="suggestion">{{ suggestion }}</mat-option>
+				}
+			</mat-autocomplete>
+
+			<mat-hint [align]="'end'">{{ 24 - form.get('keywords')?.value?.length }}</mat-hint>
+		</mat-form-field>
+	</form>
+</main>
