@@ -3,7 +3,6 @@
 // * ADMIN			SELL					ARTICLE			DELAY
 // * 																			HASHTAG
 // * 																			INVEST
-// * 																			KEYWORDS
 // * 																			QUESTION
 // * 																			TAG
 // * SHARED		  													SHARE

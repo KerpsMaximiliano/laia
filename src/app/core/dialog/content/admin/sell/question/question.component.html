@@ -27,12 +27,7 @@
 				}
 
 				@if (form.get('question')?.value) {
-					<app-component-button
-						[type]="'ICON'"
-						[icon]="'delete'"
-						[suffix]="true"
-						(click)="form.get('question')?.setValue(null)"
-					/>
+					<app-component-button [type]="'ICON'" [icon]="'delete'" [suffix]="true" (click)="form.get('question')?.setValue(null)" />
 				}
 			</div>
 
@@ -78,6 +73,30 @@
 	</p>
 
 	@if (index === 2) {
+		<mat-form-field appearance="outline">
+			<mat-label>Opciones</mat-label>
+
+			<mat-chip-grid #chipGrid aria-label="Opciones">
+				@for (option of options; track option) {
+					<mat-chip-row (removed)="remove(option)" [editable]="true" (edited)="edit(option, $event)">
+						{{ option }}
+
+						<button matChipRemove aria-label="Eliminar">
+							<app-component-button [type]="'ICON'" [icon]="'cancel'" />
+						</button>
+					</mat-chip-row>
+				}
+
+				<input
+					placeholder="Ingrese una opción"
+					[matChipInputFor]="chipGrid"
+					[matChipInputSeparatorKeyCodes]="keys"
+					[matChipInputAddOnBlur]="true"
+					(matChipInputTokenEnd)="add($event)"
+				/>
+			</mat-chip-grid>
+		</mat-form-field>
+
 		<div class="flex bet w">
 			<p>¿Solo puede elegir una respuesta?</p>
 			<mat-slide-toggle (click)="required = !required"></mat-slide-toggle>

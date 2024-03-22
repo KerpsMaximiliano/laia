@@ -126,9 +126,6 @@ export class CoreService {
 					case 'DELAY':
 						chunk = await import('@dialogs/content/admin/sell/delay/delay.component');
 						break;
-					case 'KEYWORDS':
-						chunk = await import('@dialogs/content/admin/sell/keywords/keywords.component');
-						break;
 					case 'PAYMENT':
 						chunk = await import('@dialogs/content/admin/sell/payment/payment.component');
 						break;
