@@ -1,8 +1,10 @@
-<header style="padding: 30px 0 16px 8px">
+<header class="flex bet pd-12">
 	<h1>Nuevo Hashtag</h1>
+
+	<app-component-button [type]="'MINI'" [icon]="'cancel'" (click)="close()" />
 </header>
 
-<main>
+<main class="pd-12">
 	<form [formGroup]="form">
 		<mat-form-field appearance="outline" class="w">
 			<mat-label>Hashtag</mat-label>
@@ -12,7 +14,7 @@
 					<div matTextPrefix>#</div>
 				}
 
-				<input type="text" matInput placeholder="Ingrese un hashtag" formControlName="hashtag" maxlength="21" />
+				<input #input type="text" matInput placeholder="Ingrese un hashtag" formControlName="hashtag" maxlength="21" />
 
 				@if (form.get('hashtag')?.value) {
 					<app-component-button [type]="'ICON'" [icon]="'delete'" [suffix]="true" (click)="form.get('hashtag')?.setValue(null)" />

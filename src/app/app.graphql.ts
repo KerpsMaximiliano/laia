@@ -10,7 +10,7 @@ import { environment } from '@env/environment';
 
 export function apolloOptionsFactory(): ApolloClientOptions<unknown> {
 	const httpLink: HttpLink = inject(HttpLink);
-	return { link: httpLink.create({ uri: environment.api }), cache: new InMemoryCache() };
+	return { link: httpLink.create({ uri: `${environment.api}/graphql` }), cache: new InMemoryCache() };
 }
 
 export const GRAPHQL_PROVIDER: ApplicationConfig['providers'] = [Apollo, { provide: APOLLO_OPTIONS, useFactory: apolloOptionsFactory }];

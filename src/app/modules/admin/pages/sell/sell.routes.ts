@@ -34,6 +34,10 @@ export const SELL_ROUTES: Routes = [
 				loadComponent: async () => import('./pages/incentive/incentive.component').then((c) => c.IncentiveComponent)
 			},
 			{
+				path: 'invest',
+				loadComponent: async () => import('./pages/invest/invest.component').then((c) => c.InvestComponent)
+			},
+			{
 				path: 'profile',
 				loadComponent: async () => import('./pages/profile/profile.component').then((c) => c.ProfileComponent)
 			},

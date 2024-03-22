@@ -1,7 +1,11 @@
 import { ComponentType } from '@angular/cdk/portal';
 import { Location } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { BehaviorSubject, Observable, from, map } from 'rxjs';
+
+// * Env.
+import { environment } from '@env/environment';
 
 // * Apollo.
 import { Apollo, gql } from 'apollo-angular';
@@ -23,6 +27,8 @@ export class CoreService {
 	private readonly _dialog: MatDialog = inject(MatDialog);
 	private readonly _apollo: Apollo = inject(Apollo);
 	private readonly _height: BehaviorSubject<number> = new BehaviorSubject<number>(0);
+	private readonly _http: HttpClient = inject(HttpClient);
+	private readonly _api: string = environment.api;
 
 	// eslint-disable-next-line @typescript-eslint/member-ordering
 	public gHeight: Observable<number> = this._height.asObservable();
@@ -88,17 +94,19 @@ export class CoreService {
 			.pipe(map((res) => res.data as T));
 	}
 
+	public post<T>(point: string, body: unknown): Observable<T> {
+		return this._http.post<T>(`${this._api}${point}`, body, { headers: { accept: '*/*' } });
+	}
+
 	public open(dialog: IDialog, conf?: { option?: number; logged: boolean }): Observable<MatDialogRef<unknown>> {
 		return from(
 			(async (): Promise<MatDialogRef<unknown>> => {
-				const chunk = await import('@dialogs/resize/resize-dialog.component');
+				const chunk = await import('@app/core/dialog/container-dialog.component');
 				const component = Object.values(chunk)[0] as ComponentType<unknown>;
 				return this._dialog.open(component, {
-					position: { bottom: '0%' },
-					width: '100%',
-					maxWidth: '450px',
-					height: '100%',
-					maxHeight: '950px',
+					position: { bottom: '0' },
+					minWidth: '100vw',
+					autoFocus: true,
 					data: {
 						dialog,
 						conf
@@ -114,9 +122,6 @@ export class CoreService {
 				// eslint-disable-next-line @typescript-eslint/init-declarations, @typescript-eslint/no-explicit-any
 				let chunk: any;
 				switch (content) {
-					case 'INVEST':
-						chunk = await import('@dialogs/content/admin/sell/invest/invest.component');
-						break;
 					case 'HASHTAG':
 						chunk = await import('@dialogs/content/admin/sell/hashtag/hashtag.component');
 						break;
@@ -128,9 +133,6 @@ export class CoreService {
 						break;
 					case 'PAYMENT':
 						chunk = await import('@dialogs/content/admin/sell/payment/payment.component');
-						break;
-					case 'QUESTION':
-						chunk = await import('@dialogs/content/admin/sell/question/question.component');
 						break;
 					case 'TAG':
 						chunk = await import('@dialogs/content/admin/sell/tags/tag.component');

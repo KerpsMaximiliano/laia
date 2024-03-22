@@ -16,6 +16,7 @@ import { Store } from '@ngrx/store';
 import { Subject, take, takeUntil } from 'rxjs';
 
 // * CDK.
+import { CdkDragDrop, DragDropModule, moveItemInArray } from '@angular/cdk/drag-drop';
 import { CdkTextareaAutosize, TextFieldModule } from '@angular/cdk/text-field';
 
 // * Forms.
@@ -25,7 +26,7 @@ import { AbstractControl, ReactiveFormsModule, UntypedFormControl, UntypedFormGr
 import { ButtonComponent } from '@components/button/button.component';
 
 // * Consts.
-import { INITIAL } from '@app/core/constants/load.const';
+import { CHANGE, UPDATING } from '@app/core/constants/load.const';
 
 // * Functions.
 import { id } from '@functions/id.function';
@@ -47,6 +48,7 @@ import { CoreService } from '@services/core.service';
 import { ILoading } from '@app/core/sorts/loading.sort';
 
 // * Actions.
+import { ADMIN_SELL_ARTICLE_CREATE } from '@sell/state/sell.actions';
 
 // * Validators.
 import { getErrorMessage, notOnlySpaces } from '@validators/character.validators';
@@ -64,15 +66,17 @@ import { MatSelectModule } from '@angular/material/select';
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	selector: 'app-admin-sell-article',
 	standalone: true,
-	imports: [TextFieldModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatSelectModule, ButtonComponent],
+	imports: [DragDropModule, TextFieldModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatSelectModule, ButtonComponent],
 	templateUrl: './article.component.html',
 	styleUrl: './article.component.scss'
 })
 export class ArticleComponent implements OnInit, AfterViewInit, OnDestroy {
-	@ViewChild('autosize') public autosize?: CdkTextareaAutosize;
-	@ViewChild('carousel', { static: false }) public carousel?: ElementRef;
+	@ViewChild('input') public readonly input?: ElementRef<HTMLInputElement>;
+	@ViewChild('autosize') public readonly autosize?: CdkTextareaAutosize;
+	@ViewChild('medias') public readonly medias?: ElementRef<HTMLInputElement>;
 
-	public readonly initial: ILoading = INITIAL;
+	public readonly change: ILoading = CHANGE;
+	public readonly updating: ILoading = UPDATING;
 	public readonly getErrorMessage: (control: AbstractControl<unknown, unknown>) => string = getErrorMessage;
 	public readonly currency: (value: number | null | undefined) => string = currency;
 	public readonly core: CoreService = inject(CoreService);
@@ -80,7 +84,10 @@ export class ArticleComponent implements OnInit, AfterViewInit, OnDestroy {
 	public readonly form: UntypedFormGroup = this._setForm();
 
 	public article?: Signal<ILoadableEntity<IArticle>>;
-	public index: number = 0;
+	public readonly resources = Array.from({ length: 9 }, (_, i) => i);
+	public edition: number = -1; // -1: none; 0: drag; 1: delete;
+	public changes: boolean = false;
+	public images: string[] = [];
 	public options: {
 		title: string;
 		description: string;
@@ -116,15 +123,18 @@ export class ArticleComponent implements OnInit, AfterViewInit, OnDestroy {
 	private readonly _id: (id: string | undefined) => number = id;
 	private readonly _destroy$: Subject<void> = new Subject<void>();
 
-	private _elements: NodeListOf<HTMLElement> | undefined = undefined;
-	private _listener: (() => void) | undefined;
-	private _rendered: boolean = false;
-
 	// eslint-disable-next-line @typescript-eslint/member-ordering
 	public readonly user: Signal<ILogin> = this._store.selectSignal(selectLogin);
 
+	// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
+	private _blobs: any[] = [];
+
 	public ngOnInit(): void {
 		if (this._id(this._route.snapshot.params['id']) === 0) return;
+		if (this._id(this._route.snapshot.params['id']) > 0) {
+			console.log('read', this._id(this._route.snapshot.params['id']));
+		}
+
 		// switch () {
 		// 	case -1: // CREATE.
 		// 		console.log('create');
@@ -146,52 +156,109 @@ export class ArticleComponent implements OnInit, AfterViewInit, OnDestroy {
 	}
 
 	public ngAfterViewInit(): void {
+		if (this.input) this.input.nativeElement.focus();
 		this._resize();
-		this._listen();
+	}
+
+	public onClickInput(): void {
+		// if (this.request) return;
+		if (this.medias) this.medias.nativeElement.click();
+	}
+
+	// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
+	public onFileSelected(event: any): void {
+		const input = event.target;
+
+		if (input.files && input.files.length > 0) {
+			const files: File[] = input.files;
+
+			let fail: { status: boolean; num: number[] } = { status: false, num: [] };
+
+			if (this.images.length === 0) {
+				const length = files.length > 9 ? 9 : files.length;
+				for (let i = 0; i < length; i++) {
+					if (!files[i].type.match('image.*')) {
+						fail = { status: true, num: [...fail.num, i] };
+					} else {
+						this.images.push(URL.createObjectURL(files[i]));
+						this._blobs.push(files[i]);
+					}
+				}
+			} else {
+				const max: number = 9 - this.images.length;
+				if (files.length > max) {
+					for (let i = 0; i < max; i++) {
+						if (!files[i].type.match('image.*')) {
+							fail = { status: true, num: [...fail.num, i] };
+						} else {
+							this.images.push(URL.createObjectURL(files[i]));
+							this._blobs.push(files[i]);
+						}
+					}
+				} else {
+					for (let i = 0; i < files.length; i++) {
+						if (!files[i].type.match('image.*')) {
+							fail = { status: true, num: [...fail.num, i] };
+						} else {
+							this.images.push(URL.createObjectURL(files[i]));
+							this._blobs.push(files[i]);
+						}
+					}
+				}
+			}
+
+			if (fail.status) {
+				// ! Mensaje de error sin configurar.
+				alert('Por favor selecciona una imagen.');
+			}
+		}
+	}
+
+	public drop(event: CdkDragDrop<{ item: string; index: number }>): void {
+		moveItemInArray(this.images, event.previousContainer.data.index, event.container.data.index);
 	}
 
 	public save(): void {
-		console.log('save');
-	}
-
-	public scrollToImage(index: number): void {
-		if (!this._elements) return;
-		if (!this._rendered) this._listen();
-		this._elements[index].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
-	}
-
-	public create(): void {
 		if (this.form.valid) {
-			console.log('create');
+			if (this.article) {
+				const data: IArticle = this.article().data;
+				// eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any
+				let medias: any[] = [];
+				if (data.medias && data.medias.length > 0) medias = data.medias.map((media) => media.url);
+				this._store.dispatch(
+					ADMIN_SELL_ARTICLE_CREATE({
+						medias,
+						title: this.form.get('title')?.value,
+						price: this.form.get('price')?.value,
+						tPrice: data.price.type,
+						stock: this.form.get('stock')?.value,
+						tStock: this.form.get('tStock')?.value,
+						manufacturing: data.manufacturing.time,
+						tManufacturing: data.manufacturing.type,
+						hashtag: data.hashtag,
+						keywords: data.keywords.items,
+						segmentMedia: data.segments.items[0].media,
+						segmentTitle: data.segments.items[0].title,
+						segmentDescription: data.segments.items[0].description,
+						question: data.questions.items[0].question,
+						questionType: data.questions.items[0].type,
+						questionRequired: data.questions.items[0].required,
+						questionLimit: data.questions.items[0].limit,
+						questionOptions: data.questions.items[0].options
+					})
+				);
+				console.log('save', medias, data);
+			} else {
+				console.log('no save');
+			}
 		} else {
 			this.form.markAllAsTouched();
 		}
 	}
 
 	public ngOnDestroy(): void {
-		if (this._listener) this.carousel?.nativeElement.removeEventListener('scroll', this._listener);
 		this._destroy$.next();
 		this._destroy$.complete();
-	}
-
-	private _scroll(): void {
-		const scrollLeft = this.carousel?.nativeElement.scrollLeft || 0;
-		const itemWidth = this._elements?.[0]?.offsetWidth || 0;
-		if (this.index !== Math.round(scrollLeft / itemWidth)) this.index = Math.round(scrollLeft / itemWidth);
-		this._cdr.markForCheck();
-	}
-
-	private _listen(): void {
-		if (this._rendered) return;
-		if (!this.carousel) return;
-		if (this._listener) {
-			this.carousel.nativeElement.removeEventListener('scroll', this._listener);
-		}
-		this._elements = this.carousel.nativeElement.children;
-		if (this._elements?.length === 1) return;
-		this._listener = this._scroll.bind(this);
-		this.carousel.nativeElement.addEventListener('scroll', this._listener);
-		this._rendered = true;
 	}
 
 	private _setForm(): UntypedFormGroup {

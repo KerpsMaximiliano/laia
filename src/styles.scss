@@ -20,6 +20,10 @@
 	scrollbar-width: none;
 	scrollbar-color: var(--white) var(--white);
 	color: var(--black);
+	user-select: none;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
 
 	&::-webkit-scrollbar {
 		width: 0px;
@@ -374,14 +378,6 @@ html {
 	padding: 0 !important;
 }
 
-* mat-icon {
-	font-variation-settings:
-		'FILL' 0,
-		'wght' 700,
-		'GRAD' 200,
-		'opsz' 48;
-}
-
 /* -------------------- OPTIONS -------------------- */
 .required {
 	color: var(--required);
@@ -397,6 +393,15 @@ html {
 	padding: 16px 12px;
 	border-radius: 4px;
 	-webkit-line-clamp: inherit;
+}
+
+.section--hero {
+	background-color: var(--grey-light);
+	border-radius: 4px 4px 0 0;
+	min-height: 60px;
+	display: flex;
+	align-items: center;
+	padding: 12px;
 }
 
 .disabled,

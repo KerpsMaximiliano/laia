@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, Signal, inject } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, OnDestroy, OnInit, Signal, ViewChild, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Subject } from 'rxjs';
@@ -27,6 +27,7 @@ import { getErrorMessage, isAlpha } from '@validators/character.validators';
 import { selectAdminSellArticleInfo } from '@sell/state/sell.selectors';
 
 // * Material.
+import { MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 
@@ -38,7 +39,9 @@ import { MatInputModule } from '@angular/material/input';
 	templateUrl: './hashtag.component.html',
 	styleUrl: './hashtag.component.scss'
 })
-export class HashtagComponent implements OnInit, OnDestroy {
+export class HashtagComponent implements OnInit, AfterViewInit, OnDestroy {
+	@ViewChild('input') public input?: ElementRef<HTMLInputElement>;
+
 	public readonly getErrorMessage: (control: AbstractControl<unknown, unknown>) => string = getErrorMessage;
 	public readonly form: UntypedFormGroup = this._setForm();
 	public err: boolean = false;
@@ -47,6 +50,7 @@ export class HashtagComponent implements OnInit, OnDestroy {
 	// eslint-disable-next-line @ngrx/use-consistent-global-store-name
 	private readonly _store: Store<IState> = inject(Store);
 	private readonly _route: ActivatedRoute = inject(ActivatedRoute);
+	private readonly _ref: MatDialogRef<HashtagComponent> = inject(MatDialogRef);
 
 	private readonly _id: (id: string | undefined) => number = id;
 	private readonly _destroy$: Subject<void> = new Subject<void>();
@@ -71,6 +75,16 @@ export class HashtagComponent implements OnInit, OnDestroy {
 		// 		if (hashtag.status === FAILED) return;
 		// 		this.form.get('hashtag')?.setValue(hashtag.data);
 		// 	});
+	}
+
+	public ngAfterViewInit(): void {
+		setTimeout(() => {
+			if (this.input) this.input.nativeElement.focus();
+		}, 300);
+	}
+
+	public close(): void {
+		this._ref.close();
 	}
 
 	public ngOnDestroy(): void {

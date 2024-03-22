@@ -1,4 +1,15 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, NgZone, OnDestroy, OnInit, Signal, ViewChild, inject } from '@angular/core';
+import {
+	AfterViewInit,
+	ChangeDetectionStrategy,
+	Component,
+	ElementRef,
+	NgZone,
+	OnDestroy,
+	OnInit,
+	Signal,
+	ViewChild,
+	inject
+} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Subject, take, takeUntil } from 'rxjs';
@@ -19,6 +30,9 @@ import { id } from '@functions/id.function';
 import { IState } from '@interfaces/state.interface';
 import { IArticle } from '@sell/interfaces/sell.interface';
 
+// * Services.
+import { CoreService } from '@services/core.service';
+
 // * Validators.
 import { getErrorMessage, notOnlySpaces } from '@validators/character.validators';
 
@@ -31,15 +45,17 @@ import { MatInputModule } from '@angular/material/input';
 
 @Component({
 	changeDetection: ChangeDetectionStrategy.OnPush,
-	selector: 'app-dialog-content-invest',
+	selector: 'app-admin-sell-invest',
 	standalone: true,
 	imports: [TextFieldModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, ButtonComponent],
 	templateUrl: './invest.component.html',
 	styleUrl: './invest.component.scss'
 })
 export class InvestComponent implements OnInit, AfterViewInit, OnDestroy {
+	@ViewChild('input') public readonly input?: ElementRef<HTMLInputElement>;
 	@ViewChild('autosize') public autosize?: CdkTextareaAutosize;
 
+	public readonly core: CoreService = inject(CoreService);
 	public readonly getErrorMessage: (control: AbstractControl<unknown, unknown>) => string = getErrorMessage;
 	public readonly form: UntypedFormGroup = this._setForm();
 
@@ -66,6 +82,7 @@ export class InvestComponent implements OnInit, AfterViewInit, OnDestroy {
 	}
 
 	public ngAfterViewInit(): void {
+		if (this.input) this.input.nativeElement.focus();
 		this._resize();
 	}
 
