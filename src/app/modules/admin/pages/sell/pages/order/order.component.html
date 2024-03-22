@@ -27,10 +27,11 @@
 
 		<section class="grid bd br-4 w" cdkDropList (cdkDropListDropped)="drop($event)">
 			@for (item of initialOptions; track $index) {
-				<button type="button" class="flex bet pd-12 bw" cdkDrag>
+				<div class="flex bet pd-12 bw" cdkDrag>
 					{{ item }}
+
 					<app-component-button [type]="'MINI'" [icon]="'drag_indicator'" cdkDragHandle />
-				</button>
+				</div>
 				@if (initialOptions.length - 1 !== $index) {
 					<hr />
 				}
