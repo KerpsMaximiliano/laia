@@ -34,6 +34,7 @@ type Icon =
 	| 'arrow_back_ios'
 	| 'arrow_circle_right'
 	| 'arrow_forward_ios'
+	| 'attach_money'
 	| 'calendar_month'
 	| 'cancel'
 	| 'checklist'

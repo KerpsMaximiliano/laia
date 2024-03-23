@@ -1,1 +1,1 @@
-export type ILoading = 'COMPLETE' | 'ERROR' | 'INITIAL' | 'LOADED' | 'LOADING' | 'UPDATE';
+export type ILoading = 'CHANGE' | 'COMPLETE' | 'FAILED' | 'INITIAL' | 'LOADED' | 'LOADING' | 'UPDATING';

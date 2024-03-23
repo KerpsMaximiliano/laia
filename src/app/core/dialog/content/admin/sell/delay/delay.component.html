@@ -1,14 +1,14 @@
-<header style="padding: 30px 0 16px 8px">
+<header class="flex bet pd-12">
 	<h1>Tiempo de fabricación</h1>
+
+	<app-component-button [type]="'MINI'" [icon]="'cancel'" (click)="close()" />
 </header>
 
-<main class="grid gp-24">
-	<article class="grid gp-8 bd br-4 pd-12">
-		<p class="tx-visible">
-			Las tandas que se le presentarán al Comprador será después de este tiempo y depende del tiempo de fabricación configurado en cada
-			artículo.
-		</p>
-	</article>
+<main class="grid gp-24 pd-12">
+	<p class="tx-visible message" style="margin-top: -12px">
+		Las tandas que se le presentarán al Comprador será después de este tiempo y depende del tiempo de fabricación configurado en cada
+		artículo.
+	</p>
 
 	<form [formGroup]="form" class="grid">
 		<mat-form-field appearance="outline">
@@ -17,6 +17,7 @@
 			<div class="flex gp-8">
 				<input
 					type="number"
+					#input
 					matInput
 					placeholder="Ingrese el tiempo"
 					formControlName="delay"

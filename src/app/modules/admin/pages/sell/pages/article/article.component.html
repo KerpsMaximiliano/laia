@@ -1,216 +1,260 @@
-<header class="flex bet gp-8 pd-12">
-	<div class="flex gp-4">
-		<app-component-button [type]="'MINI'" [icon]="'navigate_before'" (click)="core.back()" />
-		Nuevo Artículo
-	</div>
+<div [class.disabled]="article && article().status === updating">
+	<header class="flex bet gp-8 pd-12">
+		<div class="flex gp-4">
+			<app-component-button [type]="'MINI'" [icon]="'navigate_before'" (click)="core.back()" />
+			<h1>Nuevo Artículo</h1>
+		</div>
 
-	<button type="button" class="option" style="padding: 0 12px">Demo</button>
-</header>
-
-@if (article) {
-	<main class="grid gp-24 pd-12 pb-44">
-		<!-- <article class="grid br-4" [class.no-media]="article().data.medias.length === 0">
-			<div class="flex bet pd-12">
-				<p>Multimedia</p>
-				@if (article().data.medias.length > 0) {
-					<p>{{ article().data.medias.length }} / 9</p>
-				}
-			</div>
-
-			@if (article().data.medias.length === 0) {
-				<div class="grid">
-					<div class="grid br-12">
-						<app-component-button [type]="'ICON'" [icon]="'add'" />
-					</div>
-				</div>
+		@if (article) {
+			@if (
+				article().status === change ||
+				article().data.title !== form.get('title')?.value ||
+				article().data.price.amount !== form.get('price')?.value ||
+				article().data.stock.type !== form.get('tStock')?.value ||
+				article().data.stock.quantity !== form.get('stock')?.value
+			) {
+				<button type="button" class="option" (click)="save()">Guardar</button>
 			} @else {
-				<div #carousel class="carousel">
-					@for (media of article().data.medias; track $index) {
-						<div>
-							<img class="img" [src]="media.url" [alt]="article().data.title ?? 'Imagen sin texto alternativo'" />
+				<button type="button" class="option">{{ article().data.id === 0 ? 'Demo' : 'Preview' }}</button>
+			}
+		}
+	</header>
+
+	@if (article) {
+		<main class="grid gp-24 pd-12 pb-44">
+			<article class="grid bd br-4">
+				<div class="section--hero bet">
+					<p>Multimedia</p>
+					@if (images.length > 0) {
+						<div class="flex gp-8">
+							@if (images.length > 1) {
+								<app-component-button
+									[type]="'MINI'"
+									[icon]="'drag_indicator'"
+									(click)="edition === -1 || edition === 1 ? (edition = 0) : (edition = -1)"
+								/>
+							}
+							<app-component-button
+								[type]="'MINI'"
+								[icon]="'delete'"
+								(click)="edition === -1 || edition === 0 ? (edition = 1) : (edition = -1)"
+							/>
 						</div>
 					}
 				</div>
-			}
-		</article>
 
-		@if (article().data.medias.length > 1) {
-			<div class="flex cen gp-12">
-				@for (dot of article().data.medias; track $index) {
-					<button class="dot" aria-label="Dot" [class.active]="$index === index" (click)="scrollToImage($index)"></button>
-				}
-			</div>
-		} -->
-
-		<form [formGroup]="form" class="grid gp-30" style="margin-bottom: 12px">
-			<mat-form-field appearance="outline">
-				<mat-label>Nombre del artículo</mat-label>
-
-				<div class="fle gp-8">
-					<textarea
-						matInput
-						cdkTextareaAutosize
-						#autosize="cdkTextareaAutosize"
-						cdkAutosizeMinRows="1"
-						placeholder="Ingrese el nombre del artículo"
-						formControlName="title"
-						maxlength="121"
-					>
-					</textarea>
-
-					@if (form.get('title')?.value) {
-						<app-component-button [type]="'ICON'" [icon]="'delete'" [suffix]="true" (click)="form.get('title')?.setValue(null)" />
+				<div class="grid--layout pd-8 limit" cdkDropListGroup>
+					@for (i of resources; track $index) {
+						@if (images[$index]) {
+							<div cdkDropList [cdkDropListData]="{ item: images[i], index: $index }" (cdkDropListDropped)="drop($event)">
+								<button
+									type="button"
+									class="br-4 grid--layout__image"
+									aria-label="Editar, eliminar o organizar imagen"
+									cdkDrag
+									cdkDragBoundary=".limit"
+								>
+									<img [src]="images[$index]" alt="Imagen" />
+									@if (edition !== -1) {
+										<app-component-button
+											[type]="'MINI'"
+											[icon]="edition === 0 ? 'drag_indicator' : 'delete'"
+											[color]="'#000'"
+											class="br-4"
+											cdkDragHandle
+										/>
+									}
+								</button>
+							</div>
+						} @else if (edition === -1) {
+							<button
+								type="button"
+								class="w h br-4 grid-place grid--layout__add"
+								[class.grid--layout__first]="$first"
+								(click)="onClickInput()"
+								aria-label="Subir imagen"
+							>
+								<app-component-button [type]="'ICON'" [icon]="'add'" />
+								@if ($first) {
+									<div class="bd">
+										<p class="tx-center pd-8">Portada</p>
+									</div>
+								}
+							</button>
+						}
 					}
 				</div>
+			</article>
 
-				<mat-hint [align]="'end'">{{ 120 - form.get('title')?.value?.length }}</mat-hint>
-				<mat-error>{{ getErrorMessage(form.get('title')!) }}</mat-error>
-			</mat-form-field>
+			<input type="file" #medias hidden (change)="onFileSelected($event)" accept="image/*" multiple />
 
-			<mat-form-field appearance="outline">
-				<mat-label>Precio</mat-label>
+			<form [formGroup]="form" class="grid gp-30" style="margin-bottom: 12px">
+				<mat-form-field appearance="outline">
+					<mat-label>Nombre del artículo</mat-label>
 
-				<div class="flex">
-					@if (form.get('price')?.value) {
-						<div matTextPrefix>$</div>
+					<div class="fle gp-8">
+						<textarea
+							matInput
+							cdkTextareaAutosize
+							#autosize="cdkTextareaAutosize"
+							cdkAutosizeMinRows="1"
+							placeholder="Ingrese el nombre del artículo"
+							formControlName="title"
+							maxlength="121"
+						>
+						</textarea>
+
+						@if (form.get('title')?.value) {
+							<app-component-button [type]="'ICON'" [icon]="'delete'" [suffix]="true" (click)="form.get('title')?.setValue(null)" />
+						}
+					</div>
+
+					<mat-hint [align]="'end'">{{ 120 - form.get('title')?.value?.length }}</mat-hint>
+					<mat-error>{{ getErrorMessage(form.get('title')!) }}</mat-error>
+				</mat-form-field>
+
+				<mat-form-field appearance="outline">
+					<mat-label>Precio</mat-label>
+
+					<div class="flex">
+						@if (form.get('price')?.value) {
+							<div matTextPrefix>$</div>
+						}
+
+						<input #input type="number" matInput placeholder="Ingrese el precio del artículo" formControlName="price" max="9999999999" />
+
+						@if (form.get('price')?.value) {
+							<app-component-button [type]="'ICON'" [icon]="'delete'" [suffix]="true" (click)="form.get('price')?.setValue(null)" />
+						}
+					</div>
+
+					<mat-error>{{ getErrorMessage(form.get('price')!) }}</mat-error>
+				</mat-form-field>
+
+				<mat-form-field appearance="outline">
+					<mat-label>Unidad de venta</mat-label>
+
+					<mat-select formControlName="tStock">
+						<mat-option [value]="'UNIT'">Por unidad</mat-option>
+						<mat-option [value]="'PACKAGE'">Por paquete</mat-option>
+					</mat-select>
+				</mat-form-field>
+
+				<mat-form-field appearance="outline">
+					<mat-label>Cantidad disponible</mat-label>
+
+					<div class="flex gp-8">
+						<input type="number" matInput placeholder="Ingrese la cantidad disponible" formControlName="stock" max="9999999999" />
+
+						@if (form.get('stock')?.value) {
+							<app-component-button [type]="'ICON'" [icon]="'delete'" [suffix]="true" (click)="form.get('stock')?.setValue(null)" />
+						}
+					</div>
+
+					@if (form.get('stock')?.value === null) {
+						<mat-hint>La cantidad esta predeterminada como ilimitada.</mat-hint>
 					}
 
-					<input type="number" matInput placeholder="Ingrese el precio del artículo" formControlName="price" max="9999999999" />
+					<mat-error>{{ getErrorMessage(form.get('stock')!) }}</mat-error>
+				</mat-form-field>
+			</form>
 
-					@if (form.get('price')?.value) {
-						<app-component-button [type]="'ICON'" [icon]="'delete'" [suffix]="true" (click)="form.get('price')?.setValue(null)" />
-					}
+			<section class="grid gp-8 bd br-4">
+				<div class="flex bet gp-8 pd-12">
+					<p>Inversión por producirlo:</p>
+
+					<button type="button" class="flex gp-8" (click)="sell.redirect('invest')">
+						{{ currency(article().data.investments.total) }}
+						<app-component-button [type]="'ICON'" [icon]="'navigate_next'" />
+					</button>
 				</div>
 
-				<mat-error>
-					{{ getErrorMessage(form.get('price')!) }}
-				</mat-error>
-			</mat-form-field>
+				<div class="flex bet gp-8 pd-12">
+					<p>Beneficio bruto:</p>
 
-			<mat-form-field appearance="outline">
-				<mat-label>Unidad de venta</mat-label>
-
-				<mat-select formControlName="tStock">
-					<mat-option [value]="'UNIT'">Por unidad</mat-option>
-					<mat-option [value]="'PACKAGE'">Por paquete</mat-option>
-				</mat-select>
-			</mat-form-field>
-
-			<mat-form-field appearance="outline">
-				<mat-label>Cantidad disponible</mat-label>
-
-				<div class="flex gp-8">
-					<input type="number" matInput placeholder="Ingrese la cantidad disponible" formControlName="stock" max="9999999999" />
-
-					@if (form.get('stock')?.value) {
-						<app-component-button [type]="'ICON'" [icon]="'delete'" [suffix]="true" (click)="form.get('stock')?.setValue(null)" />
-					}
+					<button type="button" class="flex gp-8">
+						{{ article().data.price.type }} {{ currency((article().data.price.amount ?? 0) - article().data.investments.total) }}
+					</button>
 				</div>
+			</section>
 
-				@if (form.get('stock')?.value === null) {
-					<mat-hint>La cantidad esta predeterminada como ilimitada.</mat-hint>
-				}
+			<section class="grid bd br-4">
+				<p class="section--hero">Configuraciones de tu propia tienda</p>
 
-				<mat-error>{{ getErrorMessage(form.get('stock')!) }}</mat-error>
-			</mat-form-field>
-		</form>
+				<div>
+					<button type="button" class="tx-left pd-12 fle col gp-8 w" (click)="core.open('HASHTAG')">
+						<b>Hashtag</b>
+						<p class="tx-3">
+							{{
+								article().data.hashtag
+									? '#' + article().data.hashtag
+									: 'Lo adicionas en tus redes sociales y al entrar a tu tienda lo buscan y lo encuentran directamente.'
+							}}
+						</p>
+					</button>
 
-		<section class="grid gp-8 bd br-4">
-			<div class="flex bet gp-8 pd-12">
-				<p>Inversión por producirlo:</p>
+					<hr />
 
-				<button type="button" class="flex gp-8" (click)="core.open('INVEST')">
-					{{ currency(article().data.investments.total) }}
-					<app-component-button [type]="'ICON'" [icon]="'navigate_next'" />
-				</button>
-			</div>
-
-			<div class="flex bet gp-8 pd-12">
-				<p>Beneficio bruto:</p>
-
-				<button type="button" class="flex gp-8">
-					{{ article().data.price.type }} {{ currency((article().data.price.amount ?? 0) - article().data.investments.total) }}
-				</button>
-			</div>
-		</section>
-
-		<section class="grid bd br-4">
-			<p class="pd-12" style="background-color: #e0e0e3; border-radius: 4px 4px 0 0">Configuraciones de tu propia tienda</p>
-
-			<div>
-				<button type="button" class="tx-left pd-12 fle col gp-8 w" (click)="core.open('HASHTAG')">
-					<b>Hashtag</b>
-					<p class="tx-3">
-						{{
-							article().data.hashtag
-								? '#' + article().data.hashtag
-								: 'Lo adicionas en tus redes sociales y al entrar a tu tienda lo buscan y lo encuentran directamente.'
-						}}
-					</p>
-				</button>
-
-				<hr />
-
-				<button type="button" class="tx-left pd-12 fle col gp-8 w" (click)="core.open('DELAY')">
-					<b>Tiempo de fabricación</b>
-					<p class="tx-3">
-						{{
-							article().data.manufacturing.time
-								? article().data.manufacturing.type === 'MINUTE'
-									? article().data.manufacturing.time! > 1
-										? article().data.manufacturing.time + ' Minutos.'
-										: article().data.manufacturing.time + ' Minuto.'
-									: article().data.manufacturing.type === 'HOUR'
+					<button type="button" class="tx-left pd-12 fle col gp-8 w" (click)="core.open('DELAY')">
+						<b>Tiempo de fabricación</b>
+						<p class="tx-3">
+							{{
+								article().data.manufacturing.time
+									? article().data.manufacturing.type === 'MINUTE'
 										? article().data.manufacturing.time! > 1
-											? article().data.manufacturing.time + ' Horas.'
-											: article().data.manufacturing.time + ' Hora.'
-										: article().data.manufacturing.type === 'DAY'
+											? article().data.manufacturing.time + ' Minutos.'
+											: article().data.manufacturing.time + ' Minuto.'
+										: article().data.manufacturing.type === 'HOUR'
 											? article().data.manufacturing.time! > 1
-												? article().data.manufacturing.time + ' Días.'
-												: article().data.manufacturing.time + ' Día.'
-											: article().data.manufacturing.time! > 1
-												? article().data.manufacturing.time + ' Meses.'
-												: article().data.manufacturing.time + ' Mes.'
-								: 'Ej: Florista tarde 45minutos en armar el arreglo floral. Esto afecta la tanda de entrega que verá el comprador (si lo activas).'
-						}}
-					</p>
-				</button>
+												? article().data.manufacturing.time + ' Horas.'
+												: article().data.manufacturing.time + ' Hora.'
+											: article().data.manufacturing.type === 'DAY'
+												? article().data.manufacturing.time! > 1
+													? article().data.manufacturing.time + ' Días.'
+													: article().data.manufacturing.time + ' Día.'
+												: article().data.manufacturing.time! > 1
+													? article().data.manufacturing.time + ' Meses.'
+													: article().data.manufacturing.time + ' Mes.'
+									: 'Ej: Florista tarde 45minutos en armar el arreglo floral. Esto afecta la tanda de entrega que verá el comprador (si lo activas).'
+							}}
+						</p>
+					</button>
 
-				<hr />
+					<hr />
 
-				<button
-					type="button"
-					class="tx-left pd-12 fle col gp-8 w"
-					(click)="sell.redirect(article().data.segments.count > 0 ? 'segments' : 'segment')"
-				>
-					<b>Información adicional</b>
-					<p class="tx-3">
-						{{
-							article().data.segments.count > 0
-								? article().data.segments.count + ' Segmentos'
-								: 'Escribe más del artículo, si quieres incluye hasta imágenes para una descrpción más clara o una buena historia.'
-						}}
-					</p>
-				</button>
+					<button
+						type="button"
+						class="tx-left pd-12 fle col gp-8 w"
+						(click)="sell.redirect(article().data.segments.count > 0 ? 'segments' : 'segment')"
+					>
+						<b>Información adicional</b>
+						<p class="tx-3">
+							{{
+								article().data.segments.count > 0
+									? article().data.segments.count + ' Segmentos'
+									: 'Escribe más del artículo, si quieres incluye hasta imágenes para una descrpción más clara o una buena historia.'
+							}}
+						</p>
+					</button>
 
-				<hr />
+					<hr />
 
-				<button
-					type="button"
-					class="tx-left pd-12 fle col gp-8 w"
-					(click)="sell.redirect('keywords', article().data.id === 0 ? '' : article().data.id)"
-				>
-					<b>Palabras claves para búsquedas</b>
-					<p class="tx-3">
-						{{
-							article().data.keywords.count > 0
-								? article().data.keywords.count + ' Palabras claves'
-								: 'Para que tus compradores y LAIA lo encuentren con palabras referentes.'
-						}}
-					</p>
-				</button>
+					<button
+						type="button"
+						class="tx-left pd-12 fle col gp-8 w"
+						(click)="sell.redirect('keywords', article().data.id === 0 ? '' : article().data.id)"
+					>
+						<b>Palabras claves para búsquedas</b>
+						<p class="tx-3">
+							{{
+								article().data.keywords.count > 0
+									? article().data.keywords.count + ' Palabras claves'
+									: 'Para que tus compradores y LAIA lo encuentren con palabras referentes.'
+							}}
+						</p>
+					</button>
 
-				<hr />
+					<!-- <hr />
 
 				<button type="button" class="tx-left pd-12 fle col gp-8 w" (click)="core.open('QUESTION')">
 					<b>Preguntas a compradores</b>
@@ -221,22 +265,23 @@
 								: 'Generalmente usado cuando necesitas saber respuestas del comprador antes de hacer la venta del servicio o el artículo que ofreces.'
 						}}
 					</p>
-				</button>
+				</button> -->
 
-				<hr />
+					<hr />
 
-				@for (option of options; track $index) {
-					<button type="button" class="tx-left pd-12 fle col gp-8 w">
-						<p style="color: var(--required)">Próximamente</p>
-						<b>{{ option.title }}</b>
-						<p class="tx-3">{{ option.description }}</p>
-					</button>
+					@for (option of options; track $index) {
+						<button type="button" class="tx-left pd-12 fle col gp-8 w">
+							<p style="color: var(--required)">Próximamente</p>
+							<b>{{ option.title }}</b>
+							<p class="tx-3">{{ option.description }}</p>
+						</button>
 
-					@if (options.length - 1 !== $index) {
-						<hr />
+						@if (!$last) {
+							<hr />
+						}
 					}
-				}
-			</div>
-		</section>
-	</main>
-}
+				</div>
+			</section>
+		</main>
+	}
+</div>
