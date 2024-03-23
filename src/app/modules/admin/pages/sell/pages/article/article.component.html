@@ -28,9 +28,17 @@
 					@if (images.length > 0) {
 						<div class="flex gp-8">
 							@if (images.length > 1) {
-								<app-component-button [type]="'MINI'" [icon]="'drag_indicator'" (click)="edition === -1 ? (edition = 0) : (edition = -1)" />
+								<app-component-button
+									[type]="'MINI'"
+									[icon]="'drag_indicator'"
+									(click)="edition === -1 || edition === 1 ? (edition = 0) : (edition = -1)"
+								/>
 							}
-							<app-component-button [type]="'MINI'" [icon]="'delete'" (click)="edition === -1 ? (edition = 1) : (edition = -1)" />
+							<app-component-button
+								[type]="'MINI'"
+								[icon]="'delete'"
+								(click)="edition === -1 || edition === 0 ? (edition = 1) : (edition = -1)"
+							/>
 						</div>
 					}
 				</div>
@@ -41,7 +49,7 @@
 							<div cdkDropList [cdkDropListData]="{ item: images[i], index: $index }" (cdkDropListDropped)="drop($event)">
 								<button
 									type="button"
-									class="w h br-4 grid--layout__image"
+									class="br-4 grid--layout__image"
 									aria-label="Editar, eliminar o organizar imagen"
 									cdkDrag
 									cdkDragBoundary=".limit"
@@ -68,57 +76,17 @@
 							>
 								<app-component-button [type]="'ICON'" [icon]="'add'" />
 								@if ($first) {
-									<div>
+									<div class="bd">
 										<p class="tx-center pd-8">Portada</p>
 									</div>
 								}
 							</button>
 						}
 					}
-
-					<!-- <div class="w h br-4 grid-place grid--layout__first" (click)="onClickInput()">
-						<app-component-button [type]="'ICON'" [icon]="'add'" />
-						<div>
-							<p class="tx-center pd-8">Portada</p>
-						</div>
-					</div> -->
 				</div>
 			</article>
 
 			<input type="file" #medias hidden (change)="onFileSelected($event)" accept="image/*" multiple />
-
-			<!-- <article class="grid br-4" [class.no-media]="article().data.medias.length === 0">
-			<div class="flex bet pd-12">
-				<p>Multimedia</p>
-				@if (article().data.medias.length > 0) {
-					<p>{{ article().data.medias.length }} / 9</p>
-				}
-			</div>
-
-			@if (article().data.medias.length === 0) {
-				<div class="grid">
-					<div class="grid br-12">
-						<app-component-button [type]="'ICON'" [icon]="'add'" />
-					</div>
-				</div>
-			} @else {
-				<div #carousel class="carousel">
-					@for (media of article().data.medias; track $index) {
-						<div>
-							<img class="img" [src]="media.url" [alt]="article().data.title ?? 'Imagen sin texto alternativo'" />
-						</div>
-					}
-				</div>
-			}
-		</article>
-
-		@if (article().data.medias.length > 1) {
-			<div class="flex cen gp-12">
-				@for (dot of article().data.medias; track $index) {
-					<button class="dot" aria-label="Dot" [class.active]="$index === index" (click)="scrollToImage($index)"></button>
-				}
-			</div>
-		} -->
 
 			<form [formGroup]="form" class="grid gp-30" style="margin-bottom: 12px">
 				<mat-form-field appearance="outline">

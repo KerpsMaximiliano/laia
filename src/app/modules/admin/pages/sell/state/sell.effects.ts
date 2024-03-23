@@ -115,11 +115,11 @@ export class SellEffects {
 					}
 				}
 
-				return this._core.post('/product/create-aux', body).pipe(
-					map(() =>
+				return this._core.post<{ productId: number; medias: { url: string; type: 'IMAGE' }[] }>('/product/create-aux', body).pipe(
+					map((res) =>
 						ADMIN_SELL_ARTICLE_CREATED({
-							id: 1,
-							medias: [],
+							id: res.productId,
+							medias: res.medias.map((media) => media),
 							title: action.title,
 							price: { amount: action.price, type: 'USD' },
 							stock: { quantity: action.stock, type: action.tStock }
@@ -131,3 +131,21 @@ export class SellEffects {
 		);
 	});
 }
+
+// {
+// 	"productId": 21,
+// 	"medias": [
+// 			{
+// 					"url": "https://storage.googleapis.com/laia-c5d59.appspot.com/frontPages/front-page-product-21?GoogleAccessId=firebase-adminsdk-ey4kc@laia-c5d59.iam.gserviceaccount.com&Expires=2026551880&Signature=Dv5ESTB0wh%2BemGHnlU6eqy6HNlILveTWxbcqWpSptozZ66tuYkAvLynDv4c8ayKVSUSUjcb2yRMju2fW38JQlXOFolZ6ojeydCFAzdsVGKvTnpkyUERsqKArgUMIcurc%2FRPDWkq8P7xdeSlWXuCYEW67ZbP0UMXaUQl84Rf92ypPJLvaMlSL3h8Eow2W5DM3rFG%2B5JMqjSiIy79O3Ew2DIKtDFvbO1A3vG7uusqGzOnnoxytUaCLtY4Ujg%2FzpNHZ5RoCHApws3o0L6Eo2IIhTUKqSBMRYslPTYVyNfgUYIUBZ9Lr4w7PlWmpOAvmgUP6%2FKVypG0%2B0p1ylahV9cpwYg%3D%3D",
+// 					"type": "IMAGE"
+// 			},
+// 			{
+// 					"url": "https://storage.googleapis.com/laia-c5d59.appspot.com/imageProducts/image-product-21?GoogleAccessId=firebase-adminsdk-ey4kc@laia-c5d59.iam.gserviceaccount.com&Expires=2026551880&Signature=NCNgsy9VA%2BQBDZz97f%2Fz7xhdFnFLghp1uLMpFI5RW2ao7ofzkdeyNY7ZBrzAJtiWz3lcSOp6t%2B9tACaL%2B6OKedJ1bf%2FXPw6walpQqJgcBBzng46eMJS4Ug22CHlfNCqj81EZ1By3X7Ni8Nsqw1ajT9yvamfrEX5MkAXje1e7Rqw1HG8HWsaSHUi2nSYwet9dJpLWDehP9O8%2Foy9QIQvzbMv%2BHo6C9icRJZYoa7aMWuK%2BOLA9CWkHyMRuu6pkBOVp8TRL0OspKuqfXOU6NA%2Bya6ASeL3QLZPnyARxYGwAsVrohJiTEAH8mQp6zzKNpJk0MmYhnKqX6QxmCe7C3%2FDyWw%3D%3D",
+// 					"type": "IMAGE"
+// 			},
+// 			{
+// 					"url": "https://storage.googleapis.com/laia-c5d59.appspot.com/imageProducts/image-product-21?GoogleAccessId=firebase-adminsdk-ey4kc@laia-c5d59.iam.gserviceaccount.com&Expires=2026551881&Signature=j5sQaiDWLgI6UGwj%2F5qnF9i%2BvuDxuDq1PkfnjECMqttMyCGH%2B6sQ7hHM4HDEfeXs5qVxct%2FIPXOOw1qSCjbxkwQidjnU0VaaKWwZOJ1xWPiqaYwOVAbwdDrnUK964zSmXIy3aXRRUgi3BKg7cYXnM5Tw7MJkPicp3cM2s%2FnwH10xqaB10YLdHjjT5aLCcCyKW2CLFPxK3REWWaRDlxRkKmKCLdGS3le1VUSQc2zw8gv%2FQCGcIMA9g5W1GWvCjY1Ogbefou5fV68EdXyEmEAx%2B5robL2cQyQUcK2QF%2F340DQOLUfCuhoZI7DNL93seuyllHo1W2O%2BzlE3mfRvVvHaow%3D%3D",
+// 					"type": "IMAGE"
+// 			}
+// 	]
+// }
