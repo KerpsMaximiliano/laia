@@ -36,14 +36,7 @@ import { ImageEditorCommand, ImageEditorComponent, ImageEditorModule } from '@sy
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	selector: 'app-admin-sell-segment',
 	standalone: true,
-	imports: [
-		ImageEditorModule,
-		TextFieldModule,
-		ReactiveFormsModule,
-		MatFormFieldModule,
-		MatInputModule,
-		ButtonComponent
-	],
+	imports: [ImageEditorModule, TextFieldModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, ButtonComponent],
 	templateUrl: './segment.component.html',
 	styleUrl: './segment.component.scss',
 	// eslint-disable-next-line @angular-eslint/use-component-view-encapsulation

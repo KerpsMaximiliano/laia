@@ -1,13 +1,13 @@
-<header style="padding: 30px 0 16px 8px">
+<header class="flex gp-4 pd-12">
+	<app-component-button [type]="'MINI'" [icon]="'navigate_before'" (click)="core.back()" />
 	<h1>Nueva inversión</h1>
 </header>
 
-<main class="grid gp-16">
-	<article class="grid gp-8 bd br-4 pd-12">
+<main class="grid gp-16 pd-12">
+	<article class="message grid gp-4">
 		<b>Costo de la Venta (Egresos)</b>
 		<p class="tx-visible">
-			Lleva el Control de tus Inversiones. Cada venta se reflejará en tu flujo de cajas donde sabrás los beneficios de
-			tu coamrcio.
+			Lleva el Control de tus Inversiones. Cada venta se reflejará en tu flujo de cajas donde sabrás los beneficios de tu coamrcio.
 		</p>
 	</article>
 
@@ -20,21 +20,10 @@
 					<div matTextPrefix>$&nbsp;</div>
 				}
 
-				<input
-					type="number"
-					matInput
-					placeholder="Ingrese el monto del egreso"
-					formControlName="amount"
-					max="999999999"
-				/>
+				<input #input type="number" matInput placeholder="Ingrese el monto del egreso" formControlName="amount" max="999999999" />
 
 				@if (form.get('amount')?.value) {
-					<app-component-button
-						[type]="'ICON'"
-						[icon]="'delete'"
-						[suffix]="true"
-						(click)="form.get('amount')?.setValue(null)"
-					/>
+					<app-component-button [type]="'ICON'" [icon]="'delete'" [suffix]="true" (click)="form.get('amount')?.setValue(null)" />
 				}
 			</div>
 
@@ -48,12 +37,7 @@
 				<input type="text" matInput placeholder="Ingrese el nombre del egreso" formControlName="title" maxlength="61" />
 
 				@if (form.get('title')?.value) {
-					<app-component-button
-						[type]="'ICON'"
-						[icon]="'delete'"
-						[suffix]="true"
-						(click)="form.get('title')?.setValue(null)"
-					/>
+					<app-component-button [type]="'ICON'" [icon]="'delete'" [suffix]="true" (click)="form.get('title')?.setValue(null)" />
 				}
 			</div>
 
@@ -70,8 +54,7 @@
 					matInput
 					cdkTextareaAutosize
 					#autosize="cdkTextareaAutosize"
-					cdkAutosizeMinRows="10"
-					cdkAutosizeMaxRows="10"
+					cdkAutosizeMinRows="1"
 					placeholder="Ingrese una nota para el egreso"
 					formControlName="note"
 					maxlength="501"
@@ -79,12 +62,7 @@
 				</textarea>
 
 				@if (form.get('note')?.value) {
-					<app-component-button
-						[type]="'ICON'"
-						[icon]="'delete'"
-						[suffix]="true"
-						(click)="form.get('note')?.setValue(null)"
-					/>
+					<app-component-button [type]="'ICON'" [icon]="'delete'" [suffix]="true" (click)="form.get('note')?.setValue(null)" />
 				}
 			</div>
 

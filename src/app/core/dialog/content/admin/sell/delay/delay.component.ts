@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit, Signal, inject } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, OnInit, Signal, ViewChild, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Subject } from 'rxjs';
@@ -23,6 +23,7 @@ import { getErrorMessage, isNumeric } from '@validators/character.validators';
 import { selectAdminSellArticleInfo } from '@sell/state/sell.selectors';
 
 // * Material.
+import { MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 
@@ -34,7 +35,9 @@ import { MatInputModule } from '@angular/material/input';
 	templateUrl: './delay.component.html',
 	styleUrl: './delay.component.scss'
 })
-export class DelayComponent implements OnInit {
+export class DelayComponent implements OnInit, AfterViewInit {
+	@ViewChild('input') public input?: ElementRef<HTMLInputElement>;
+
 	public readonly form: UntypedFormGroup = this._setForm();
 	public readonly getErrorMessage: (control: AbstractControl<unknown, unknown>) => string = getErrorMessage;
 	public manufacturing?: Signal<IArticle['manufacturing'] | null>;
@@ -43,6 +46,7 @@ export class DelayComponent implements OnInit {
 	// eslint-disable-next-line @ngrx/use-consistent-global-store-name
 	private readonly _store: Store<IState> = inject(Store);
 	private readonly _route: ActivatedRoute = inject(ActivatedRoute);
+	private readonly _ref: MatDialogRef<DelayComponent> = inject(MatDialogRef);
 
 	private readonly _id: (id: string | undefined) => number = id;
 	private readonly _destroy$: Subject<void> = new Subject<void>();
@@ -56,6 +60,12 @@ export class DelayComponent implements OnInit {
 
 		this.form.get('delay')?.setValue(this.manufacturing()?.time);
 		this.type = this.manufacturing()?.type ?? 'MINUTE';
+	}
+
+	public ngAfterViewInit(): void {
+		setTimeout(() => {
+			if (this.input) this.input.nativeElement.focus();
+		}, 300);
 	}
 
 	public change(): void {
@@ -86,6 +96,10 @@ export class DelayComponent implements OnInit {
 			case 'MONTH':
 				return value && value > 1 ? 'Meses' : 'Mes';
 		}
+	}
+
+	public close(): void {
+		this._ref.close();
 	}
 
 	private _setForm(): UntypedFormGroup {

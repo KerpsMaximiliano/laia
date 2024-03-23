@@ -1,34 +1,31 @@
-// ! https://laia-dev.up.railway.app/product/create
-// frontPage
-// userId
-// title
+// ! https://laia-dev.up.railway.app/product/create-aux
+// userID
 
+// medias
+
+// title
 // price
 // typeOfPrice
-
 // stock
 // typeOfSale
 
-// hashtagValue
-
-// status
+// status // 1: active, 0: inactive
 
 // manufacturingTime
 // manufacturingType
 
-// segmentMedia
 // segmentTitle
 // segmentDescription
+// segmentMedia
 
-// keywordValue
+// hashtagValue
+
+// invenstmentAmount
+// invenstmentTitle
+// invenstmentNote
 
 // sellerQuestionValue
 // sellerQuestionType
 // sellerQuestionRequired
 // sellerQuestionLimit
-
-// categoryTitle
-
-// invenstmentAmount
-// invenstmentTitle
-// invenstmentNote
+// sellerQuestionOptions

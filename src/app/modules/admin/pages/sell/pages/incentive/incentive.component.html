@@ -1,8 +1,8 @@
 <header class="flex bet gp-8 pd-12">
-	<button type="button" class="flex gp-4" (click)="core.back()">
-		<app-component-button [type]="'ICON'" [icon]="'navigate_before'" />
-		Incentivo
-	</button>
+	<div class="flex gp-4">
+		<app-component-button [type]="'MINI'" [icon]="'navigate_before'" (click)="core.back()" />
+		<h1>Incentivo</h1>
+	</div>
 
 	<button type="button" class="option" style="padding: 0 12px">Guardar</button>
 </header>

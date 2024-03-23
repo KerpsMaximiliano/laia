@@ -6,18 +6,18 @@ import { ILoadableEntity } from '@interfaces/load.interface';
 import { IArticle, ISell } from '@sell/interfaces/sell.interface';
 
 // * ADMIN SELL INITIAL ARTICLE.
-export const article: ILoadableEntity<IArticle> = {
+export const ARTICLE: ILoadableEntity<IArticle> = {
 	status: LOADED,
 	data: {
 		id: 0,
 		medias: [],
-		title: 'Producto uno', // null,
+		title: null,
 		price: {
-			amount: 999999.99, // null,
+			amount: null,
 			type: 'USD'
 		},
 		stock: {
-			quantity: 1, // null,
+			quantity: null,
 			type: 'UNIT'
 		},
 		investments: {
@@ -25,9 +25,9 @@ export const article: ILoadableEntity<IArticle> = {
 			items: [
 				{
 					id: 0,
-					amount: 999999.99, // null,
-					title: 'Inversión uno', // null,
-					note: 'Nota uno' // null
+					amount: null,
+					title: null,
+					note: null
 				}
 			],
 			total: 0
@@ -37,31 +37,47 @@ export const article: ILoadableEntity<IArticle> = {
 			items: [
 				{
 					id: 0,
-					amount: 999999.99, // null,
+					amount: null,
 					type: 'AMOUNT'
 				}
 			],
 			total: 0
 		},
-		hashtag: 'Hola', // null,
+		hashtag: null,
 		keywords: {
 			status: LOADED,
-			count: 1,
-			items: ['hola']
+			count: 0,
+			items: []
 		},
 		manufacturing: {
-			time: 3,
-			type: 'DAY'
+			time: null,
+			type: 'MINUTE'
 		},
 		questions: {
 			status: LOADED,
 			count: 0,
-			items: []
+			items: [
+				{
+					id: 0,
+					question: null,
+					type: 'TEXT',
+					limit: 0,
+					required: 0,
+					options: []
+				}
+			]
 		},
 		segments: {
 			status: LOADED,
 			count: 0,
-			items: []
+			items: [
+				{
+					id: 0,
+					title: null,
+					description: null,
+					media: null
+				}
+			]
 		}
 	}
 };
@@ -72,5 +88,5 @@ export const ADMIN_SELL_STATE: ISell = {
 		status: INITIAL,
 		items: []
 	},
-	article: article
+	article: ARTICLE
 };

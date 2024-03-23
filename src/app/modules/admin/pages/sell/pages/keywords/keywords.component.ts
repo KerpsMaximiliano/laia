@@ -1,4 +1,5 @@
 import {
+	AfterViewInit,
 	ChangeDetectionStrategy,
 	ChangeDetectorRef,
 	Component,
@@ -63,7 +64,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 	templateUrl: './keywords.component.html',
 	styleUrl: './keywords.component.scss'
 })
-export class KeywordsComponent implements OnInit, OnDestroy {
+export class KeywordsComponent implements OnInit, AfterViewInit, OnDestroy {
 	@ViewChild('input') public readonly input?: ElementRef<HTMLInputElement>;
 
 	public readonly form: UntypedFormGroup = this._setForm();
@@ -132,6 +133,10 @@ export class KeywordsComponent implements OnInit, OnDestroy {
 			.subscribe((keywords: IArticle['keywords'] | null) => {
 				if (keywords) this.keywords = [...keywords.items];
 			});
+	}
+
+	public ngAfterViewInit(): void {
+		if (this.input) this.input.nativeElement.focus();
 	}
 
 	public add(event: MatChipInputEvent): void {

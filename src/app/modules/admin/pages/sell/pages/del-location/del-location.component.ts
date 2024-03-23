@@ -16,12 +16,13 @@ import { getErrorMessage } from '@validators/character.validators';
 // * Material.
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
 
 @Component({
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	selector: 'app-dialog-content-del-location',
 	standalone: true,
-	imports: [ReactiveFormsModule, MatFormFieldModule, MatInputModule, ButtonComponent, LoadingComponent],
+	imports: [ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatSelectModule, ButtonComponent, LoadingComponent],
 	templateUrl: './del-location.component.html',
 	styleUrl: './del-location.component.scss'
 })
@@ -34,9 +35,11 @@ export class DeliveryLocationComponent {
 		return new UntypedFormGroup({
 			starting: new UntypedFormControl(null),
 			amount: new UntypedFormControl(null),
-			untilKm: new UntypedFormControl(null),
-			eachKm: new UntypedFormControl(null),
-			limitExtraAmount: new UntypedFormControl(null)
+			until: new UntypedFormControl(null),
+			tUntil: new UntypedFormControl(1),
+			each: new UntypedFormControl(null),
+			tEach: new UntypedFormControl(1),
+			free: new UntypedFormControl(null)
 		});
 	}
 }

@@ -49,7 +49,7 @@ interface IQuestion {
 	question: string | null;
 	type: 'CALENDAR' | 'MULTIPLE' | 'TEXT' | 'TIME';
 	limit: number;
-	required: boolean;
+	required: number;
 	options: string[];
 }
 

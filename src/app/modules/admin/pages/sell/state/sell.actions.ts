@@ -4,6 +4,45 @@ import { createAction, props } from '@ngrx/store';
 import { ILoadableEntity } from '@interfaces/load.interface';
 import { IArticle } from '@sell/interfaces/sell.interface';
 
+// * CREATE ARTICLE.
+export const ADMIN_SELL_ARTICLE_CREATE = createAction(
+	'[Admin Sell Article] Create Article',
+	props<{
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		medias: any[];
+
+		title: string | null;
+
+		price: number | null;
+		tPrice: 'USD';
+
+		stock: number | null;
+		tStock: 'PACKAGE' | 'UNIT';
+
+		manufacturing: number | null;
+		tManufacturing: 'DAY' | 'HOUR' | 'MINUTE' | 'MONTH';
+
+		hashtag: string | null;
+
+		keywords: string[];
+
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		segmentMedia?: any;
+		segmentTitle: string | null;
+		segmentDescription: string | null;
+
+		question: string | null;
+		questionType: 'CALENDAR' | 'MULTIPLE' | 'TEXT' | 'TIME';
+		questionRequired: number;
+		questionLimit: number;
+		questionOptions: string[];
+	}>()
+);
+export const ADMIN_SELL_ARTICLE_CREATED = createAction(
+	'[Admin Sell Article] Created Article',
+	props<{ id: number; medias: IArticle['medias']; title: IArticle['title']; price: IArticle['price']; stock: IArticle['stock'] }>()
+);
+
 // --------------------------------------------------------------------------------------------------------------
 
 // * LOAD ARTICLE.
