@@ -70,6 +70,10 @@ export const SELL_ROUTES: Routes = [
 				loadComponent: async () => import('./pages/order/order.component').then((c) => c.OrderComponent)
 			},
 			{
+				path: 'report-filter',
+				loadComponent: async () => import('./pages/report-filter/report-filter.component').then((c) => c.ReportFilterComponent)
+			},
+			{
 				path: '**',
 				redirectTo: '',
 				pathMatch: 'full'
