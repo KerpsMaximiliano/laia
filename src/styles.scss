@@ -74,7 +74,6 @@ button {
 	touch-action: manipulation;
 }
 
-h1,
 h2,
 h3,
 h4,
@@ -93,7 +92,7 @@ h3,
 
 h1 {
 	font-size: 17px;
-	font-weight: 600;
+	line-height: normal;
 }
 
 h2 {

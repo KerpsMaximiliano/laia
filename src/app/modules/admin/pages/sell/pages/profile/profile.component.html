@@ -1,8 +1,10 @@
 <header class="flex bet pd-12">
 	<div class="flex gp-4">
 		<app-component-button [type]="'MINI'" [icon]="'navigate_before'" (click)="core.back()" />
+
 		<h1>Perfil Comercial</h1>
 	</div>
+
 	<button type="button" class="option" style="padding: 0 12px">Guardar</button>
 </header>
 
@@ -29,12 +31,7 @@
 				/>
 
 				@if (form.get('title')?.value) {
-					<app-component-button
-						[type]="'ICON'"
-						[icon]="'delete'"
-						[suffix]="true"
-						(click)="form.get('title')?.setValue(null)"
-					/>
+					<app-component-button [type]="'ICON'" [icon]="'delete'" [suffix]="true" (click)="form.get('title')?.setValue(null)" />
 				}
 			</div>
 
@@ -61,12 +58,7 @@
 				/>
 
 				@if (form.get('phone')?.value) {
-					<app-component-button
-						[type]="'ICON'"
-						[icon]="'delete'"
-						[suffix]="true"
-						(click)="form.get('phone')?.setValue(null)"
-					/>
+					<app-component-button [type]="'ICON'" [icon]="'delete'" [suffix]="true" (click)="form.get('phone')?.setValue(null)" />
 				}
 			</div>
 
@@ -87,12 +79,7 @@
 				<input matInput type="text" formControlName="web" placeholder="Ingrese su página web" maxlength="256" />
 
 				@if (form.get('web')?.value) {
-					<app-component-button
-						[type]="'ICON'"
-						[icon]="'delete'"
-						[suffix]="true"
-						(click)="form.get('web')?.setValue(null)"
-					/>
+					<app-component-button [type]="'ICON'" [icon]="'delete'" [suffix]="true" (click)="form.get('web')?.setValue(null)" />
 				}
 			</div>
 
@@ -115,12 +102,7 @@
 				</textarea>
 
 				@if (form.get('description')?.value) {
-					<app-component-button
-						[type]="'ICON'"
-						[icon]="'delete'"
-						[suffix]="true"
-						(click)="form.get('description')?.setValue(null)"
-					/>
+					<app-component-button [type]="'ICON'" [icon]="'delete'" [suffix]="true" (click)="form.get('description')?.setValue(null)" />
 				}
 			</div>
 

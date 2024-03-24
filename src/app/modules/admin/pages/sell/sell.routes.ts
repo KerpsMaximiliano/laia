@@ -30,6 +30,10 @@ export const SELL_ROUTES: Routes = [
 				loadComponent: async () => import('./pages/del-time/del-time.component').then((c) => c.DeliveryTimeComponent)
 			},
 			{
+				path: 'direction',
+				loadComponent: async () => import('./pages/direction/direction.component').then((c) => c.DirectionComponent)
+			},
+			{
 				path: 'entpr-sale',
 				loadComponent: async () => import('./pages/entpr-sale/entpr-sale.component').then((c) => c.EntprSaleComponent)
 			},
