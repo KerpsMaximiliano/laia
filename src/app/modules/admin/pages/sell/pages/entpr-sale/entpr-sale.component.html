@@ -1,5 +1,6 @@
 <header class="flex gp-4 pd-12">
 	<app-component-button [type]="'MINI'" [icon]="'navigate_before'" (click)="core.back()" />
+
 	<h1>Emprendedor: Ventas</h1>
 </header>
 
@@ -13,28 +14,13 @@
 			[expanded]="true"
 			class="expansion-panel-content"
 		>
-			<mat-expansion-panel-header style="background-color: var(--grey-light); padding: 12px 16px 12px 12px">
+			<mat-expansion-panel-header style="background-color: var(--grey-light); padding: 12px 16px 12px 12px; height: 48px">
 				<mat-panel-title class="fle bet">Tiempo de entrega </mat-panel-title>
 			</mat-expansion-panel-header>
-			<div class="entrepreneur grid bd br-4">
-				<!-- @for (item of entrepreneur; track $index) {
-					<button type="button" class="fle col gp-4 my-8 pd-12 w">
-						@if (!item.status) {
-							<p style="color: var(--required)">Próximamente</p>
-						}
-						{{ item.title }}
-						<p class="tx-visible tx-left">{{ item.description }}</p>
-					</button>
-
-					@if ($index < entrepreneur.length - 1) {
-						<hr />
-					}
-				} -->
-
+			<div class="grid bd br-bottom-4">
 				<button type="button" class="grid gp-8 pd-12" style="grid-template-columns: max-content 1fr">
 					<app-component-button [type]="'ICON'" [icon]="'calendar_month'" class="pd-12" />
 					<div class="grid gp-4 tx-left">
-						<!-- <p class="required">Todos los días</p> -->
 						<div class="flex gp-4">
 							<p class="date">L</p>
 							<p class="date">M</p>
@@ -43,15 +29,27 @@
 						<p>11:00 - 13:00</p>
 					</div>
 				</button>
+			</div>
+		</mat-expansion-panel>
+	</mat-accordion>
 
-				<hr />
+	<mat-accordion class="expansion-panel-pd grid gp-16">
+		<mat-expansion-panel [expanded]="true">
+			<mat-expansion-panel-header style="background-color: var(--grey-light); padding: 12px 16px 12px 12px; height: 48px">
+				<mat-panel-title>Tiempos de entrega</mat-panel-title>
+			</mat-expansion-panel-header>
 
-				<button type="button" class="grid gp-8 pd-12" style="grid-template-columns: max-content 1fr">
-					<app-component-button [type]="'ICON'" [icon]="'imagesearch_roller'" class="pd-12" />
+			<div class="grid bd br-bottom-4">
+				<!-- ! Sin redirección -->
+				<button type="button" class="grid gp-8 pd-12 btn">
+					<!-- <app-component-button [type]="'ICON'" [icon]="'event'" class="pd-12" /> -->
+					<app-component-button [type]="'ICON'" [icon]="'calendar_today'" class="pd-12" />
+					<!-- <app-component-button [type]="'ICON'" [icon]="'calendar_month'" class="pd-12" /> -->
+
 					<div class="grid gp-4 tx-left">
-						<p class="required">Lunes, martes, miércoles, jueves y viernes</p>
-						Turno tarde
-						<p>14:00 - 17:00</p>
+						<p class="required">Por activar</p>
+
+						Adiciona una tanda
 					</div>
 				</button>
 			</div>
@@ -59,207 +57,165 @@
 	</mat-accordion>
 
 	<mat-accordion class="expansion-panel-pd grid gp-16">
-		<mat-expansion-panel
-			(opened)="panelOpenState = true"
-			(closed)="panelOpenState = false"
-			togglePosition="after"
-			style="box-shadow: none"
-			[expanded]="true"
-			class="expansion-panel-content"
-		>
-			<mat-expansion-panel-header style="background-color: var(--grey-light); padding: 12px 16px 12px 12px">
-				<mat-panel-title class="fle bet">Lugares de entrega</mat-panel-title>
+		<mat-expansion-panel [expanded]="true">
+			<mat-expansion-panel-header style="background-color: var(--grey-light); padding: 12px 16px 12px 12px; height: 48px">
+				<mat-panel-title>Lugares de entrega</mat-panel-title>
 			</mat-expansion-panel-header>
-			<div class="entrepreneur grid bd br-4">
-				<!-- @for (item of entrepreneur; track $index) {
-					<button type="button" class="fle col gp-4 my-8 pd-12 w">
-						@if (!item.status) {
-							<p style="color: var(--required)">Próximamente</p>
-						}
-						{{ item.title }}
-						<p class="tx-visible tx-left">{{ item.description }}</p>
-					</button>
 
-					@if ($index < entrepreneur.length - 1) {
-						<hr />
-					}
-				} -->
+			<div class="grid bd br-bottom-4">
+				<!-- ! Sin redirección -->
+				<button type="button" class="grid gp-8 pd-12 btn">
+					<!-- <app-component-button [type]="'ICON'" [icon]="'share_location'" class="pd-12" /> -->
+					<app-component-button [type]="'ICON'" [icon]="'add_location_alt'" class="pd-12" />
+
+					<div class="grid gp-4 tx-left">
+						<p class="required">Por activar</p>
+
+						Adiciona un lugar
+					</div>
+				</button>
 			</div>
 		</mat-expansion-panel>
 	</mat-accordion>
 
 	<mat-accordion class="expansion-panel-pd grid gp-16">
-		<mat-expansion-panel
-			(opened)="panelOpenState = true"
-			(closed)="panelOpenState = false"
-			togglePosition="after"
-			style="box-shadow: none"
-			[expanded]="true"
-			class="expansion-panel-content"
-		>
-			<mat-expansion-panel-header style="background-color: var(--grey-light); padding: 12px 16px 12px 12px">
-				<mat-panel-title class="fle bet">Métodos de pago</mat-panel-title>
+		<mat-expansion-panel [expanded]="true">
+			<mat-expansion-panel-header style="background-color: var(--grey-light); padding: 12px 16px 12px 12px; height: 48px">
+				<mat-panel-title>Métodos de pago</mat-panel-title>
 			</mat-expansion-panel-header>
-			<div class="entrepreneur grid bd br-4">
-				<!-- @for (item of entrepreneur; track $index) {
-						<button type="button" class="fle col gp-4 my-8 pd-12 w">
-							@if (!item.status) {
-								<p style="color: var(--required)">Próximamente</p>
-							}
-							{{ item.title }}
-							<p class="tx-visible tx-left">{{ item.description }}</p>
-						</button>
 
-						@if ($index < entrepreneur.length - 1) {
-							<hr />
-						}
-					} -->
+			<div class="grid bd br-bottom-4">
+				<!-- ! Sin redirección -->
+				<button type="button" class="grid gp-8 pd-12 btn">
+					<!-- <app-component-button [type]="'ICON'" [icon]="'payments'" class="pd-12" /> -->
+					<app-component-button [type]="'ICON'" [icon]="'add_card'" class="pd-12" />
+
+					<div class="grid gp-4 tx-left">
+						<p class="required">Por activar</p>
+
+						Adiciona un método
+					</div>
+				</button>
 			</div>
 		</mat-expansion-panel>
 	</mat-accordion>
-
-	<section class="grid bd br-4">
-		<p class="section--title flex pd-12">Dedicatoria de regalo</p>
-
-		<hr />
-
-		<button type="button" class="flex bet my-8 pd-12 btn">Artículos Propios</button>
-
-		<hr />
-
-		<button type="button" class="flex bet my-8 pd-12 btn">Artículos de Otros</button>
-	</section>
 
 	<mat-accordion class="expansion-panel-pd grid gp-16">
-		<mat-expansion-panel
-			(opened)="panelOpenState = true"
-			(closed)="panelOpenState = false"
-			togglePosition="after"
-			style="box-shadow: none"
-			[expanded]="true"
-			class="expansion-panel-content"
-		>
-			<mat-expansion-panel-header style="background-color: var(--grey-light); padding: 12px 16px 12px 12px">
-				<mat-panel-title class="fle bet">Configuración de facturas</mat-panel-title>
+		<mat-expansion-panel [expanded]="true">
+			<mat-expansion-panel-header style="background-color: var(--grey-light); padding: 12px 16px 12px 12px; height: 48px">
+				<mat-panel-title>Dedicatoria de regalo</mat-panel-title>
 			</mat-expansion-panel-header>
-			<div class="entrepreneur grid bd br-4">
-				<!-- @for (item of entrepreneur; track $index) {
-						<button type="button" class="fle col gp-4 my-8 pd-12 w">
-							@if (!item.status) {
-								<p style="color: var(--required)">Próximamente</p>
-							}
-							{{ item.title }}
-							<p class="tx-visible tx-left">{{ item.description }}</p>
-						</button>
 
-						@if ($index < entrepreneur.length - 1) {
-							<hr />
-						}
-					} -->
+			<div class="grid bd br-bottom-4">
+				<!-- ! Sin redirección -->
+				<button type="button" class="grid gp-8 pd-12 btn">
+					<app-component-button [type]="'ICON'" [icon]="'redeem'" class="pd-12" />
+
+					<div class="grid gp-4 tx-left">
+						<p class="required">Opcional al comprador</p>
+
+						Virtual
+
+						<p class="tx-visible">Texto en tarjeta. QR para multimedia.</p>
+					</div>
+				</button>
+
+				<hr />
+
+				<!-- ! Sin redirección -->
+				<button type="button" class="grid gp-8 pd-12 btn">
+					<app-component-button [type]="'ICON'" [icon]="'article'" class="pd-12" />
+
+					<div class="grid gp-4 tx-left">
+						<p class="required">Opcional al comprador</p>
+
+						Tradicional
+
+						<p class="tx-visible">Texto en tarjeta. QR para multimedia.</p>
+					</div>
+				</button>
 			</div>
 		</mat-expansion-panel>
 	</mat-accordion>
 
-	<section class="grid bd br-4">
-		<p class="section--title flex pd-12">¿Qué venderás?</p>
+	<mat-accordion class="expansion-panel-pd grid gp-16">
+		<mat-expansion-panel [expanded]="true">
+			<mat-expansion-panel-header style="background-color: var(--grey-light); padding: 12px 16px 12px 12px; height: 48px">
+				<mat-panel-title>Configuración de facturas</mat-panel-title>
+			</mat-expansion-panel-header>
 
-		<hr />
+			<div class="grid bd br-bottom-4">
+				<!-- ! Sin redirección -->
+				<button type="button" class="grid gp-8 pd-12 btn">
+					<app-component-button [type]="'ICON'" [icon]="'forward_to_inbox'" class="pd-12" />
 
-		<button type="button" class="grid gp-8 pd-12" style="grid-template-columns: max-content 1fr">
-			<app-component-button [type]="'ICON'" [icon]="'public'" class="pd-12" />
-			<div class="grid gp-4 tx-left">
-				<p class="required">Moneda del País</p>
-				Configura la moneda de los pagos
-				<p>Tipo de moneda. Ubicación geográfica</p>
+					<div class="grid gp-4 tx-left">
+						<p class="required">Por activar</p>
+
+						Adiciona correos electrónico o números de WhatsApp
+					</div>
+				</button>
 			</div>
-		</button>
+		</mat-expansion-panel>
+	</mat-accordion>
 
-		<hr />
+	<mat-accordion class="expansion-panel-pd grid gp-16">
+		<mat-expansion-panel [expanded]="true">
+			<mat-expansion-panel-header style="background-color: var(--grey-light); padding: 12px 16px 12px 12px; height: 48px">
+				<mat-panel-title>Estrategias</mat-panel-title>
+			</mat-expansion-panel-header>
 
-		<button type="button" class="grid gp-8 pd-12" style="grid-template-columns: max-content 1fr">
-			<app-component-button [type]="'ICON'" [icon]="'imagesearch_roller'" class="pd-12" />
-			<div class="grid gp-4 tx-left">
-				<p class="required">Próximamente</p>
-				Color de tu tienda
-				<p>Por defecto</p>
+			<div class="grid bd br-bottom-4">
+				<!-- ! Sin redirección -->
+				<button type="button" class="grid gp-8 pd-12 btn">
+					<app-component-button [type]="'ICON'" [icon]="'public'" class="pd-12" />
+
+					<div class="grid gp-4 tx-left">
+						<p class="required">Próximamente</p>
+
+						Donde te promocionamos
+					</div>
+				</button>
 			</div>
-		</button>
-	</section>
+		</mat-expansion-panel>
+	</mat-accordion>
 
-	<!-- @for (option of options; track $index) {
-		@if ($index === 2) {
-			<section class="grid bd br-4">
-				<mat-accordion class="expansion-panel-pd grid gp-16">
-					<mat-expansion-panel
-						(opened)="panelOpenState = true"
-						(closed)="panelOpenState = false"
-						togglePosition="after"
-						style="box-shadow: none"
-						[expanded]="true"
-						class="expansion-panel-content"
-					>
-						<mat-expansion-panel-header>
-							<mat-panel-title class="fle bet"> Métodos de pago </mat-panel-title>
-						</mat-expansion-panel-header>
+	<mat-accordion class="expansion-panel-pd grid gp-16">
+		<mat-expansion-panel [expanded]="true">
+			<mat-expansion-panel-header style="background-color: var(--grey-light); padding: 12px 16px 12px 12px; height: 48px">
+				<mat-panel-title>¿Qué venderás?</mat-panel-title>
+			</mat-expansion-panel-header>
 
-						<button
-							type="button"
-							class="grid pd-12 tx-left"
-							style="grid-template-columns: max-content 1fr max-content; padding: 16px"
-							(click)="open()"
-						>
-							<app-component-button [type]="'ICON'" [icon]="'credit_card'" class="pd-8" />
+			<div class="grid bd br-bottom-4">
+				<!-- ! Sin redirección -->
+				<button type="button" class="grid gp-8 pd-12 btn">
+					<app-component-button [type]="'ICON'" [icon]="'attach_money'" class="pd-12" />
+					<!-- <app-component-button [type]="'ICON'" [icon]="'currency_exchange'" class="pd-12" /> -->
 
-							<div
-								class="grid"
-								style="grid-template-rows: repeat(2, minmax(22.5px, max-content)); gap: 4px; padding-left: 16px"
-							>
-								<p style="color: var(--required)">{{ options[2][0].title }}</p>
-								{{ options[2][0].subtitle }}
-							</div>
-						</button>
-					</mat-expansion-panel>
-				</mat-accordion>
-			</section>
-		} @else {
-			<section class="grid bd br-4">
-				<p class="pd-12 message">{{ option[0].header }}</p>
+					<div class="grid gp-4 tx-left">
+						<p class="required">Moneda del País</p>
 
-				@for (item of option; track $index) {
-					<hr />
+						Configura la moneda de los pagos
 
-					<button
-						type="button"
-						class="grid pd-12 tx-left"
-						style="grid-template-columns: max-content 1fr max-content; padding: 16px"
-						(click)="redirect(item.redirect ?? '')"
-					>
-						@switch (item.icon) {
-							@case ('truck') {
-								<app-component-button [type]="'ICON'" [icon]="'local_shipping'" class="pd-8" />
-							}
-							@case ('public') {
-								<app-component-button [type]="'ICON'" [icon]="'public'" class="pd-8" />
-							}
-							@case ('imagesearch_roller') {
-								<app-component-button [type]="'ICON'" [icon]="'imagesearch_roller'" class="pd-8" />
-							}
-							@default {
-								<app-component-button [type]="'ICON'" [icon]="'folder'" class="pd-8" />
-							}
-						}
+						<p class="tx-visible">Tipo de moneda. Ubicación geográfica</p>
+					</div>
+				</button>
 
-						<div
-							class="grid"
-							style="grid-template-rows: repeat(2, minmax(22.5px, max-content)); gap: 4px; padding-left: 16px"
-						>
-							<p style="color: var(--required)">{{ item.title }}</p>
-							{{ item.subtitle }}
-							<p>{{ item.content }}</p>
-						</div>
-					</button>
-				}
-			</section>
-		}
-	} -->
+				<hr />
+
+				<!-- ! Sin redirección -->
+				<button type="button" class="grid gp-8 pd-12 btn">
+					<app-component-button [type]="'ICON'" [icon]="'imagesearch_roller'" class="pd-12" />
+
+					<div class="grid gp-4 tx-left">
+						<p class="required">Próximamente</p>
+
+						Color de tu tienda
+
+						<p>Por defecto</p>
+					</div>
+				</button>
+			</div>
+		</mat-expansion-panel>
+	</mat-accordion>
 </main>
