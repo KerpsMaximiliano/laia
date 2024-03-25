@@ -22,18 +22,16 @@
 				</mat-expansion-panel-header>
 				<div class="grid bd br-4">
 					@for (item of data.statusPayment; track $index) {
-						<button type="button" class="flex bet my-8 pd-12">
+						<button type="button" class="flex bet my-8 pd-12" (click)="item.check === 1 ? (item.check = 0) : (item.check = 1)">
 							<div class="grid gp-4">
 								<p style="font-size: 16px; font-weight: 600; text-align: left">{{ item.id }}</p>
 
 								<p style="text-align: left">{{ item.sales }} Venta{{ item.sales === 1 ? '' : 's' }}</p>
 							</div>
-							<input
-								type="radio"
-								class="my-12"
-								style="accent-color: #9747ff; width: 15px; height: 15px"
-								[checked]="item.check"
-								(click)="item.check === 1 ? (item.check = 0) : (item.check = 1)"
+							<app-component-button
+								[type]="'ICON'"
+								[icon]="item.check ? 'check_circle' : 'radio_button_unchecked'"
+								[color]="item.check ? 'var(--violet)' : ''"
 							/>
 						</button>
 						@if (data.statusPayment.length !== $index) {
@@ -63,18 +61,16 @@
 				</mat-expansion-panel-header>
 				<div class="grid bd br-4">
 					@for (item of data.sellers; track $index) {
-						<button type="button" class="flex bet my-8 pd-12">
+						<button type="button" class="flex bet my-8 pd-12" (click)="item.check === 1 ? (item.check = 0) : (item.check = 1)">
 							<div class="grid gp-4">
 								<p style="font-size: 16px; font-weight: 600; text-align: left">{{ item.id }}</p>
 
 								<p style="text-align: left">{{ item.sales }} Venta{{ item.sales === 1 ? '' : 's' }}</p>
 							</div>
-							<input
-								type="radio"
-								class="my-12"
-								style="accent-color: #9747ff; width: 15px; height: 15px"
-								[checked]="item.check"
-								(click)="item.check === 1 ? (item.check = 0) : (item.check = 1)"
+							<app-component-button
+								[type]="'ICON'"
+								[icon]="item.check ? 'check_circle' : 'radio_button_unchecked'"
+								[color]="item.check ? 'var(--violet)' : ''"
 							/>
 						</button>
 						@if (data.sellers.length !== $index) {
@@ -104,18 +100,16 @@
 				</mat-expansion-panel-header>
 				<div class="grid bd br-4">
 					@for (item of data.status; track $index) {
-						<button type="button" class="flex bet my-8 pd-12">
+						<button type="button" class="flex bet my-8 pd-12" (click)="item.check === 1 ? (item.check = 0) : (item.check = 1)">
 							<div class="grid gp-4">
 								<p style="font-size: 16px; font-weight: 600; text-align: left">{{ item.id }}</p>
 
 								<p style="text-align: left">{{ item.sales }} Venta{{ item.sales === 1 ? '' : 's' }}</p>
 							</div>
-							<input
-								type="radio"
-								class="my-12"
-								style="accent-color: #9747ff; width: 15px; height: 15px"
-								[checked]="item.check"
-								(click)="item.check === 1 ? (item.check = 0) : (item.check = 1)"
+							<app-component-button
+								[type]="'ICON'"
+								[icon]="item.check ? 'check_circle' : 'radio_button_unchecked'"
+								[color]="item.check ? 'var(--violet)' : ''"
 							/>
 						</button>
 						@if (data.status.length !== $index) {
@@ -147,18 +141,16 @@
 				</mat-expansion-panel-header>
 				<div class="grid bd br-4">
 					@for (item of data.batches; track $index) {
-						<button type="button" class="flex bet my-8 pd-12">
+						<button type="button" class="flex bet my-8 pd-12" (click)="item.check === 1 ? (item.check = 0) : (item.check = 1)">
 							<div class="grid gp-4">
 								<p style="font-size: 16px; font-weight: 600; text-align: left">{{ item.id }}</p>
 
 								<p style="text-align: left">{{ item.sales }} Venta{{ item.sales === 1 ? '' : 's' }}</p>
 							</div>
-							<input
-								type="radio"
-								class="my-12"
-								style="accent-color: #9747ff; width: 15px; height: 15px"
-								[checked]="item.check"
-								(click)="item.check === 1 ? (item.check = 0) : (item.check = 1)"
+							<app-component-button
+								[type]="'ICON'"
+								[icon]="item.check ? 'check_circle' : 'radio_button_unchecked'"
+								[color]="item.check ? 'var(--violet)' : ''"
 							/>
 						</button>
 						@if (data.batches.length !== $index) {
@@ -188,18 +180,16 @@
 				</mat-expansion-panel-header>
 				<div class="grid bd br-4">
 					@for (item of data.coords; track $index) {
-						<button type="button" class="flex bet my-8 pd-12">
+						<button type="button" class="flex bet my-8 pd-12" (click)="item.check === 1 ? (item.check = 0) : (item.check = 1)">
 							<div class="grid gp-4">
 								<p style="font-size: 16px; font-weight: 600; text-align: left">{{ item.id }}</p>
 
 								<p style="text-align: left">{{ item.sales }} Venta{{ item.sales === 1 ? '' : 's' }}</p>
 							</div>
-							<input
-								type="radio"
-								class="my-12"
-								style="accent-color: #9747ff; width: 15px; height: 15px"
-								[checked]="item.check"
-								(click)="item.check === 1 ? (item.check = 0) : (item.check = 1)"
+							<app-component-button
+								[type]="'ICON'"
+								[icon]="item.check ? 'check_circle' : 'radio_button_unchecked'"
+								[color]="item.check ? 'var(--violet)' : ''"
 							/>
 						</button>
 						@if (data.coords.length !== $index) {
@@ -229,18 +219,16 @@
 				</mat-expansion-panel-header>
 				<div class="grid bd br-4">
 					@for (item of data.catalogs; track $index) {
-						<button type="button" class="flex bet my-8 pd-12">
+						<button type="button" class="flex bet my-8 pd-12" (click)="item.check === 1 ? (item.check = 0) : (item.check = 1)">
 							<div class="grid gp-4">
 								<p style="font-size: 16px; font-weight: 600; text-align: left">{{ item.id }}</p>
 
 								<p style="text-align: left">{{ item.sales }} Venta{{ item.sales === 1 ? '' : 's' }}</p>
 							</div>
-							<input
-								type="radio"
-								class="my-12"
-								style="accent-color: #9747ff; width: 15px; height: 15px"
-								[checked]="item.check"
-								(click)="item.check === 1 ? (item.check = 0) : (item.check = 1)"
+							<app-component-button
+								[type]="'ICON'"
+								[icon]="item.check ? 'check_circle' : 'radio_button_unchecked'"
+								[color]="item.check ? 'var(--violet)' : ''"
 							/>
 						</button>
 						@if (data.catalogs.length !== $index) {

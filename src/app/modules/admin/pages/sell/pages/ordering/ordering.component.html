@@ -6,13 +6,13 @@
 	</div>
 
 	@if (change) {
-		<button type="button" class="option">Ver</button>
+		<button type="button" class="option" (click)="save()">Ver</button>
 	}
 </header>
 
 <main class="grid gp-30 pd-12">
 	<section class="grid bd br-4">
-		<button type="button" class="flex bet pd-12" (click)="order = 0">
+		<button type="button" class="flex bet pd-12" (click)="compare(0)">
 			Ascendente
 
 			<app-component-button
@@ -24,7 +24,7 @@
 
 		<hr />
 
-		<button type="button" class="flex bet pd-12" (click)="order = 1">
+		<button type="button" class="flex bet pd-12" (click)="compare(1)">
 			Descendente
 
 			<app-component-button
@@ -36,7 +36,7 @@
 	</section>
 
 	<section class="bd br-4" cdkDropList (cdkDropListDropped)="drop($event)">
-		@for (item of initialOptions; track $index) {
+		@for (item of selectedOptions; track $index) {
 			<div class="flex bet pd-12 bw" cdkDrag>
 				{{ item }}
 

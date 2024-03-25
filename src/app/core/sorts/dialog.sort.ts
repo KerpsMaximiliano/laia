@@ -4,5 +4,6 @@
 // * 																			HASHTAG
 // * 																			TAG
 // * SHARED		  													SHARE
+// * TIME       SELL          DEL-TIME    TIME
 
-export type IDialog = 'CALENDAR' | 'DELAY' | 'HASHTAG' | 'PAYMENT' | 'SHARE' | 'SORT' | 'TAG' | 'TIME-RANGE';
+export type IDialog = 'CALENDAR' | 'DELAY' | 'HASHTAG' | 'PAYMENT' | 'SHARE' | 'SORT' | 'TAG' | 'TIME';

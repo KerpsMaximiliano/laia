@@ -38,7 +38,7 @@ export class MiniaturesComponent implements OnInit {
 	];
 
 	public options: string[] = ['Cabecera', 'Title', 'Subtitle'];
-	public selectionEdit: number | undefined = undefined; // Variable para determinar que seleccionamos para editar
+	public selectionEdit: number = 1; // Variable para determinar que seleccionamos para editar
 	public selectedItems: number[][] = [[], [], []]; // 0: Cabecera; 1: Title; 2: Subtitle;
 	public initialItems: number[][] = [[], [], []];
 	public change: boolean = false;
@@ -50,24 +50,44 @@ export class MiniaturesComponent implements OnInit {
 
 	public selection(index: number): void {
 		if (this.selectionEdit) {
-			this.change = true;
-
 			// Valida que no exista en el arreglo. Default: Elimina el elemento del arreglo.
 			if (this.selectedItems[this.selectionEdit - 1].includes(index)) {
 				this.selectedItems[this.selectionEdit - 1] = this.selectedItems[this.selectionEdit - 1].filter((i) => i !== index);
 			} else {
 				this.selectedItems[this.selectionEdit - 1].push(index);
 			}
+			this.change = !this.changes();
 		}
+	}
+
+	public changes(): boolean {
+		// Si tienen la misma longitud evaluamos
+		if (this.initialItems.length !== this.selectedItems.length) {
+			return false;
+		}
+		for (let i = 0; i < this.initialItems.length; i++) {
+			if (this.initialItems[i].length !== this.selectedItems[i].length) {
+				return false;
+			}
+
+			for (let j = 0; j < this.initialItems[i].length; j++) {
+				if (this.initialItems[i][j] !== this.selectedItems[i][j]) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+
+	public check(index: number): boolean {
+		return this.selectedItems[this.selectionEdit - 1].includes(index);
 	}
 
 	public save(): void {
 		this.change = false;
-		console.log(this._getConfigOfIndex()); // Muestra como queda el string para ser enviado al servicio
-	}
+		this.initialItems = this._getIndexOfItems(this._getConfigOfIndex(), this.items).slice();
 
-	public check(index: number): boolean {
-		return this.selectionEdit !== undefined && this.selectedItems[this.selectionEdit - 1].includes(index);
+		console.log(this._getConfigOfIndex()); // Muestra como queda el string para ser enviado al servicio
 	}
 
 	/**

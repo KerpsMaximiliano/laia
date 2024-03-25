@@ -143,8 +143,8 @@ export class CoreService {
 					case 'SORT':
 						chunk = await import('@dialogs/content/admin/sell/sort/sort.component');
 						break;
-					case 'TIME-RANGE':
-						chunk = await import('@dialogs/content/admin/sell/time-range/time-range.component');
+					case 'TIME':
+						chunk = await import('@app/core/dialog/content/admin/sell/time/time.component');
 						break;
 				}
 				const component = Object.values(chunk)[0] as ComponentType<unknown>;

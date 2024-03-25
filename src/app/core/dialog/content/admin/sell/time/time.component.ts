@@ -8,11 +8,11 @@ import { getErrorMessage } from '@validators/character.validators';
 
 @Component({
 	changeDetection: ChangeDetectionStrategy.OnPush,
-	selector: 'app-dialog-content-time-range',
+	selector: 'app-dialog-content-time',
 	standalone: true,
 	imports: [MatFormFieldModule, MatInputModule, ReactiveFormsModule],
-	templateUrl: './time-range.component.html',
-	styleUrl: './time-range.component.scss'
+	templateUrl: './time.component.html',
+	styleUrl: './time.component.scss'
 })
 export class TimeRangeComponent {
 	public readonly form: UntypedFormGroup = this._setForm();
