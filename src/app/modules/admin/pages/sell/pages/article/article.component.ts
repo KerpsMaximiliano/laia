@@ -9,6 +9,7 @@ import {
 	OnInit,
 	Signal,
 	ViewChild,
+	afterNextRender,
 	inject
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
@@ -61,6 +62,7 @@ import { selectLogin } from '@user/state/user.selectors';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { MUTATION_ADMIN_SELL_ASSOCIATION } from '../../state/sell.graphql';
 
 @Component({
 	changeDetection: ChangeDetectionStrategy.OnPush,
@@ -128,6 +130,23 @@ export class ArticleComponent implements OnInit, AfterViewInit, OnDestroy {
 
 	// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
 	private _blobs: any[] = [];
+
+	public constructor() {
+		afterNextRender(() => {
+			const product: string | undefined = this.core.get('product');
+			const user: string | undefined = this.core.get('user');
+			if (user && product) {
+				this.core
+					.mutation(MUTATION_ADMIN_SELL_ASSOCIATION, { user, product })
+					.pipe(take(1))
+					.subscribe(() => {
+						localStorage.removeItem('product');
+						this.sell.redirect('article', product);
+					});
+				return;
+			}
+		});
+	}
 
 	public ngOnInit(): void {
 		if (this._id(this._route.snapshot.params['id']) === 0) return;

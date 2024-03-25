@@ -5,7 +5,7 @@ import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
 // * Components.
 import { ButtonComponent } from '@components/button/button.component';
 import { Store } from '@ngrx/store';
-import { BehaviorSubject, take } from 'rxjs';
+import { BehaviorSubject, Subject, filter, takeUntil } from 'rxjs';
 import { environment } from '../../../../../../../environment/environment';
 import { IState } from '../../../../../../core/interfaces/state.interface';
 import { CoreService } from '../../../../../../core/services/core.service';
@@ -58,6 +58,7 @@ export class DirectionComponent implements OnInit, OnDestroy {
 		}
 	};
 	public autocompleteResults: BehaviorSubject<IPrediction[]> = new BehaviorSubject<IPrediction[]>([]);
+	// public autocompleteResults: Signal<IPrediction[]> = signal([]);
 	public currentPosition?: GeolocationPosition;
 
 	public marker: google.maps.LatLngLiteral = {
@@ -69,6 +70,8 @@ export class DirectionComponent implements OnInit, OnDestroy {
 	private readonly _store: Store<IState> = inject(Store);
 	private readonly _cdr: ChangeDetectorRef = inject(ChangeDetectorRef);
 	private readonly _core: CoreService = inject(CoreService);
+
+	private readonly _destroy$: Subject<void> = new Subject<void>();
 
 	// eslint-disable-next-line @typescript-eslint/member-ordering
 	// public readonly user: Signal<{ id: number; logged: boolean }> = this._store.selectSignal(selectEcommerceUserLogin);
@@ -155,15 +158,17 @@ export class DirectionComponent implements OnInit, OnDestroy {
 		this.marker = { lat: 0, lng: 0 };
 	}
 
-	// ! UNSUBSCRIBE.
 	public selectFirst(): void {
-		this.autocompleteResults.pipe(take(1)).subscribe((predictions: IPrediction[]) => {
-			if (predictions.length > 0) {
+		this.autocompleteResults
+			.pipe(
+				takeUntil(this._destroy$),
+				filter((predictions) => predictions.length > 0)
+			)
+			.subscribe((predictions: IPrediction[]) => {
 				this.selectPlace(predictions[0]);
 				if (this.trigger) this.trigger.closePanel();
 				this.form.get('address')?.setValue(predictions[0].description);
-			}
-		});
+			});
 	}
 
 	public addMarker(event: google.maps.MapMouseEvent): void {
@@ -200,6 +205,8 @@ export class DirectionComponent implements OnInit, OnDestroy {
 
 	public ngOnDestroy(): void {
 		this.autocompleteResults.unsubscribe();
+		this._destroy$.next();
+		this._destroy$.complete();
 	}
 
 	// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any

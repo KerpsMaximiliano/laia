@@ -41,10 +41,20 @@ export class CoreService {
 		this._height.next(height);
 	}
 
+	/**
+	 * localStorage.getItem(key);
+	 * @param key string;
+	 * @returns string | undefined.
+	 */
 	public get(key: string): string | undefined {
 		return localStorage.getItem(key) ?? undefined;
 	}
 
+	/**
+	 * localStorage.setItem(key, value);
+	 * @param key string;
+	 * @param value number | string;
+	 */
 	public set(key: string, value: number | string): void {
 		localStorage.setItem(key, `${value}`);
 	}
