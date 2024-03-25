@@ -17,9 +17,13 @@
 			/>
 
 			@if (form.get('address')?.value && form.get('address')?.value.trim()) {
-				<button matSuffix aria-label="clear" (click)="clear()" style="padding-right: 10px">
-					<app-component-button [type]="'ICON'" [icon]="'close'" />
-				</button>
+				<app-component-button
+					[type]="'ICON'"
+					[icon]="'close'"
+					[suffix]="true"
+					(click)="form.get('address')?.setValue(null)"
+					style="padding-right: 10px"
+				/>
 			}
 
 			@if (form.get('address')?.invalid && form.get('address')?.touched) {

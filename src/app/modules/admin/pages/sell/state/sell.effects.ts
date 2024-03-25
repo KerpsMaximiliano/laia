@@ -9,7 +9,7 @@ import { environment } from '@env/environment';
 import { LOADED, LOADING } from '@consts/load.const';
 
 // * Interfaces.
-import { IArticlesResponse } from './sell.response';
+import { IArticlesResponse, ICreateArticle } from './sell.response';
 
 // * Services.
 import { CoreService } from '@services/core.service';
@@ -79,11 +79,16 @@ export class SellEffects {
 		return this._actions$.pipe(
 			ofType(ADMIN_SELL_ARTICLE_CREATE),
 			exhaustMap((action) => {
+				const user: string | undefined = this._core.get('user');
+
 				const body: FormData = new FormData();
 				body.append('status', '1');
 				body.append('typeOfPrice', action.tPrice);
 				body.append('typeOfSale', action.tStock);
 
+				if (user) {
+					body.append('userId', user);
+				}
 				if (action.medias.length > 0) {
 					action.medias.forEach((media) => {
 						body.append('medias', media);
@@ -115,16 +120,22 @@ export class SellEffects {
 					}
 				}
 
-				return this._core.post<{ productId: number; medias: { url: string; type: 'IMAGE' }[] }>('/product/create-aux', body).pipe(
-					map((res) =>
-						ADMIN_SELL_ARTICLE_CREATED({
+				return this._core.post<ICreateArticle>('/product/create-aux', body).pipe(
+					map((res) => {
+						const user: string | undefined = this._core.get('user');
+						if (!user) {
+							this._core.set('product', res.productId);
+							this._core.redirect('auth');
+						}
+						return ADMIN_SELL_ARTICLE_CREATED({
 							id: res.productId,
 							medias: res.medias.map((media) => media),
 							title: action.title,
 							price: { amount: action.price, type: 'USD' },
-							stock: { quantity: action.stock, type: action.tStock }
-						})
-					),
+							stock: { quantity: action.stock, type: action.tStock },
+							segmentMedia: res.segmentMedia?.url ?? null
+						});
+					}),
 					catchError(() => of({ type: '[ERROR_ADMIN_SELL_ARTICLE_CREATE]: POST_PRODUCT_CREATE_AUX' }))
 				);
 			})
