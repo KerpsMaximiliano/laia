@@ -58,6 +58,10 @@ body {
 	max-height: 950px;
 }
 
+main {
+	padding-bottom: 44px !important;
+}
+
 hr {
 	background-color: var(--grey-light);
 	height: 1px;
@@ -70,7 +74,6 @@ button {
 	touch-action: manipulation;
 }
 
-h1,
 h2,
 h3,
 h4,
@@ -88,7 +91,8 @@ h3,
 }
 
 h1 {
-	font-size: 24px;
+	font-size: 17px;
+	line-height: normal;
 }
 
 h2 {
@@ -386,6 +390,7 @@ html {
 .option {
 	color: var(--violet);
 	font-size: 17px;
+	padding: 0 12px;
 }
 
 .message {
@@ -407,7 +412,7 @@ html {
 
 .disabled,
 .disabled * {
-	color: #c3c3c3;
+	color: #c3c3c3 !important;
 }
 
 /* -------------------- GOOGLE MAPS -------------------- */

@@ -18,20 +18,18 @@ import { CdkDragDrop, DragDropModule, moveItemInArray } from '@angular/cdk/drag-
 	styleUrl: './order.component.scss'
 })
 export class OrderComponent implements OnInit {
+	public readonly core: CoreService = inject(CoreService);
+
 	// Variable para saber si hubo cambios y habilitar el boton "Ver"
 	public change: boolean = false;
 
-	// Variable para saber si el ordenamiento, false = Descendiente, true = Ascendente
-	public asc: boolean = true;
-	public desc: boolean = false;
+	public order: number = 0;
 
 	// Datos configurados en el back.
 	public items: string = 'Por Tiempo, Estado del pago, Status, Ventas por mes, Tandas de tiempo, Coordenadas, Catálogo, Vendendores';
 
 	// Lista para recorrer
 	public initialOptions: string[] = [];
-
-	private _core: CoreService = inject(CoreService);
 
 	public ngOnInit(): void {
 		//Configuracion recibida la pasamos a un array.
@@ -51,20 +49,6 @@ export class OrderComponent implements OnInit {
 		} else {
 			this.change = true;
 		}
-	}
-
-	public check(value?: string): void {
-		if (value === 'asc') {
-			this.asc = true;
-			this.desc = false;
-		} else {
-			this.asc = false;
-			this.desc = true;
-		}
-	}
-
-	public back(): void {
-		this._core.back();
 	}
 
 	// Retora un string con el formato para ser almacenado(ordenado)

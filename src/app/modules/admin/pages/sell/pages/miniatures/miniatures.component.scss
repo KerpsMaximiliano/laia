@@ -1,19 +1,10 @@
-/* h1,
-
-
-h1 {
-	line-height: normal;
+main article {
+	padding: 8px 0;
 }
 
-.disabled,
-.disabled * {
-	color: #c3c3c3;
-} */
-
-h1 {
-	font-size: 17px;
-	font-weight: 600;
-	line-height: normal;
+main article button {
+	grid-template-columns: 1fr max-content;
+	padding: 4px 16px;
 }
 
 .title {

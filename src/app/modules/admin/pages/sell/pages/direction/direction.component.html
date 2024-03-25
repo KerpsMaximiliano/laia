@@ -1,0 +1,54 @@
+<header class="flex gp-4 pd-12">
+	<app-component-button [type]="'MINI'" [icon]="'navigate_before'" />
+	<h1>Elige una dirección</h1>
+</header>
+
+<main>
+	<!-- <form [formGroup]="form">
+		<mat-form-field class="w" style="padding-top: 24px">
+			<input
+				type="text"
+				(input)="search(form.get('address')?.value)"
+				(keydown.enter)="selectFirst()"
+				matInput
+				formControlName="address"
+				[matAutocomplete]="auto"
+				placeholder="Busca tu dirección de entrega"
+			/>
+
+			@if (form.get('address')?.value && form.get('address')?.value.trim()) {
+				<button matSuffix aria-label="clear" (click)="clear()" style="padding-right: 10px">
+					<app-component-button [type]="'ICON'" [icon]="'close'" />
+				</button>
+			}
+
+			@if (form.get('address')?.invalid && form.get('address')?.touched) {
+				<mat-error>{{ getErrorMessage(form.get('address')!) }}</mat-error>
+			}
+
+			<mat-autocomplete #auto="matAutocomplete">
+				@for (prediction of autocompleteResults | async; track $index) {
+					<mat-option [value]="prediction.description" (click)="selectPlace(prediction)" style="font-size: 15px">
+						<div class="flex gp-8">
+							<app-component-button [type]="'ICON'" [icon]="'location_on'" style="width: fit-content" />
+							<p>{{ prediction.description }}</p>
+						</div>
+					</mat-option>
+				}
+			</mat-autocomplete>
+		</mat-form-field>
+	</form> -->
+
+	<div class="h">
+		<google-map
+			height="100%"
+			width="100%"
+			[center]="config.center"
+			[zoom]="config.zoom"
+			[options]="config.options"
+			(mapClick)="addMarker($event)"
+		>
+			<map-marker [position]="marker" />
+		</google-map>
+	</div>
+</main>

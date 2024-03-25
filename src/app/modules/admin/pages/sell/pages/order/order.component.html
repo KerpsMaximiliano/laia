@@ -1,41 +1,51 @@
-<div class="box">
-	<header class="flex bet gp-4">
-		<div class="flex gp-4">
-			<app-component-button [type]="'MINI'" [icon]="'navigate_before'" (click)="back()" />
-			<h1>Ordenamiento</h1>
-		</div>
-		<!-- Agregar condicion al if && asc => Dependiendo si por defecto es asc o desc -->
-		@if (change) {
-			<button type="button" class="option" style="padding: 0 12px">Ver</button>
-		}
-	</header>
+<header class="flex bet pd-12">
+	<div class="flex gp-4">
+		<app-component-button [type]="'MINI'" [icon]="'navigate_before'" (click)="core.back()" />
 
-	<main class="flex col gp-24 pd-12 example-list">
-		<section class="grid bd br-4 w">
-			<button type="button" class="flex bet pd-12" (click)="check('asc')">
-				Ascendente
-				<input type="radio" class="my-12" style="accent-color: #9747ff; width: 15px; height: 15px" [checked]="asc" />
-			</button>
+		<h1>Ordenamiento</h1>
+	</div>
 
-			<hr />
+	@if (change) {
+		<button type="button" class="option">Ver</button>
+	}
+</header>
 
-			<button type="button" class="flex bet pd-12" (click)="check()">
-				Descendente
-				<input type="radio" class="my-12" style="accent-color: #9747ff; width: 15px; height: 15px" [checked]="desc" />
-			</button>
-		</section>
+<main class="grid gp-30 pd-12">
+	<section class="grid bd br-4">
+		<button type="button" class="flex bet pd-12" (click)="order = 0">
+			Ascendente
 
-		<section class="grid bd br-4 w" cdkDropList (cdkDropListDropped)="drop($event)">
-			@for (item of initialOptions; track $index) {
-				<div class="flex bet pd-12 bw" cdkDrag>
-					{{ item }}
+			<app-component-button
+				[type]="'ICON'"
+				[icon]="order === 0 ? 'check_circle' : 'radio_button_unchecked'"
+				[color]="order === 0 ? 'var(--violet)' : ''"
+			/>
+		</button>
 
-					<app-component-button [type]="'MINI'" [icon]="'drag_indicator'" cdkDragHandle />
-				</div>
-				@if (initialOptions.length - 1 !== $index) {
-					<hr />
-				}
+		<hr />
+
+		<button type="button" class="flex bet pd-12" (click)="order = 1">
+			Descendente
+
+			<app-component-button
+				[type]="'ICON'"
+				[icon]="order === 1 ? 'check_circle' : 'radio_button_unchecked'"
+				[color]="order === 1 ? 'var(--violet)' : ''"
+			/>
+		</button>
+	</section>
+
+	<section class="bd br-4" cdkDropList (cdkDropListDropped)="drop($event)">
+		@for (item of initialOptions; track $index) {
+			<div class="flex bet pd-12 bw" cdkDrag>
+				{{ item }}
+
+				<app-component-button [type]="'ICON'" [icon]="'drag_indicator'" cdkDragHandle />
+			</div>
+
+			@if (!$last) {
+				<hr />
 			}
-		</section>
-	</main>
-</div>
+		}
+	</section>
+</main>
