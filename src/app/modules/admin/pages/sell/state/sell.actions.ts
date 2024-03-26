@@ -40,8 +40,18 @@ export const ADMIN_SELL_ARTICLE_CREATE = createAction(
 );
 export const ADMIN_SELL_ARTICLE_CREATED = createAction(
 	'[Admin Sell Article] Created Article',
-	props<{ id: number; medias: IArticle['medias']; title: IArticle['title']; price: IArticle['price']; stock: IArticle['stock'] }>()
+	props<{
+		id: number;
+		medias: IArticle['medias'];
+		title: IArticle['title'];
+		price: IArticle['price'];
+		stock: IArticle['stock'];
+		segmentMedia: IArticle['segments']['items'][number]['media'];
+	}>()
 );
+
+// * ASSIGN ARTICLE.
+export const ADMIN_SELL_ARTICLE_ASSIGN = createAction('[Admin Sell Article] Assign Article', props<{ article: number }>());
 
 // --------------------------------------------------------------------------------------------------------------
 

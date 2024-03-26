@@ -13,3 +13,10 @@ interface IArticles {
 
 export type IKeywordsWatchResponse = IResponse<{ wAdminSellKeyWords: string[] }>;
 export type IArticlesResponse = IResponse<{ products: IArticles[] }>;
+
+// * Interface type response.
+export interface ICreateArticle {
+	productId: number;
+	medias: { url: string; type: 'IMAGE' }[];
+	segmentMedia: { url: string; type: 'IMAGE' } | null;
+}
