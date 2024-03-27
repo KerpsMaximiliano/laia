@@ -138,6 +138,9 @@ export class CoreService {
 					case 'HASHTAG':
 						chunk = await import('@dialogs/content/admin/sell/hashtag/hashtag.component');
 						break;
+					case 'DATE-RANGE':
+						chunk = await import('@app/core/dialog/content/admin/sell/date-range/date-range.component');
+						break;
 					case 'DELAY':
 						chunk = await import('@dialogs/content/admin/sell/delay/delay.component');
 						break;
