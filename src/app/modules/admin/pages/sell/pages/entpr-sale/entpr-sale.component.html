@@ -4,17 +4,10 @@
 	<h1>Emprendedor: Ventas</h1>
 </header>
 
-<main class="grid gp-24 pd-12 pb-44">
+<main class="grid gp-24 pd-12">
 	<mat-accordion class="expansion-panel-pd grid gp-16">
-		<mat-expansion-panel
-			(opened)="panelOpenState = true"
-			(closed)="panelOpenState = false"
-			togglePosition="after"
-			style="box-shadow: none"
-			[expanded]="true"
-			class="expansion-panel-content"
-		>
-			<mat-expansion-panel-header style="background-color: var(--grey-light); padding: 12px 16px 12px 12px; height: 48px">
+		<mat-expansion-panel [expanded]="true" class="expansion-panel-content">
+			<mat-expansion-panel-header style="background-color: var(--grey-light); padding: 12px 20px 12px 12px; height: 48px">
 				<mat-panel-title class="fle bet">Tiempo de entrega </mat-panel-title>
 			</mat-expansion-panel-header>
 			<div class="grid bd br-bottom-4">
@@ -35,13 +28,13 @@
 
 	<mat-accordion class="expansion-panel-pd grid gp-16">
 		<mat-expansion-panel [expanded]="true">
-			<mat-expansion-panel-header style="background-color: var(--grey-light); padding: 12px 16px 12px 12px; height: 48px">
+			<mat-expansion-panel-header style="background-color: var(--grey-light); padding: 12px 20px 12px 12px; height: 48px">
 				<mat-panel-title>Tiempos de entrega</mat-panel-title>
 			</mat-expansion-panel-header>
 
 			<div class="grid bd br-bottom-4">
 				<!-- ! Sin redirección -->
-				<button type="button" class="grid gp-8 pd-12 btn">
+				<button type="button" class="btn grid gp-8 pd-12">
 					<!-- <app-component-button [type]="'ICON'" [icon]="'event'" class="pd-12" /> -->
 					<app-component-button [type]="'ICON'" [icon]="'calendar_today'" class="pd-12" />
 					<!-- <app-component-button [type]="'ICON'" [icon]="'calendar_month'" class="pd-12" /> -->
@@ -58,13 +51,13 @@
 
 	<mat-accordion class="expansion-panel-pd grid gp-16">
 		<mat-expansion-panel [expanded]="true">
-			<mat-expansion-panel-header style="background-color: var(--grey-light); padding: 12px 16px 12px 12px; height: 48px">
+			<mat-expansion-panel-header style="background-color: var(--grey-light); padding: 12px 20px 12px 12px; height: 48px">
 				<mat-panel-title>Lugares de entrega</mat-panel-title>
 			</mat-expansion-panel-header>
 
 			<div class="grid bd br-bottom-4">
 				<!-- ! Sin redirección -->
-				<button type="button" class="grid gp-8 pd-12 btn">
+				<button type="button" class="btn grid gp-8 pd-12">
 					<!-- <app-component-button [type]="'ICON'" [icon]="'share_location'" class="pd-12" /> -->
 					<app-component-button [type]="'ICON'" [icon]="'add_location_alt'" class="pd-12" />
 
@@ -80,13 +73,13 @@
 
 	<mat-accordion class="expansion-panel-pd grid gp-16">
 		<mat-expansion-panel [expanded]="true">
-			<mat-expansion-panel-header style="background-color: var(--grey-light); padding: 12px 16px 12px 12px; height: 48px">
+			<mat-expansion-panel-header style="background-color: var(--grey-light); padding: 12px 20px 12px 12px; height: 48px">
 				<mat-panel-title>Métodos de pago</mat-panel-title>
 			</mat-expansion-panel-header>
 
 			<div class="grid bd br-bottom-4">
 				<!-- ! Sin redirección -->
-				<button type="button" class="grid gp-8 pd-12 btn">
+				<button type="button" class="btn grid gp-8 pd-12">
 					<!-- <app-component-button [type]="'ICON'" [icon]="'payments'" class="pd-12" /> -->
 					<app-component-button [type]="'ICON'" [icon]="'add_card'" class="pd-12" />
 
@@ -102,13 +95,13 @@
 
 	<mat-accordion class="expansion-panel-pd grid gp-16">
 		<mat-expansion-panel [expanded]="true">
-			<mat-expansion-panel-header style="background-color: var(--grey-light); padding: 12px 16px 12px 12px; height: 48px">
+			<mat-expansion-panel-header style="background-color: var(--grey-light); padding: 12px 20px 12px 12px; height: 48px">
 				<mat-panel-title>Dedicatoria de regalo</mat-panel-title>
 			</mat-expansion-panel-header>
 
 			<div class="grid bd br-bottom-4">
 				<!-- ! Sin redirección -->
-				<button type="button" class="grid gp-8 pd-12 btn">
+				<button type="button" class="btn grid gp-8 pd-12">
 					<app-component-button [type]="'ICON'" [icon]="'redeem'" class="pd-12" />
 
 					<div class="grid gp-4 tx-left">
@@ -123,7 +116,7 @@
 				<hr />
 
 				<!-- ! Sin redirección -->
-				<button type="button" class="grid gp-8 pd-12 btn">
+				<button type="button" class="btn grid gp-8 pd-12">
 					<app-component-button [type]="'ICON'" [icon]="'article'" class="pd-12" />
 
 					<div class="grid gp-4 tx-left">
@@ -140,13 +133,13 @@
 
 	<mat-accordion class="expansion-panel-pd grid gp-16">
 		<mat-expansion-panel [expanded]="true">
-			<mat-expansion-panel-header style="background-color: var(--grey-light); padding: 12px 16px 12px 12px; height: 48px">
+			<mat-expansion-panel-header style="background-color: var(--grey-light); padding: 12px 20px 12px 12px; height: 48px">
 				<mat-panel-title>Configuración de facturas</mat-panel-title>
 			</mat-expansion-panel-header>
 
 			<div class="grid bd br-bottom-4">
 				<!-- ! Sin redirección -->
-				<button type="button" class="grid gp-8 pd-12 btn">
+				<button type="button" class="btn grid gp-8 pd-12">
 					<app-component-button [type]="'ICON'" [icon]="'forward_to_inbox'" class="pd-12" />
 
 					<div class="grid gp-4 tx-left">
@@ -161,13 +154,13 @@
 
 	<mat-accordion class="expansion-panel-pd grid gp-16">
 		<mat-expansion-panel [expanded]="true">
-			<mat-expansion-panel-header style="background-color: var(--grey-light); padding: 12px 16px 12px 12px; height: 48px">
+			<mat-expansion-panel-header style="background-color: var(--grey-light); padding: 12px 20px 12px 12px; height: 48px">
 				<mat-panel-title>Estrategias</mat-panel-title>
 			</mat-expansion-panel-header>
 
 			<div class="grid bd br-bottom-4">
 				<!-- ! Sin redirección -->
-				<button type="button" class="grid gp-8 pd-12 btn">
+				<button type="button" class="btn grid gp-8 pd-12">
 					<app-component-button [type]="'ICON'" [icon]="'public'" class="pd-12" />
 
 					<div class="grid gp-4 tx-left">
@@ -182,13 +175,13 @@
 
 	<mat-accordion class="expansion-panel-pd grid gp-16">
 		<mat-expansion-panel [expanded]="true">
-			<mat-expansion-panel-header style="background-color: var(--grey-light); padding: 12px 16px 12px 12px; height: 48px">
+			<mat-expansion-panel-header style="background-color: var(--grey-light); padding: 12px 20px 12px 12px; height: 48px">
 				<mat-panel-title>¿Qué venderás?</mat-panel-title>
 			</mat-expansion-panel-header>
 
 			<div class="grid bd br-bottom-4">
 				<!-- ! Sin redirección -->
-				<button type="button" class="grid gp-8 pd-12 btn">
+				<button type="button" class="btn grid gp-8 pd-12">
 					<app-component-button [type]="'ICON'" [icon]="'attach_money'" class="pd-12" />
 					<!-- <app-component-button [type]="'ICON'" [icon]="'currency_exchange'" class="pd-12" /> -->
 
@@ -204,7 +197,7 @@
 				<hr />
 
 				<!-- ! Sin redirección -->
-				<button type="button" class="grid gp-8 pd-12 btn">
+				<button type="button" class="btn grid gp-8 pd-12">
 					<app-component-button [type]="'ICON'" [icon]="'imagesearch_roller'" class="pd-12" />
 
 					<div class="grid gp-4 tx-left">

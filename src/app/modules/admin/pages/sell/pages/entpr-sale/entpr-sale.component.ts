@@ -1,15 +1,15 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 
+// * Components.
+import { ButtonComponent } from '@components/button/button.component';
+import { LoginComponent } from '@components/login/login.component';
+
 // * Services.
 import { SellService } from '@sell/services/sell.service';
 import { CoreService } from '@services/core.service';
 
 // * Sorts.
 import { IDays } from '@sorts/calendar.sort';
-
-// * Components.
-import { ButtonComponent } from '@components/button/button.component';
-import { LoginComponent } from '@components/login/login.component';
 
 // * Material.
 import { MatExpansionModule } from '@angular/material/expansion';
@@ -19,7 +19,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	selector: 'app-admin-sell-entprsale',
 	standalone: true,
-	imports: [ButtonComponent, LoginComponent, MatSlideToggleModule, MatExpansionModule],
+	imports: [MatSlideToggleModule, MatExpansionModule, ButtonComponent, LoginComponent],
 	templateUrl: './entpr-sale.component.html',
 	styleUrl: './entpr-sale.component.scss'
 })

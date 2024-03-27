@@ -6,7 +6,7 @@
 	--required: #b64400;
 	--black: #403d3d;
 	--grey: #7b7b7b;
-	--grey-light: #d9d9d9;
+	--grey-light: #e0e0e3;
 	--white: #fff;
 }
 
@@ -311,6 +311,10 @@ p {
 	border-radius: 4px;
 }
 
+.br-bottom-4 {
+	border-radius: 0 0 4px 4px !important;
+}
+
 .br-8 {
 	border-radius: 8px;
 }
@@ -380,6 +384,14 @@ html {
 
 .expansion-panel-pd .mat-expansion-panel-content .mat-expansion-panel-body {
 	padding: 0 !important;
+}
+
+.expansion-footer {
+	background-color: var(--grey-light);
+	min-height: 48px;
+	display: flex;
+	align-items: center;
+	padding: 0 12px;
 }
 
 /* -------------------- OPTIONS -------------------- */

@@ -64,19 +64,9 @@ export class ProfileComponent implements AfterViewInit, OnDestroy {
 
 	private _setForm(): UntypedFormGroup {
 		return new UntypedFormGroup({
-			title: new UntypedFormControl(null, [
-				Validators.required,
-				Validators.minLength(1),
-				Validators.maxLength(30),
-				notOnlySpaces()
-			]),
+			title: new UntypedFormControl(null, [Validators.required, Validators.minLength(1), Validators.maxLength(30), notOnlySpaces()]),
 			// * Address.
-			phone: new UntypedFormControl(null, [
-				Validators.required,
-				Validators.minLength(5),
-				Validators.maxLength(15),
-				isNumeric()
-			]),
+			phone: new UntypedFormControl(null, [Validators.required, Validators.minLength(5), Validators.maxLength(15), isNumeric()]),
 			promotions: new UntypedFormControl(null, [Validators.required]),
 			web: new UntypedFormControl(null, [Validators.maxLength(255), notOnlySpaces()]),
 			description: new UntypedFormControl(null, [Validators.maxLength(500), notOnlySpaces()])
@@ -84,7 +74,7 @@ export class ProfileComponent implements AfterViewInit, OnDestroy {
 	}
 
 	private _resize(): void {
-		this.form.controls['note'].valueChanges.pipe(takeUntil(this._destroy$)).subscribe(() => {
+		this.form.controls['description'].valueChanges.pipe(takeUntil(this._destroy$)).subscribe(() => {
 			this._zone.onStable.pipe(take(1)).subscribe(() => this.autosize?.resizeToFitContent(true));
 		});
 	}

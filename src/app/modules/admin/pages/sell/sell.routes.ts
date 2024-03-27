@@ -54,6 +54,10 @@ export const SELL_ROUTES: Routes = [
 				loadComponent: async () => import('./pages/miniatures/miniatures.component').then((c) => c.MiniaturesComponent)
 			},
 			{
+				path: 'order',
+				loadComponent: async () => import('./pages/order/order.component').then((c) => c.OrderComponent)
+			},
+			{
 				path: 'ordering',
 				loadComponent: async () => import('./pages/ordering/ordering.component').then((c) => c.OrderingComponent)
 			},
