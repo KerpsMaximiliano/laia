@@ -35,9 +35,9 @@
 		</button>
 	</section>
 
-	<section class="bd br-4" cdkDropList (cdkDropListDropped)="drop($event)">
+	<section class="bd br-4 limit" cdkDropList (cdkDropListDropped)="drop($event)">
 		@for (item of selectedOptions; track $index) {
-			<div class="flex bet pd-12 bw" cdkDrag>
+			<div class="flex bet pd-12 bw" cdkDrag cdkDragBoundary=".limit">
 				{{ item }}
 
 				<app-component-button [type]="'ICON'" [icon]="'drag_indicator'" cdkDragHandle />
