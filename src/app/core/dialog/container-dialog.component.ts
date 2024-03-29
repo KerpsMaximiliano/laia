@@ -4,7 +4,6 @@ import {
 	ChangeDetectorRef,
 	Component,
 	OnDestroy,
-	OnInit,
 	ViewChild,
 	ViewContainerRef,
 	afterNextRender,
@@ -35,7 +34,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 		</div>
 	`
 })
-export class ContainerDialogComponent implements OnInit, OnDestroy {
+export class ContainerDialogComponent implements OnDestroy {
 	@ViewChild('content', { read: ViewContainerRef }) public readonly content?: ViewContainerRef;
 
 	public cAnimation: boolean = false;
@@ -67,10 +66,6 @@ export class ContainerDialogComponent implements OnInit, OnDestroy {
 					}
 				});
 		});
-	}
-
-	public ngOnInit(): void {
-		console.log('hola');
 	}
 
 	public close(): void {

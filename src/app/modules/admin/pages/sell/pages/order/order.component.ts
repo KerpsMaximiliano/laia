@@ -20,7 +20,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 export class OrderComponent {
 	public readonly core: CoreService = inject(CoreService);
 
-	public readonly view: 'ADMIN' | 'USER' = 'USER';
+	public readonly view: 'ADMIN' | 'USER' = 'ADMIN';
 
 	public user: {
 		id: number;
@@ -29,20 +29,18 @@ export class OrderComponent {
 		name: string | null;
 		surname: string | null;
 		phone: string | null;
-	} | null = null;
-
-	// {
-	// 	id: 1,
-	// 	email: 'maximilianokerps@gmail.com',
-	// 	// image: 'https://avatars.githubusercontent.com/u/25936678?v=4',
-	// 	image: null,
-	// 	// name: 'Maximiliano',
-	// 	name: null,
-	// 	// surname: 'Kerps',
-	// 	surname: null,
-	// 	phone: '+5493434047556'
-	// 	// phone: null
-	// };
+	} | null = {
+		id: 1,
+		email: 'maximilianokerps@gmail.com',
+		// image: 'https://avatars.githubusercontent.com/u/25936678?v=4',
+		image: null,
+		// name: 'Maximiliano',
+		name: null,
+		// surname: 'Kerps',
+		surname: null,
+		phone: '+5493434047556'
+		// phone: null
+	};
 
 	public merchant: {
 		id: number;

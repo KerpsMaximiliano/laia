@@ -382,6 +382,31 @@ html {
 	--mat-expansion-header-expanded-state-height: 48px;
 }
 
+/* ---------- ANGULAR MAT-ACCORDION ---------- */
+
+mat-expansion-panel-header {
+	background-color: var(--grey-light);
+	border-radius: 4px 4px 0 0;
+}
+
+mat-panel-title {
+	font-size: 15px;
+	margin: 0;
+}
+
+.expansion-panel-body {
+	animation: expand 2s ease-out;
+}
+
+.mat-expansion-panel-spacing {
+	margin: 0;
+}
+
+.mat-accordion .mat-expansion-panel:not(.mat-expanded),
+.mat-accordion .mat-expansion-panel:not(.mat-expansion-panel-spacing) {
+	border-radius: 4px;
+}
+
 .expansion-panel-pd .mat-expansion-panel-content .mat-expansion-panel-body {
 	padding: 0 !important;
 }
@@ -420,6 +445,11 @@ html {
 	display: flex;
 	align-items: center;
 	padding: 12px;
+}
+
+.btn {
+	font-size: 17px;
+	font-weight: 600;
 }
 
 .disabled,

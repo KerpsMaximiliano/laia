@@ -20,14 +20,3 @@ mat-panel-title {
 .mat-accordion .mat-expansion-panel:not(.mat-expansion-panel-spacing) {
 	border-radius: 4px;
 }
-
-.entrepreneur,
-.manager {
-	border-radius: 0 0 4px 4px;
-}
-
-.entrepreneur button,
-.manager button {
-	font-size: 17px;
-	font-weight: 600;
-}

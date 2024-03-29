@@ -57,68 +57,62 @@
 	@defer (when user().logged) {
 		@if (user().logged) {
 			<mat-accordion class="expansion-panel-pd grid gp-16">
-				<mat-expansion-panel
-					(opened)="panelOpenState = true"
-					(closed)="panelOpenState = false"
-					togglePosition="after"
-					style="box-shadow: none"
-					[expanded]="true"
-					class="expansion-panel-content"
-				>
-					<mat-expansion-panel-header style="background-color: var(--grey-light)">
-						<mat-panel-title class="fle bet"> Sombrero del Emprendedor </mat-panel-title>
+				<mat-expansion-panel [expanded]="true">
+					<mat-expansion-panel-header style="background-color: var(--grey-light); padding: 12px 20px 12px 12px; height: 48px">
+						<mat-panel-title>Sombrero del Emprendedor</mat-panel-title>
 					</mat-expansion-panel-header>
-					<div class="entrepreneur grid bd br-4">
+
+					<div class="grid bd br-4">
 						@for (item of entrepreneur; track $index) {
-							<button type="button" class="fle col gp-4 my-8 pd-12 w">
+							<button type="button" class="btn grid gp-4 my-8 pd-12 tx-left w">
 								@if (!item.status) {
 									<p style="color: var(--required)">Próximamente</p>
 								}
+
 								{{ item.title }}
+
 								<p class="tx-visible tx-left">{{ item.description }}</p>
 							</button>
 
-							@if ($index < entrepreneur.length - 1) {
+							@if (!$last) {
 								<hr />
 							}
 						}
 					</div>
 				</mat-expansion-panel>
 
-				<mat-expansion-panel
-					(opened)="panelOpenState = true"
-					(closed)="panelOpenState = false"
-					togglePosition="after"
-					style="box-shadow: none"
-					class="expansion-panel-content"
-				>
+				<mat-expansion-panel>
 					<mat-expansion-panel-header style="background-color: var(--grey-light)">
 						<mat-panel-title class="fle bet"> Sombrero del Gerente </mat-panel-title>
 					</mat-expansion-panel-header>
-					<div class="manager grid bd br-4">
-						<button type="button" class="fle col gp-4 my-8 pd-12">
+					<div class="grid bd br-4">
+						<button type="button" class="btn grid gp-4 my-8 pd-12 tx-left w">
 							Artículos
+
 							<p class="tx-visible">40</p>
 						</button>
 
 						<hr />
 
-						<button type="button" class="fle col gp-4 my-8 pd-12">
+						<button type="button" class="btn grid gp-4 my-8 pd-12 tx-left w">
 							Ventas
+
 							<p class="tx-visible">Iniciadas 450. En Proceso 780.</p>
 						</button>
 
 						<hr />
 
-						<button type="button" class="fle col gp-4 my-8 pd-12">
+						<button type="button" class="btn grid gp-4 my-8 pd-12 tx-left w">
 							Flujo de Caja
+
 							<p class="tx-visible">Ingresos $0. Egresos $0. Beneficio $0.</p>
 						</button>
 
 						<hr />
 
-						<button type="button" class="fle col gp-4 my-8 pd-12">
+						<button type="button" class="btn grid gp-4 my-8 pd-12 tx-left w">
 							Compradores
+
 							<p class="tx-visible">> 4: 0. > 8: 0. > 16:0</p>
 						</button>
 					</div>

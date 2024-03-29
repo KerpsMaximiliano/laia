@@ -98,7 +98,6 @@ export class HomeComponent {
 			status: false
 		}
 	];
-	public panelOpenState: boolean = true;
 
 	// eslint-disable-next-line @ngrx/use-consistent-global-store-name
 	private readonly _store: Store<IState> = inject(Store);

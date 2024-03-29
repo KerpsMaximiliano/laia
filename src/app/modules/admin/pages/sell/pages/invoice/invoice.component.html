@@ -1,0 +1,198 @@
+<header class="flex bet pd-12">
+	<div class="flex gp-4">
+		<app-component-button [type]="'MINI'" [icon]="'navigate_before'" />
+		<h1>Factura</h1>
+	</div>
+
+	<div>
+		<app-component-button [type]="'MINI'" [icon]="'more_vert'" />
+	</div>
+</header>
+
+<main class="grid gp-30 pd-12">
+	<article class="gp-8">
+		<div class="grid gp-8">
+			<h2 class="tx-3">Factura de Maximiliano Kerps</h2>
+
+			<p>20240101MV012N365</p>
+
+			<p>28 de marzo del 2024</p>
+		</div>
+
+		<div class="merchant--image grid-place br-50">
+			@if (user.image) {
+				<img [src]="user.image" alt="Imagen del comerciante" class="br-50 w h" />
+			} @else {
+				<p>
+					{{ user.name ? user.name!.charAt(0) : user.surname ? user.surname!.charAt(0) : user.email!.charAt(0) }}
+				</p>
+			}
+		</div>
+	</article>
+
+	<mat-accordion class="expansion-panel-pd grid gp-16">
+		<mat-expansion-panel [expanded]="true">
+			<mat-expansion-panel-header style="background-color: var(--grey-light); padding: 12px 20px 12px 12px; height: 48px">
+				<mat-panel-title>Comprador</mat-panel-title>
+			</mat-expansion-panel-header>
+
+			<div class="grid bd br-bottom-4">
+				<!-- ! Sin redirección -->
+				<button type="button" class="btn grid gp-8 pd-12">
+					<div class="img--profile br-50 grid-place">
+						@if (user.image) {
+							<img [src]="user.image" alt="Imagen del comerciante" class="br-50 w h" />
+						} @else {
+							<p>
+								{{ user.name ? user.name!.charAt(0) : user.surname ? user.surname!.charAt(0) : user.email!.charAt(0) }}
+							</p>
+						}
+					</div>
+
+					<div class="grid tx-left">
+						{{
+							user.name && user.surname
+								? user.name + ' ' + user.surname
+								: user.name || user.surname
+									? user.name ?? user.surname
+									: user.phone
+										? user.phone
+										: user.email
+						}}
+
+						<p class="tx-visible">
+							@if (user.name || user.surname || user.phone) {
+								Correo: {{ user.email }} <br />
+							}
+
+							@if (user.name || user.surname) {
+								Teléfono: {{ user.phone }}
+							}
+						</p>
+					</div>
+				</button>
+			</div>
+		</mat-expansion-panel>
+	</mat-accordion>
+
+	<mat-accordion class="expansion-panel-pd grid gp-16">
+		<mat-expansion-panel [expanded]="true">
+			<mat-expansion-panel-header style="background-color: var(--grey-light); padding: 12px 20px 12px 12px; height: 48px">
+				<mat-panel-title>Artículos</mat-panel-title>
+			</mat-expansion-panel-header>
+
+			<div class="grid bd br-bottom-4">
+				<!-- ! Sin redirección -->
+				@if (articles.items.length === 0) {
+					<h3 class="tx-center pd-12">Sin articulos</h3>
+				} @else {
+					@for (article of articles.items; track $index) {
+						<button type="button" class="article grid gp-4 pd-12">
+							<img [src]="article.media" alt="Imagen del producto" class="br-4" />
+
+							<div class="grid tx-left h">
+								<p class="required">
+									{{ article.stock.quantity }}
+									{{
+										article.stock.type === 'UNIT'
+											? article.stock.quantity > 1
+												? 'unidades'
+												: 'unidad'
+											: article.stock.quantity > 1
+												? 'paquetes'
+												: 'paquete'
+									}}
+								</p>
+
+								{{ article.title }}
+
+								<p class="tx-visible">{{ currency(article.price) }}</p>
+							</div>
+						</button>
+					}
+
+					<div class="expansion-footer">
+						{{ articles.items.length > 1 ? articles.items.length + ' artículos' : articles.items.length + ' artículo' }}.
+						{{ currency(articles.total) }} en total.
+					</div>
+				}
+			</div>
+		</mat-expansion-panel>
+	</mat-accordion>
+
+	<mat-accordion class="expansion-panel-pd grid gp-16">
+		<mat-expansion-panel [expanded]="true">
+			<mat-expansion-panel-header style="background-color: var(--grey-light); padding: 12px 20px 12px 12px; height: 48px">
+				<mat-panel-title>Datos de entrega</mat-panel-title>
+			</mat-expansion-panel-header>
+
+			<div class="grid bd br-bottom-4">
+				<!-- ! Sin redirección -->
+				<button type="button" class="btn grid gp-8 pd-12">
+					<app-component-button [type]="'ICON'" [icon]="'location_on'" class="pd-12" />
+
+					<div class="grid gp-4 tx-left">
+						Dirección de entrega
+
+						<p class="tx-visible">Por defecto: dirección automática</p>
+					</div>
+				</button>
+
+				<hr />
+
+				<!-- ! Sin redirección -->
+				<button type="button" class="btn grid gp-8 pd-12">
+					<app-component-button [type]="'ICON'" [icon]="'calendar_month'" class="pd-12" />
+
+					<div class="grid gp-4 tx-left">
+						Fecha de entrega
+
+						<p class="tx-visible">Por defecto: fecha automática</p>
+					</div>
+				</button>
+
+				<button type="button" class="expansion-footer bet">
+					¿Sorpresa? ¿Quién lo recibirá?...
+
+					<app-component-button [type]="'ICON'" [icon]="'sticky_note_2'" />
+				</button>
+			</div>
+		</mat-expansion-panel>
+	</mat-accordion>
+
+	@if (false) {
+		<mat-accordion class="expansion-panel-pd grid gp-16">
+			<mat-expansion-panel [expanded]="true">
+				<mat-expansion-panel-header style="background-color: var(--grey-light); padding: 12px 20px 12px 12px; height: 48px">
+					<mat-panel-title>Información adicional</mat-panel-title>
+				</mat-expansion-panel-header>
+
+				<div class="grid bd br-bottom-4">
+					<!-- ! Sin redirección -->
+					<button type="button" class="btn grid gp-8 pd-12">
+						<app-component-button [type]="'ICON'" [icon]="'redeem'" class="pd-12" />
+
+						<div class="grid gp-4 tx-left">
+							Dedicatoria de regalo
+
+							<p class="tx-visible">Incluye la dedicatoria</p>
+						</div>
+					</button>
+
+					<!-- ! Sin redirección -->
+					<!-- <hr />
+
+          <button type="button" class="btn grid gp-8 pd-12">
+      <app-component-button [type]="'ICON'" [icon]="'article'" class="pd-12" />
+
+      <div class="grid gp-4 tx-left">
+        Tipo de factura
+        
+        <p class="tx-visible">Por defecto: Tipo de factura automática</p>
+      </div>
+    </button> -->
+				</div>
+			</mat-expansion-panel>
+		</mat-accordion>
+	}
+</main>
