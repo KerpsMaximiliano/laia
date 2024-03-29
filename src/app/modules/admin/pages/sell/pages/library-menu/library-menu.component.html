@@ -1,0 +1,24 @@
+<div class="box">
+	<header class="flex gp-4 pd-12">
+		<app-component-button [type]="'MINI'" [icon]="'navigate_before'" (click)="core.back()" />
+		<h1>Menu de Compradores</h1>
+	</header>
+	<main class="pd-12">
+		<section class="grid bd br-4">
+			<button type="button" class="flex bet pd-12">
+				Nuevo comprador
+				<app-component-button [type]="'ICON'" [icon]="'add'" />
+			</button>
+			<hr />
+			<button type="button" class="flex bet pd-12">
+				Enlace directo de acceso rápido
+				<app-component-button [type]="'ICON'" [icon]="'forward_to_inbox'" />
+			</button>
+			<hr />
+			<button type="button" class="flex bet pd-12">
+				Descargar PDF
+				<app-component-button [type]="'ICON'" [icon]="'add'" />
+			</button>
+		</section>
+	</main>
+</div>

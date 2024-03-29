@@ -1,246 +1,205 @@
 <div class="box">
-	<header class="flex gp-4 pd-12">
-		<app-component-button [type]="'MINI'" [icon]="'navigate_before'" (click)="core.back()" />
-		<h1>Filtros del reporte</h1>
+	<header class="flex bet pd-12">
+		<div class="flex gp-4">
+			<app-component-button [type]="'MINI'" [icon]="'navigate_before'" (click)="core.back()" />
+			<h1>Filtros del reporte</h1>
+		</div>
+
+		@if (change()) {
+			<button type="button" class="option" (click)="save()">Guardar</button>
+		}
 	</header>
 
 	<main class="fle col gp-24 pd-12 pb-44">
+		<!-- Por Fecha -->
+		<button type="button" class="btn--direction flex bet pd-16 br-4" (click)="core.open('DATE-RANGE')">
+			Seleccione una fecha *
+
+			<app-component-button [type]="'ICON'" [icon]="'calendar_month'" />
+		</button>
+
 		<!-- Estado del Pago -->
-		<mat-accordion class="expansion-panel-pd grid gp-16">
-			<mat-expansion-panel
-				(opened)="panelOpenState[0] = true"
-				(closed)="panelOpenState[0] = false"
-				togglePosition="after"
-				style="box-shadow: none"
-				[expanded]="true"
-				class="expansion-panel-content"
-			>
-				<mat-expansion-panel-header style="background-color: var(--grey-light); padding: 12px 16px 12px 12px">
-					<mat-panel-title class="fle bet"
-						>Estado del Pago {{ !panelOpenState[0] ? '(' + calcTotal(data.statusPayment) + ')' : '' }}</mat-panel-title
-					>
-				</mat-expansion-panel-header>
-				<div class="grid bd br-4">
-					@for (item of data.statusPayment; track $index) {
-						<button type="button" class="flex bet my-8 pd-12" (click)="item.check === 1 ? (item.check = 0) : (item.check = 1)">
-							<div class="grid gp-4">
-								<p style="font-size: 16px; font-weight: 600; text-align: left">{{ item.id }}</p>
+		@if (data.statusPayment) {
+			<mat-accordion class="expansion-panel-pd grid gp-16">
+				<mat-expansion-panel (opened)="panelOpenState[0] = true" (closed)="panelOpenState[0] = false" [expanded]="true">
+					<mat-expansion-panel-header style="background-color: var(--grey-light); padding: 12px 20px 12px 12px; height: 48px">
+						<mat-panel-title>Estado del Pago {{ !panelOpenState[0] ? '(' + calcTotal(data.statusPayment) + ')' : '' }}</mat-panel-title>
+					</mat-expansion-panel-header>
+					<div class="grid bd br-bottom-4">
+						@for (item of data.statusPayment; track $index) {
+							<button type="button" class="btn grid gp-8 pd-12 tx-left" (click)="item.check === 1 ? (item.check = 0) : (item.check = 1)">
+								{{ item.id }}
 
-								<p style="text-align: left">{{ item.sales }} Venta{{ item.sales === 1 ? '' : 's' }}</p>
-							</div>
-							<app-component-button
-								[type]="'ICON'"
-								[icon]="item.check ? 'check_circle' : 'radio_button_unchecked'"
-								[color]="item.check ? 'var(--violet)' : ''"
-							/>
-						</button>
-						@if (data.statusPayment.length !== $index) {
-							<hr />
+								<app-component-button
+									[type]="'ICON'"
+									[icon]="item.check ? 'check_circle' : 'radio_button_unchecked'"
+									[color]="item.check ? 'var(--violet)' : ''"
+								/>
+							</button>
+							@if (data.statusPayment.length !== $index) {
+								<hr />
+							}
 						}
-					}
 
-					<p class="pd-12" style="color: var(--grey); text-align: right">
-						{{ calcTotal(data.statusPayment) }} Venta{{ calcTotal(data.statusPayment) === 1 ? '' : 's' }}
-					</p>
-				</div>
-			</mat-expansion-panel>
-		</mat-accordion>
+						<p class="pd-12" style="color: var(--grey); text-align: right">{{ calcTotal(data.statusPayment) }}</p>
+					</div>
+				</mat-expansion-panel>
+			</mat-accordion>
+		}
 
 		<!-- Vendedores -->
-		<mat-accordion class="expansion-panel-pd grid gp-16">
-			<mat-expansion-panel
-				(opened)="panelOpenState[1] = true"
-				(closed)="panelOpenState[1] = false"
-				togglePosition="after"
-				style="box-shadow: none"
-				[expanded]="true"
-				class="expansion-panel-content"
-			>
-				<mat-expansion-panel-header style="background-color: var(--grey-light); padding: 12px 16px 12px 12px">
-					<mat-panel-title class="fle bet">Vendedores {{ !panelOpenState[1] ? '(' + calcTotal(data.sellers) + ')' : '' }}</mat-panel-title>
-				</mat-expansion-panel-header>
-				<div class="grid bd br-4">
-					@for (item of data.sellers; track $index) {
-						<button type="button" class="flex bet my-8 pd-12" (click)="item.check === 1 ? (item.check = 0) : (item.check = 1)">
-							<div class="grid gp-4">
-								<p style="font-size: 16px; font-weight: 600; text-align: left">{{ item.id }}</p>
+		@if (data.sellers) {
+			<mat-accordion class="expansion-panel-pd grid gp-16">
+				<mat-expansion-panel (opened)="panelOpenState[1] = true" (closed)="panelOpenState[1] = false" [expanded]="true">
+					<mat-expansion-panel-header style="background-color: var(--grey-light); padding: 12px 20px 12px 12px; height: 48px">
+						<mat-panel-title>Vendedores {{ !panelOpenState[1] ? '(' + calcTotal(data.sellers) + ')' : '' }}</mat-panel-title>
+					</mat-expansion-panel-header>
+					<div class="grid bd br-bottom-4">
+						@for (item of data.sellers; track $index) {
+							<button type="button" class="btn grid gp-8 pd-12 tx-left" (click)="item.check === 1 ? (item.check = 0) : (item.check = 1)">
+								{{ item.id }}
 
-								<p style="text-align: left">{{ item.sales }} Venta{{ item.sales === 1 ? '' : 's' }}</p>
-							</div>
-							<app-component-button
-								[type]="'ICON'"
-								[icon]="item.check ? 'check_circle' : 'radio_button_unchecked'"
-								[color]="item.check ? 'var(--violet)' : ''"
-							/>
-						</button>
-						@if (data.sellers.length !== $index) {
-							<hr />
+								<app-component-button
+									[type]="'ICON'"
+									[icon]="item.check ? 'check_circle' : 'radio_button_unchecked'"
+									[color]="item.check ? 'var(--violet)' : ''"
+								/>
+							</button>
+							@if (data.sellers.length !== $index) {
+								<hr />
+							}
 						}
-					}
 
-					<p class="pd-12" style="color: var(--grey); text-align: right">
-						{{ calcTotal(data.sellers) }} Venta{{ calcTotal(data.sellers) === 1 ? '' : 's' }}
-					</p>
-				</div>
-			</mat-expansion-panel>
-		</mat-accordion>
+						<p class="pd-12" style="color: var(--grey); text-align: right">
+							{{ calcTotal(data.sellers) }}
+						</p>
+					</div>
+				</mat-expansion-panel>
+			</mat-accordion>
+		}
 
 		<!-- Status -->
-		<mat-accordion class="expansion-panel-pd grid gp-16">
-			<mat-expansion-panel
-				(opened)="panelOpenState[2] = true"
-				(closed)="panelOpenState[2] = false"
-				togglePosition="after"
-				style="box-shadow: none"
-				[expanded]="true"
-				class="expansion-panel-content"
-			>
-				<mat-expansion-panel-header style="background-color: var(--grey-light); padding: 12px 16px 12px 12px">
-					<mat-panel-title class="fle bet">Status {{ !panelOpenState[2] ? '(' + calcTotal(data.status) + ')' : '' }}</mat-panel-title>
-				</mat-expansion-panel-header>
-				<div class="grid bd br-4">
-					@for (item of data.status; track $index) {
-						<button type="button" class="flex bet my-8 pd-12" (click)="item.check === 1 ? (item.check = 0) : (item.check = 1)">
-							<div class="grid gp-4">
-								<p style="font-size: 16px; font-weight: 600; text-align: left">{{ item.id }}</p>
+		@if (data.status) {
+			<mat-accordion class="expansion-panel-pd grid gp-16">
+				<mat-expansion-panel (opened)="panelOpenState[2] = true" (closed)="panelOpenState[2] = false" [expanded]="true">
+					<mat-expansion-panel-header style="background-color: var(--grey-light); padding: 12px 20px 12px 12px; height: 48px">
+						<mat-panel-title>Status {{ !panelOpenState[2] ? '(' + calcTotal(data.status) + ')' : '' }}</mat-panel-title>
+					</mat-expansion-panel-header>
+					<div class="grid bd br-bottom-4">
+						@for (item of data.status; track $index) {
+							<button type="button" class="btn grid gp-8 pd-12 tx-left" (click)="item.check === 1 ? (item.check = 0) : (item.check = 1)">
+								{{ item.id }}
 
-								<p style="text-align: left">{{ item.sales }} Venta{{ item.sales === 1 ? '' : 's' }}</p>
-							</div>
-							<app-component-button
-								[type]="'ICON'"
-								[icon]="item.check ? 'check_circle' : 'radio_button_unchecked'"
-								[color]="item.check ? 'var(--violet)' : ''"
-							/>
-						</button>
-						@if (data.status.length !== $index) {
-							<hr />
+								<app-component-button
+									[type]="'ICON'"
+									[icon]="item.check ? 'check_circle' : 'radio_button_unchecked'"
+									[color]="item.check ? 'var(--violet)' : ''"
+								/>
+							</button>
+							@if (data.status.length !== $index) {
+								<hr />
+							}
 						}
-					}
 
-					<p class="pd-12" style="color: var(--grey); text-align: right">
-						{{ calcTotal(data.status) }} Venta{{ calcTotal(data.status) === 1 ? '' : 's' }}
-					</p>
-				</div>
-			</mat-expansion-panel>
-		</mat-accordion>
+						<p class="pd-12" style="color: var(--grey); text-align: right">
+							{{ calcTotal(data.status) }}
+						</p>
+					</div>
+				</mat-expansion-panel>
+			</mat-accordion>
+		}
 
 		<!-- Tandas de Tiempo -->
-		<mat-accordion class="expansion-panel-pd grid gp-16">
-			<mat-expansion-panel
-				(opened)="panelOpenState[3] = true"
-				(closed)="panelOpenState[3] = false"
-				togglePosition="after"
-				style="box-shadow: none"
-				[expanded]="true"
-				class="expansion-panel-content"
-			>
-				<mat-expansion-panel-header style="background-color: var(--grey-light); padding: 12px 16px 12px 12px">
-					<mat-panel-title class="fle bet"
-						>Tandas de Tiempo {{ !panelOpenState[3] ? '(' + calcTotal(data.batches) + ')' : '' }}</mat-panel-title
-					>
-				</mat-expansion-panel-header>
-				<div class="grid bd br-4">
-					@for (item of data.batches; track $index) {
-						<button type="button" class="flex bet my-8 pd-12" (click)="item.check === 1 ? (item.check = 0) : (item.check = 1)">
-							<div class="grid gp-4">
-								<p style="font-size: 16px; font-weight: 600; text-align: left">{{ item.id }}</p>
+		@if (data.batches) {
+			<mat-accordion class="expansion-panel-pd grid gp-16">
+				<mat-expansion-panel (opened)="panelOpenState[3] = true" (closed)="panelOpenState[3] = false" [expanded]="true">
+					<mat-expansion-panel-header style="background-color: var(--grey-light); padding: 12px 20px 12px 12px; height: 48px">
+						<mat-panel-title>Tandas de Tiempo {{ !panelOpenState[3] ? '(' + calcTotal(data.batches) + ')' : '' }}</mat-panel-title>
+					</mat-expansion-panel-header>
+					<div class="grid bd br-bottom-4">
+						@for (item of data.batches; track $index) {
+							<button type="button" class="btn grid gp-8 pd-12 tx-left" (click)="item.check === 1 ? (item.check = 0) : (item.check = 1)">
+								{{ item.id }}
 
-								<p style="text-align: left">{{ item.sales }} Venta{{ item.sales === 1 ? '' : 's' }}</p>
-							</div>
-							<app-component-button
-								[type]="'ICON'"
-								[icon]="item.check ? 'check_circle' : 'radio_button_unchecked'"
-								[color]="item.check ? 'var(--violet)' : ''"
-							/>
-						</button>
-						@if (data.batches.length !== $index) {
-							<hr />
+								<app-component-button
+									[type]="'ICON'"
+									[icon]="item.check ? 'check_circle' : 'radio_button_unchecked'"
+									[color]="item.check ? 'var(--violet)' : ''"
+								/>
+							</button>
+							@if (data.batches.length !== $index) {
+								<hr />
+							}
 						}
-					}
 
-					<p class="pd-12" style="color: var(--grey); text-align: right">
-						{{ calcTotal(data.batches) }} Venta{{ calcTotal(data.batches) === 1 ? '' : 's' }}
-					</p>
-				</div>
-			</mat-expansion-panel>
-		</mat-accordion>
+						<p class="pd-12" style="color: var(--grey); text-align: right">
+							{{ calcTotal(data.batches) }}
+						</p>
+					</div>
+				</mat-expansion-panel>
+			</mat-accordion>
+		}
 
 		<!-- Coordenadas -->
-		<mat-accordion class="expansion-panel-pd grid gp-16">
-			<mat-expansion-panel
-				(opened)="panelOpenState[4] = true"
-				(closed)="panelOpenState[4] = false"
-				togglePosition="after"
-				style="box-shadow: none"
-				[expanded]="true"
-				class="expansion-panel-content"
-			>
-				<mat-expansion-panel-header style="background-color: var(--grey-light); padding: 12px 16px 12px 12px">
-					<mat-panel-title class="fle bet">Coordenadas {{ !panelOpenState[4] ? '(' + calcTotal(data.coords) + ')' : '' }}</mat-panel-title>
-				</mat-expansion-panel-header>
-				<div class="grid bd br-4">
-					@for (item of data.coords; track $index) {
-						<button type="button" class="flex bet my-8 pd-12" (click)="item.check === 1 ? (item.check = 0) : (item.check = 1)">
-							<div class="grid gp-4">
-								<p style="font-size: 16px; font-weight: 600; text-align: left">{{ item.id }}</p>
+		@if (data.coords) {
+			<mat-accordion class="expansion-panel-pd grid gp-16">
+				<mat-expansion-panel (opened)="panelOpenState[4] = true" (closed)="panelOpenState[4] = false" [expanded]="true">
+					<mat-expansion-panel-header style="background-color: var(--grey-light); padding: 12px 20px 12px 12px; height: 48px">
+						<mat-panel-title>Coordenadas {{ !panelOpenState[4] ? '(' + calcTotal(data.coords) + ')' : '' }}</mat-panel-title>
+					</mat-expansion-panel-header>
+					<div class="grid bd br-bottom-4">
+						@for (item of data.coords; track $index) {
+							<button type="button" class="btn grid gp-8 pd-12 tx-left" (click)="item.check === 1 ? (item.check = 0) : (item.check = 1)">
+								{{ item.id }}
 
-								<p style="text-align: left">{{ item.sales }} Venta{{ item.sales === 1 ? '' : 's' }}</p>
-							</div>
-							<app-component-button
-								[type]="'ICON'"
-								[icon]="item.check ? 'check_circle' : 'radio_button_unchecked'"
-								[color]="item.check ? 'var(--violet)' : ''"
-							/>
-						</button>
-						@if (data.coords.length !== $index) {
-							<hr />
+								<app-component-button
+									[type]="'ICON'"
+									[icon]="item.check ? 'check_circle' : 'radio_button_unchecked'"
+									[color]="item.check ? 'var(--violet)' : ''"
+								/>
+							</button>
+							@if (data.coords.length !== $index) {
+								<hr />
+							}
 						}
-					}
 
-					<p class="pd-12" style="color: var(--grey); text-align: right">
-						{{ calcTotal(data.coords) }} Venta{{ calcTotal(data.coords) === 1 ? '' : 's' }}
-					</p>
-				</div>
-			</mat-expansion-panel>
-		</mat-accordion>
+						<p class="pd-12" style="color: var(--grey); text-align: right">
+							{{ calcTotal(data.coords) }}
+						</p>
+					</div>
+				</mat-expansion-panel>
+			</mat-accordion>
+		}
 
 		<!-- Catalogos -->
-		<mat-accordion class="expansion-panel-pd grid gp-16">
-			<mat-expansion-panel
-				(opened)="panelOpenState[5] = true"
-				(closed)="panelOpenState[5] = false"
-				togglePosition="after"
-				style="box-shadow: none"
-				[expanded]="true"
-				class="expansion-panel-content"
-			>
-				<mat-expansion-panel-header style="background-color: var(--grey-light); padding: 12px 16px 12px 12px">
-					<mat-panel-title class="fle bet">Catálogos {{ !panelOpenState[5] ? '(' + calcTotal(data.catalogs) + ')' : '' }}</mat-panel-title>
-				</mat-expansion-panel-header>
-				<div class="grid bd br-4">
-					@for (item of data.catalogs; track $index) {
-						<button type="button" class="flex bet my-8 pd-12" (click)="item.check === 1 ? (item.check = 0) : (item.check = 1)">
-							<div class="grid gp-4">
-								<p style="font-size: 16px; font-weight: 600; text-align: left">{{ item.id }}</p>
+		@if (data.catalogs) {
+			<mat-accordion class="expansion-panel-pd grid gp-16">
+				<mat-expansion-panel (opened)="panelOpenState[5] = true" (closed)="panelOpenState[5] = false" [expanded]="true">
+					<mat-expansion-panel-header style="background-color: var(--grey-light); padding: 12px 20px 12px 12px; height: 48px">
+						<mat-panel-title>Catálogos {{ !panelOpenState[5] ? '(' + calcTotal(data.catalogs) + ')' : '' }}</mat-panel-title>
+					</mat-expansion-panel-header>
+					<div class="grid bd br-bottom-4">
+						@for (item of data.catalogs; track $index) {
+							<button type="button" class="btn grid gp-8 pd-12 tx-left" (click)="item.check === 1 ? (item.check = 0) : (item.check = 1)">
+								{{ item.id }}
 
-								<p style="text-align: left">{{ item.sales }} Venta{{ item.sales === 1 ? '' : 's' }}</p>
-							</div>
-							<app-component-button
-								[type]="'ICON'"
-								[icon]="item.check ? 'check_circle' : 'radio_button_unchecked'"
-								[color]="item.check ? 'var(--violet)' : ''"
-							/>
-						</button>
-						@if (data.catalogs.length !== $index) {
-							<hr />
+								<app-component-button
+									[type]="'ICON'"
+									[icon]="item.check ? 'check_circle' : 'radio_button_unchecked'"
+									[color]="item.check ? 'var(--violet)' : ''"
+								/>
+							</button>
+							@if (data.catalogs.length !== $index) {
+								<hr />
+							}
 						}
-					}
 
-					<p class="pd-12" style="color: var(--grey); text-align: right">
-						{{ calcTotal(data.catalogs) }} Venta{{ calcTotal(data.catalogs) === 1 ? '' : 's' }}
-					</p>
-				</div>
-			</mat-expansion-panel>
-		</mat-accordion>
+						<p class="pd-12" style="color: var(--grey); text-align: right">
+							{{ calcTotal(data.catalogs) }}
+						</p>
+					</div>
+				</mat-expansion-panel>
+			</mat-accordion>
+		}
 	</main>
 </div>

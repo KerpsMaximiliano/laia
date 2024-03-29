@@ -90,6 +90,14 @@ export const SELL_ROUTES: Routes = [
 				loadComponent: async () => import('./pages/media/media.component').then((c) => c.MediaComponent)
 			},
 			{
+				path: 'library',
+				loadComponent: async () => import('./pages/library/library.component').then((c) => c.LibraryComponent)
+			},
+			{
+				path: 'library-menu',
+				loadComponent: async () => import('./pages/library-menu/library-menu.component').then((c) => c.LibraryMenuComponent)
+			},
+			{
 				path: '**',
 				redirectTo: '',
 				pathMatch: 'full'

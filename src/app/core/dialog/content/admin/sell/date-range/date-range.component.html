@@ -1,0 +1,14 @@
+<header>
+	<h1>Rango de fechas</h1>
+</header>
+
+<main>
+	<mat-calendar
+		(selectedChange)="onSelectedChange($event)"
+		[selected]="selectedDateRange"
+		[headerComponent]="calendarHeader"
+		[maxDate]="maxDate"
+		style="height: 400px"
+	>
+	</mat-calendar>
+</main>

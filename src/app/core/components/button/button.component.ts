@@ -41,6 +41,7 @@ type Icon =
 	| 'attach_money'
 	| 'calendar_month'
 	| 'calendar_today'
+	| 'campaignOnePicker'
 	| 'cancel'
 	| 'chat'
 	| 'check_circle'
