@@ -8,14 +8,9 @@ main article {
 }
 
 .grid--layout {
-	width: calc(100vw - 26px);
-	max-width: 424px;
-	height: calc(100vw - 26px);
-	max-height: 424px;
 	display: grid;
 	grid-template-columns: repeat(3, 1fr);
 	grid-template-rows: repeat(3, 1fr);
-	gap: 8px;
 }
 
 .grid--layout__add {
@@ -24,45 +19,43 @@ main article {
 	& app-component-button {
 		transform: scale(1.5);
 	}
-
-	& div {
-		border-radius: 0 0 4px 4px;
-	}
 }
 
-.grid--layout__first {
+.portal {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	background-color: var(--white);
+	border-radius: 0 0 4px 4px;
+}
+
+.grid--layout__add,
+.grid--layout__content {
+	width: calc((100vw - 56px) / 3);
+	max-width: calc(394px / 3);
+	height: calc((100vw - 56px) / 3);
+	max-height: calc(394px / 3);
+}
+
+.grid--layout__add,
+.grid--layout__content button,
+.cdk-drag-preview button {
 	position: relative;
-
-	& div {
-		position: absolute;
-		bottom: 0;
-		left: 0;
-		right: 0;
-		background-color: var(--white);
-	}
 }
 
-.grid--layout__image {
-	position: relative;
-
-	& img {
-		aspect-ratio: 1 / 1;
-		object-fit: contain;
-	}
-
-	& app-component-button {
-		position: absolute;
-		top: 50%;
-		left: 50%;
-		transform: translate(-50%, -50%);
-		background-color: var(--white);
-	}
+.grid--layout__content button img,
+.cdk-drag-preview button img {
+	aspect-ratio: 1 / 1;
+	object-fit: contain;
+	pointer-events: none;
 }
 
-.grid--layout__image,
-.grid--layout__image img {
-	width: calc((100vw - 58px) / 3);
-	max-width: calc((450px - 58px) / 3);
-	height: calc((100vw - 58px) / 3);
-	max-height: calc((450px - 58px) / 3);
+.grid--layout__content button app-component-button,
+.cdk-drag-preview button app-component-button {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	background-color: var(--white);
 }

@@ -1,4 +1,4 @@
-import { ILoading } from '@app/core/sorts/loading.sort';
+import { ILoading } from '@sorts/loading.sort';
 
 // * Entities loading.
 export interface ILoadableEntities<T> {

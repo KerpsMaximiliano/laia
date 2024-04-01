@@ -43,40 +43,41 @@
 					}
 				</div>
 
-				<div class="grid--layout pd-8 limit" cdkDropListGroup>
+				<div class="grid--layout gp-8 pd-8 limit" cdkDropListGroup>
 					@for (i of resources; track $index) {
 						@if (images[$index]) {
-							<div cdkDropList [cdkDropListData]="{ item: images[i], index: $index }" (cdkDropListDropped)="drop($event)">
-								<button
-									type="button"
-									class="br-4 grid--layout__image"
-									aria-label="Editar, eliminar o organizar imagen"
-									cdkDrag
-									cdkDragBoundary=".limit"
-								>
-									<img [src]="images[$index]" alt="Imagen" />
-									@if (edition !== -1) {
-										<app-component-button
-											[type]="'MINI'"
-											[icon]="edition === 0 ? 'drag_indicator' : 'delete'"
-											[color]="'#000'"
-											class="br-4"
-											cdkDragHandle
-										/>
+							<div
+								cdkDropList
+								cdkDropListOrientation="horizontal"
+								[cdkDropListData]="{ item: images[i], index: $index }"
+								(cdkDropListDropped)="drop($event)"
+								class="grid--layout__content"
+							>
+								<button type="button" aria-label="Editar, eliminar u organizar imagen" cdkDragBoundary=".limit" cdkDrag class="w h">
+									<div *cdkDragPlaceholder></div>
+
+									<img [src]="images[$index]" alt="Imagen" class="br-4 w h" />
+
+									<app-component-button
+										[type]="'MINI'"
+										[icon]="'drag_indicator'"
+										[color]="'#000'"
+										class="br-4"
+										[class.d-none]="edition !== 0"
+										cdkDragHandle
+									/>
+
+									@if (edition === 1) {
+										<app-component-button [type]="'MINI'" [icon]="'delete'" [color]="'#000'" class="br-4" />
 									}
 								</button>
 							</div>
 						} @else if (edition === -1) {
-							<button
-								type="button"
-								class="w h br-4 grid-place grid--layout__add"
-								[class.grid--layout__first]="$first"
-								(click)="onClickInput()"
-								aria-label="Subir imagen"
-							>
+							<button type="button" class="w h br-4 grid-place grid--layout__add" (click)="onClickInput()" aria-label="Subir imagen">
 								<app-component-button [type]="'ICON'" [icon]="'add'" />
+
 								@if ($first) {
-									<div class="bd">
+									<div class="bd" [class.portal]="$first">
 										<p class="tx-center pd-8">Portada</p>
 									</div>
 								}
