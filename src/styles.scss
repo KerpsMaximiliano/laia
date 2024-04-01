@@ -457,6 +457,21 @@ mat-panel-title {
 	color: #c3c3c3 !important;
 }
 
+.btn {
+	font-size: 17px;
+	font-weight: 600;
+}
+
+.dinamic {
+	max-height: 231px;
+	display: grid;
+	grid-template-rows: 1fr max-content;
+
+	& > div {
+		overflow-y: scroll;
+	}
+}
+
 /* -------------------- GOOGLE MAPS -------------------- */
 
 .gmnoprint {
