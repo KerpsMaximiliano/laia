@@ -1,53 +1,93 @@
 <div class="box">
-	<header class="flex bet pd-12">
-		<div class="flex gp-4">
-			<app-component-button [type]="'MINI'" [icon]="'navigate_before'" (click)="core.back()" />
-			<h1>Compradores</h1>
-		</div>
+	<div>
+		<header class="flex bet pd-12">
+			<div class="flex gp-4">
+				<app-component-button [type]="'MINI'" [icon]="'navigate_before'" (click)="core.back()" />
+				<h1>{{ library?.name }}</h1>
+			</div>
 
-		<app-component-button [type]="'MINI'" [icon]="'more_vert'" (click)="core.back()" />
-	</header>
-	<main class="grid gp-24 pd-12">
-		@for (item of library; track $index) {
-			<mat-accordion class="expansion-panel-pd grid gp-16">
-				<mat-expansion-panel [expanded]="true">
-					<mat-expansion-panel-header style="background-color: var(--grey-light); padding: 12px 20px 12px 12px; height: 48px">
-						<mat-panel-title>{{ log(item) }}</mat-panel-title>
-					</mat-expansion-panel-header>
+			<app-component-button [type]="'MINI'" [icon]="'more_vert'" (click)="core.back()" />
+		</header>
+		<main class="grid gp-12 pd-12">
+			@for (item of library?.book; track $index) {
+				<mat-accordion class="expansion-panel-pd grid gp-16">
+					<mat-expansion-panel [expanded]="true">
+						<mat-expansion-panel-header style="background-color: var(--grey-light); padding: 12px 20px 12px 12px; height: 48px">
+							<mat-panel-title>{{ item.header }}</mat-panel-title>
+						</mat-expansion-panel-header>
 
-					<div class="grid bd br-bottom-4">
-						@for (a of item; track $index) {
-							<button type="button" class="btn grid gp-8 pd-12">
-								<div #content_image class="br-12 skeleton-loader">
-									<img
-										#img
-										style="display: none"
-										class="br-4"
-										src="https://firebasestorage.googleapis.com/v0/b/laia-c5d59.appspot.com/o/imageProducts%2Fimage-product-106-2d7b215b-223b-4632-a43a-c3f9568cd0af?alt=media&token=e624b685-1eab-4381-a1a2-552ffd57e99c"
-										[alt]="'Imagen sin texto alternativo.'"
-										(load)="loadImage(content_image, img)"
+						<div class="dinamic">
+							<div class="grid">
+								@for (a of item.items; track $index) {
+									<button
+										type="button"
+										class="btn grid gp-8 pd-12"
+										[style]="a.image ? 'grid-template-columns: 108px 1fr 24px' : a.icon === null ? 'grid-template-columns: 1fr 24px' : ''"
+										(click)="item.config.checkbox ? check(item.items, $index, item.config.multiple) : ''"
+									>
+										@if (a.image) {
+											<div #content_image class="br-12 skeleton-loader">
+												<img
+													#img
+													style="display: none"
+													class="br-4 img"
+													[src]="a.image"
+													[alt]="'Imagen sin texto alternativo.'"
+													(load)="loadImage(content_image, img)"
+												/>
+											</div>
+										} @else if (a.icon) {
+											@switch (a.icon) {
+												@case ('calendar_month') {
+													<app-component-button [type]="'ICON'" [icon]="'calendar_month'" class="pd-12" />
+												}
+											}
+										}
+
+										<div class="grid gp-4 tx-left">
+											<p class="required tx-visible">{{ a.headerboard }}</p>
+
+											{{ a.title }}
+
+											<p class="tx-visible">{{ a.subtitle }}</p>
+										</div>
+
+										@if (item.config.checkbox) {
+											<app-component-button
+												[type]="'ICON'"
+												[icon]="a.check ? 'check_circle' : 'radio_button_unchecked'"
+												[color]="a.check ? 'var(--violet)' : ''"
+											/>
+										}
+									</button>
+
+									@if (!$last) {
+										<hr />
+									}
+								}
+							</div>
+
+							@if (item.config.footer) {
+								<button type="button" class="expansion-footer bet" [style]="!item.footer ? 'justify-content: flex-end' : ''">
+									{{ item.footer ? item.footer : '' }}
+
+									<app-component-button
+										[type]="'ICON'"
+										[icon]="'navigate_next'"
+										(click)="item.redirect ? sell.redirect(item.redirect) : ''"
 									/>
-								</div>
-
-								<div class="grid gp-4 tx-left">
-									<p class="required">{{ item[$index + 1].headboard }}</p>
-
-									Configura la moneda de los pagos
-
-									<p class="tx-visible">Tipo de moneda. Ubicación geográfica</p>
-								</div>
-								<app-component-button [type]="'ICON'" [icon]="'radio_button_unchecked'" [color]="'var(--violet)'" />
-							</button>
-
-							<hr />
-						}
-						<div>
-							<p>Cliente: 28</p>
-							<app-component-button [type]="'MINI'" [icon]="'navigate_before'" (click)="core.back()" />
+								</button>
+							}
 						</div>
-					</div>
-				</mat-expansion-panel>
-			</mat-accordion>
-		}
-	</main>
+					</mat-expansion-panel>
+				</mat-accordion>
+			}
+		</main>
+	</div>
+
+	<button type="button" class="confirm flex gp-8 br-4">
+		<app-component-button [type]="'ICON'" [icon]="'add'" />
+
+		{{ 'Nuevo ' + library?.disminutive }}
+	</button>
 </div>
