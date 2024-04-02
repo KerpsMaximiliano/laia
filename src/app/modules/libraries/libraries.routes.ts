@@ -20,12 +20,8 @@ export const LIBRARIES_ROUTES: Routes = [
 			{
 				path: 'collection/:id', // ! <= La ruta de la COLECCIÓN dentro de las BIBLIOTECAS.
 				children: [
-					{
-						path: '' // ! <= Vista de la COLECCIÓN.
-					},
-					{
-						path: '' // ! <= Vista del MENÚ de la COLECCIÓN.
-					},
+					// ! <= Vista de la COLECCIÓN.
+					// ! <= Vista del MENÚ de la COLECCIÓN.
 					{
 						path: 'filter',
 						loadComponent: async () => import('./pages/filter/filter.component').then((c) => c.ReportFilterComponent)
