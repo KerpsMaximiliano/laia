@@ -11,21 +11,23 @@ export const LIBRARIES_ROUTES: Routes = [
 			},
 			{
 				path: 'menu',
-				loadComponent: async () => import('./pages/menu/menu.component').then((c) => c.MenuComponent)
-			},
-			{
-				path: 'filter',
-				loadComponent: async () => import('./pages/filter/filter.component').then((c) => c.ReportFilterComponent)
+				loadComponent: async () => import('./pages/library-menu/library-menu.component').then((c) => c.LibraryMenuComponent)
 			},
 			{
 				path: 'miniatures',
 				loadComponent: async () => import('./pages/miniatures/miniatures.component').then((c) => c.MiniaturesComponent)
 			},
 			{
-				path: 'collection/:id', // ! <= La ruta de la COLECCIÓN dentro de las BIBLIOTECAS.
+				path: 'collection/:id',
 				children: [
-					// ! <= Vista de la COLECCIÓN.
-					// ! <= Vista del MENÚ de la COLECCIÓN.
+					{
+						path: '',
+						loadComponent: async () => import('./pages/collection/collection.component').then((c) => c.CollectionComponent)
+					},
+					{
+						path: 'menu',
+						loadComponent: async () => import('./pages/collection-menu/collection-menu.component').then((c) => c.CollectionMenuComponent)
+					},
 					{
 						path: 'filter',
 						loadComponent: async () => import('./pages/filter/filter.component').then((c) => c.ReportFilterComponent)

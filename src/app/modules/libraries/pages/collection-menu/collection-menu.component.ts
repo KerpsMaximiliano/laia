@@ -6,18 +6,15 @@ import { ButtonComponent } from '@components/button/button.component';
 // * Services.
 import { CoreService } from '@services/core.service';
 
-// * Material.
-import { MatExpansionModule } from '@angular/material/expansion';
-
 @Component({
 	changeDetection: ChangeDetectionStrategy.OnPush,
-	selector: 'app-admin-sell-menu',
+	selector: 'app-library-collection-menu',
 	standalone: true,
-	imports: [MatExpansionModule, ButtonComponent],
-	templateUrl: './menu.component.html',
-	styleUrl: './menu.component.scss'
+	imports: [ButtonComponent],
+	templateUrl: './collection-menu.component.html',
+	styleUrl: './collection-menu.component.scss'
 })
-export class MenuComponent implements OnInit {
+export class CollectionMenuComponent implements OnInit {
 	public readonly core: CoreService = inject(CoreService);
 	public stars: number[] = [1, 2, 3, 4, 5]; // Cantidad de estrellas que se pueden asignar.
 	public rating: number = 0; // Calificacion del usuario, por defecto 0(No califico la app).

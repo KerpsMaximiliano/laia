@@ -11,7 +11,7 @@ import { CoreService } from '@services/core.service';
 
 @Component({
 	changeDetection: ChangeDetectionStrategy.OnPush,
-	selector: 'app-shared-ordering',
+	selector: 'app-library-collection-ordering',
 	standalone: true,
 	imports: [ButtonComponent, DragDropModule],
 	templateUrl: './ordering.component.html',

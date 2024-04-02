@@ -8,7 +8,7 @@ import { CoreService } from '@services/core.service';
 
 @Component({
 	changeDetection: ChangeDetectionStrategy.OnPush,
-	selector: 'app-shared-miniatures',
+	selector: 'app-libraries-miniatures',
 	standalone: true,
 	imports: [ButtonComponent],
 	templateUrl: './miniatures.component.html',

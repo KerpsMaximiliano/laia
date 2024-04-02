@@ -19,7 +19,7 @@ import { data } from './mock';
 
 @Component({
 	changeDetection: ChangeDetectionStrategy.OnPush,
-	selector: 'app-shared-filter',
+	selector: 'app-library-collection-filter',
 	standalone: true,
 	providers: [provideNativeDateAdapter()],
 	imports: [ButtonComponent, MatExpansionModule, MatFormFieldModule, MatDatepickerModule],
