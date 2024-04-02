@@ -14,6 +14,10 @@ export const LIBRARIES_ROUTES: Routes = [
 				loadComponent: async () => import('./pages/menu/menu.component').then((c) => c.MenuComponent)
 			},
 			{
+				path: 'filter',
+				loadComponent: async () => import('./pages/filter/filter.component').then((c) => c.ReportFilterComponent)
+			},
+			{
 				path: 'miniatures',
 				loadComponent: async () => import('./pages/miniatures/miniatures.component').then((c) => c.MiniaturesComponent)
 			},

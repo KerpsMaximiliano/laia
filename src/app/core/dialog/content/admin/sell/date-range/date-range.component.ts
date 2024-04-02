@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, inject } from '@angular/core';
 
 // * Forms.
 import { ReactiveFormsModule } from '@angular/forms';
@@ -14,16 +14,18 @@ import {
 import { MatFormFieldModule } from '@angular/material/form-field';
 
 // * Components.
+import { ButtonComponent } from '@components/button/button.component';
 import { CalendarHeaderComponent } from './calendar-header';
 
 // * Pipes.
+import { MatDialogRef } from '@angular/material/dialog';
 import { dateTransform } from '@pipes/date.pipe';
 
 @Component({
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	selector: 'app-dialog-content-date-range',
 	standalone: true,
-	imports: [MatDatepickerModule, MatFormFieldModule, ReactiveFormsModule],
+	imports: [MatDatepickerModule, MatFormFieldModule, ReactiveFormsModule, ButtonComponent],
 	templateUrl: './date-range.component.html',
 	styleUrl: './date-range.component.scss',
 	providers: [
@@ -35,6 +37,7 @@ import { dateTransform } from '@pipes/date.pipe';
 	]
 })
 export class DateRangeComponent implements OnInit, OnDestroy {
+	public readonly ref: MatDialogRef<DateRangeComponent> = inject(MatDialogRef);
 	public calendarHeader = CalendarHeaderComponent;
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	public datePipe: any = dateTransform;

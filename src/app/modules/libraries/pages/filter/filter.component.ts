@@ -14,6 +14,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 
 // !AUX
 // * Mock.
+import { IItems } from '../../../admin/pages/sell/interfaces/sell.interface';
 import { data } from './mock';
 
 @Component({
@@ -43,17 +44,36 @@ export class ReportFilterComponent {
 	}
 
 	public change(): boolean {
-		for (const prop in this.data) {
-			for (let i = 0; i < this.data[prop].length; i++) {
-				const item1 = this.data[prop][i];
-				const item2 = this.initialData[prop][i];
+		for (let i = 0; i < this.data.length; i++) {
+			const oldItem = this.data[i];
+			const newItem = this.initialData[i];
 
-				if (item1.id !== item2.id || item1.sales !== item2.sales || item1.check !== item2.check) {
+			if (oldItem.items.length !== newItem.items.length) {
+				return true;
+			}
+
+			for (let j = 0; j < oldItem.items.length; j++) {
+				const oldCheck = oldItem.items[j].check;
+				const newCheck = newItem.items[j].check;
+
+				if (oldCheck !== newCheck) {
 					return true;
 				}
 			}
 		}
+
 		return false;
+	}
+
+	public check(value: IItems[], index: number, multiple: number): void {
+		value[index].check = value[index].check === 1 ? 0 : 1;
+		if (multiple === 1) {
+			value.forEach((item, i) => {
+				if (i !== index) {
+					item.check = 0;
+				}
+			});
+		}
 	}
 
 	public calcTotal(data: { id: string; sales: number; check: number }[]): string {
