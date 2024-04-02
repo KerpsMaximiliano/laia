@@ -2,9 +2,9 @@
 
 <h3>Versions</h3>
 <hr />
-- node versión: 20.10.0
-- npm versión: 10.2.3
-- angular cli versión: 17.0.5
+- node versión: 20.12.0
+- npm versión: 10.5.0
+- angular cli versión: 17.3.3
 
 <hr />
 <h3>VSCode extensions</h3>
