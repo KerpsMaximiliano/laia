@@ -93,8 +93,11 @@ type Icon =
 	| 'share_location'
 	| 'share'
 	| 'shopping_cart'
+	| 'star_border'
+	| 'star'
 	| 'sticky_note_2'
 	| 'store'
 	| 'storefront'
 	| 'sync'
+	| 'unfold_more'
 	| 'wysiwyg';

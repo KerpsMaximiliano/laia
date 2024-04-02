@@ -39,7 +39,6 @@ export class ReportFilterComponent {
 	public initialData?: any = JSON.parse(JSON.stringify(data));
 
 	public save(): void {
-		console.log(this.data);
 		this.initialData = JSON.parse(JSON.stringify(this.data));
 	}
 
