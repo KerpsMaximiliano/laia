@@ -386,7 +386,7 @@ html {
 
 mat-expansion-panel-header {
 	background-color: var(--grey-light);
-	border-radius: 4px 4px 0 0;
+	border-radius: 4px 4px 0 0 !important;
 }
 
 mat-panel-title {
@@ -475,4 +475,32 @@ mat-panel-title {
 
 .gmnoprint {
 	display: none;
+}
+
+/* ---------- SKELETON ---------- */
+
+.skeleton-loader {
+	background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+	width: 100px;
+	height: 100px;
+	background-size: 400% 100%;
+	animation: skeleton-loading 1.5s ease infinite;
+}
+
+@keyframes skeleton-loading {
+	0% {
+		background-position: 100% 0;
+	}
+	100% {
+		background-position: -100% 0;
+	}
+}
+
+@-webkit-keyframes skeleton-loading {
+	0% {
+		background-position: 100% 0;
+	}
+	100% {
+		background-position: -100% 0;
+	}
 }

@@ -1,4 +1,4 @@
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withFetch } from '@angular/common/http';
 import { ApplicationConfig, isDevMode } from '@angular/core';
 
 // * SSR.
@@ -35,7 +35,7 @@ export const appConfig: ApplicationConfig = {
 	providers: [
 		provideAnimationsAsync(),
 		provideRouter(APP_ROUTES, withViewTransitions()),
-		provideHttpClient(),
+		provideHttpClient(withFetch()),
 		provideOAuthClient(),
 		GRAPHQL_PROVIDER,
 		provideStore(ROOT_REDUCERS),
