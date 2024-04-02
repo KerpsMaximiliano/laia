@@ -18,12 +18,12 @@ import { data } from './mock';
 
 @Component({
 	changeDetection: ChangeDetectionStrategy.OnPush,
-	selector: 'app-admin-sell-report-filter',
+	selector: 'app-shared-filter',
 	standalone: true,
 	providers: [provideNativeDateAdapter()],
 	imports: [ButtonComponent, MatExpansionModule, MatFormFieldModule, MatDatepickerModule],
-	templateUrl: './report-filter.component.html',
-	styleUrl: './report-filter.component.scss'
+	templateUrl: './filter.component.html',
+	styleUrl: './filter.component.scss'
 })
 export class ReportFilterComponent {
 	public core: CoreService = inject(CoreService);

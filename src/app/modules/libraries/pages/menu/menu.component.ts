@@ -11,12 +11,12 @@ import { MatExpansionModule } from '@angular/material/expansion';
 
 @Component({
 	changeDetection: ChangeDetectionStrategy.OnPush,
-	selector: 'app-admin-sell-library-menu',
+	selector: 'app-shared-menu',
 	standalone: true,
 	imports: [MatExpansionModule, ButtonComponent],
-	templateUrl: './library-menu.component.html',
-	styleUrl: './library-menu.component.scss'
+	templateUrl: './menu.component.html',
+	styleUrl: './menu.component.scss'
 })
-export class LibraryMenuComponent {
+export class MenuComponent {
 	public readonly core: CoreService = inject(CoreService);
 }

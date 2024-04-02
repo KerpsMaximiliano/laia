@@ -12,7 +12,7 @@ export const USER_STATE: ILoadableEntity<IUser> = {
 		id: 0,
 		email: null,
 		image: null,
-		logged: true,
+		logged: false,
 		name: null,
 		surname: null,
 		password: null,

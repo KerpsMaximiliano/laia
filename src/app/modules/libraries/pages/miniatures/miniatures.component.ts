@@ -1,14 +1,14 @@
 import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
 
-// * Services.
-import { CoreService } from '@services/core.service';
-
 // * Components.
 import { ButtonComponent } from '@components/button/button.component';
 
+// * Services.
+import { CoreService } from '@services/core.service';
+
 @Component({
 	changeDetection: ChangeDetectionStrategy.OnPush,
-	selector: 'app-admin-sell-miniatures',
+	selector: 'app-shared-miniatures',
 	standalone: true,
 	imports: [ButtonComponent],
 	templateUrl: './miniatures.component.html',

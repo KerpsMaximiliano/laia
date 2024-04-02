@@ -1,17 +1,17 @@
 import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
 
+// * CDK.
+import { CdkDragDrop, DragDropModule, moveItemInArray } from '@angular/cdk/drag-drop';
+
 // * Components.
 import { ButtonComponent } from '@components/button/button.component';
 
 // * Services.
 import { CoreService } from '@services/core.service';
 
-// * Material.
-import { CdkDragDrop, DragDropModule, moveItemInArray } from '@angular/cdk/drag-drop';
-
 @Component({
 	changeDetection: ChangeDetectionStrategy.OnPush,
-	selector: 'app-admin-sell-ordering',
+	selector: 'app-shared-ordering',
 	standalone: true,
 	imports: [ButtonComponent, DragDropModule],
 	templateUrl: './ordering.component.html',

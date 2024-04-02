@@ -15,7 +15,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 
 @Component({
 	changeDetection: ChangeDetectionStrategy.OnPush,
-	selector: 'app-admin-sell-library',
+	selector: 'app-shared-library',
 	standalone: true,
 	imports: [MatExpansionModule, ButtonComponent],
 	templateUrl: './library.component.html',
