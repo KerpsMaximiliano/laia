@@ -74,7 +74,7 @@ export const SELL_ROUTES: Routes = [
 				loadComponent: async () => import('./pages/wire-transfer/wire-transfer.component').then((c) => c.WireTransferComponent)
 			},
 			{
-				path: 'library/:id',
+				path: 'library/:type',
 				loadChildren: async () => import('@libraries/libraries.routes').then((r) => r.LIBRARIES_ROUTES)
 			},
 			{

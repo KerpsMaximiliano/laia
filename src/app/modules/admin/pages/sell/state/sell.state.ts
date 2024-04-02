@@ -1,5 +1,5 @@
 // * Consts.
-import { INITIAL, LOADED } from '@app/core/constants/load.const';
+import { INITIAL, LOADED } from '@consts/load.const';
 
 // * Interfaces.
 import { ILoadableEntity } from '@interfaces/load.interface';

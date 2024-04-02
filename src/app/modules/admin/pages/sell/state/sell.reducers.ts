@@ -22,25 +22,25 @@ export const ADMIN_SELL_REDUCERS = createReducer(
 	// * INITIAL STATE.
 	ADMIN_SELL_STATE,
 	on(ADMIN_SELL_ARTICLES_LOAD, (state): ISell => state),
-	on(ADMIN_SELL_ARTICLES_LOADED, (state, { articles }): ISell => {
-		return {
+	on(
+		ADMIN_SELL_ARTICLES_LOADED,
+		(state, { articles }): ISell => ({
 			...state,
 			articles: {
 				status: LOADED,
 				items: [...state.articles.items, ...articles]
 			}
-		};
-	}),
-	on(ADMIN_SELL_ARTICLE_CREATE, (state): ISell => {
-		return { ...state, article: { ...state.article, status: UPDATING } };
-	}),
-	on(ADMIN_SELL_ARTICLE_CREATED, (state, { id, title, price, stock, medias }): ISell => {
-		return {
+		})
+	),
+	on(ADMIN_SELL_ARTICLE_CREATE, (state): ISell => ({ ...state, article: { ...state.article, status: UPDATING } })),
+	on(
+		ADMIN_SELL_ARTICLE_CREATED,
+		(state, { id, title, price, stock, medias }): ISell => ({
 			articles: {
 				status: COMPLETE,
 				items: [...state.articles.items, { status: COMPLETE, data: { ...state.article.data, id, medias, title, price, stock } }]
 			},
 			article: ARTICLE
-		};
-	})
+		})
+	)
 );
