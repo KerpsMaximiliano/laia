@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject, OnDestroy, OnInit, inject } from '@angular/core';
 
 // * Forms.
 import { ReactiveFormsModule } from '@angular/forms';
@@ -18,7 +18,7 @@ import { ButtonComponent } from '@components/button/button.component';
 import { CalendarHeaderComponent } from './calendar-header';
 
 // * Pipes.
-import { MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { dateTransform } from '@pipes/date.pipe';
 
 @Component({
@@ -37,16 +37,23 @@ import { dateTransform } from '@pipes/date.pipe';
 	]
 })
 export class DateRangeComponent implements OnInit, OnDestroy {
+	@Inject(MAT_DIALOG_DATA) public data?: { maxMonth: number; minMonth: number };
 	public readonly ref: MatDialogRef<DateRangeComponent> = inject(MatDialogRef);
 	public calendarHeader = CalendarHeaderComponent;
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	public datePipe: any = dateTransform;
 	public maxDate: Date = new Date();
+	public minDate: Date = new Date();
 
 	public selectedDateRange?: DateRange<Date>;
 
 	public ngOnInit(): void {
-		this.maxDate.setFullYear(this.maxDate.getFullYear());
+		if (this.data?.maxMonth) {
+			this.maxDate.setMonth(this.maxDate.getMonth() + this.data.maxMonth);
+		}
+		if (this.data?.minMonth) {
+			this.minDate.setMonth(this.maxDate.getMonth() - this.data.minMonth);
+		}
 	}
 
 	public onSelectedChange(date: Date): void {

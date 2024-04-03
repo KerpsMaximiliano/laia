@@ -15,13 +15,12 @@ import { MatIconModule } from '@angular/material/icon';
 	imports: [MatButtonModule, MatIconModule],
 	template: `
 		<div style="display: flex; align-items: center; padding: 0.5em;">
-			@if (shouldShowPreviousButton()) {
-				<button mat-icon-button (click)="onClick('BEFORE')">
-					<mat-icon>keyboard_arrow_left</mat-icon>
-				</button>
-			} @else {
-				<div style="min-width: 48px"></div>
-			}
+			<button mat-icon-button (click)="onClick('BEFORE')">
+				<mat-icon>keyboard_arrow_left</mat-icon>
+			</button>
+
+			<div style="min-width: 48px"></div>
+
 			<span style="flex: 1; height: 1em; font-weight: 500; text-align: center;">{{ label }}</span>
 
 			<button mat-icon-button (click)="onClick('AFTER')">
@@ -47,21 +46,6 @@ export class CalendarHeaderComponent<D> implements OnDestroy {
 
 	public get label(): string {
 		return this._adapter.format(this._calendar.activeDate, this._formats.display.monthYearLabel).toLocaleUpperCase();
-	}
-
-	public shouldShowPreviousButton(): boolean {
-		const today = new Date();
-		const oneYearAgo = new Date(today.getFullYear() - 1, today.getMonth(), today.getDate()); // Calcular la fecha hace un año
-
-		// Determinar si la fecha activa del calendario es posterior a la fecha de hoy
-		const activeDate = this._calendar.activeDate;
-		const isAfterToday = activeDate > today;
-
-		// Determinar si la fecha activa del calendario es anterior a hace un año
-		const isBeforeOneYearAgo = activeDate < oneYearAgo;
-
-		// Se debe mostrar el botón anterior si la fecha activa es posterior a hoy y no es anterior a hace un año
-		return !isAfterToday && !isBeforeOneYearAgo;
 	}
 
 	public onClick(mode: 'AFTER' | 'BEFORE'): void {

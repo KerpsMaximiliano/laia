@@ -12,6 +12,7 @@ import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSliderModule } from '@angular/material/slider';
 
 // !AUX
 // * Mock.
@@ -23,16 +24,12 @@ import { data } from './mock';
 	selector: 'app-library-collection-filter',
 	standalone: true,
 	providers: [provideNativeDateAdapter()],
-	imports: [MatExpansionModule, MatFormFieldModule, MatDatepickerModule, ButtonComponent, BtnInputComponent],
+	imports: [MatExpansionModule, MatFormFieldModule, MatDatepickerModule, ButtonComponent, BtnInputComponent, MatSliderModule],
 	templateUrl: './filter.component.html',
 	styleUrl: './filter.component.scss'
 })
 export class ReportFilterComponent {
 	public core: CoreService = inject(CoreService);
-
-	public panelOpenState: boolean[] = [false, false, false, false, false, false];
-
-	public globalTotal: number = 0;
 
 	// !AUX
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -42,6 +39,10 @@ export class ReportFilterComponent {
 
 	public save(): void {
 		this.initialData = JSON.parse(JSON.stringify(this.data));
+	}
+
+	public selectRange(): void {
+		this.core.open('DATE-RANGE');
 	}
 
 	public change(): boolean {

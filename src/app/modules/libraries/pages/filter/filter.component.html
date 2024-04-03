@@ -11,11 +11,15 @@
 </header>
 
 <main class="fle col gp-24 pd-12 pb-44">
+	<mat-slider min="200" max="500">
+		<input value="300" matSliderStartThumb />
+		<input value="400" matSliderEndThumb />
+	</mat-slider>
 	<app-component-btn-input
 		[placeholder]="'Seleccione una fecha'"
 		[label]=""
 		[icon]="false ? 'add' : 'calendar_month'"
-		(click)="core.open('DATE-RANGE')"
+		(click)="selectRange()"
 	/>
 
 	@for (item of data; track $index) {

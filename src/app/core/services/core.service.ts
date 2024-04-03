@@ -108,7 +108,8 @@ export class CoreService {
 		return this._http.post<T>(`${this._api}${point}`, body, { headers: { accept: '*/*' } });
 	}
 
-	public open(dialog: IDialog, conf?: { option?: number; logged: boolean }): Observable<MatDialogRef<unknown>> {
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	public open(dialog: IDialog, conf?: { option?: any; logged: boolean }): Observable<MatDialogRef<unknown>> {
 		return from(
 			(async (): Promise<MatDialogRef<unknown>> => {
 				const chunk = await import('@app/core/dialog/container-dialog.component');

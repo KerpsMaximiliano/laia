@@ -1,0 +1,38 @@
+<header class="flex gp-4 pd-12">
+	<app-component-button [type]="'MINI'" [icon]="'navigate_before'" (click)="core.back()" />
+
+	<h1>Menu de {{ data.name }}</h1>
+</header>
+
+<main class="grid gp-16 pd-12">
+	<section class="grid bd br-4">
+		@for (item of data.items; track $index) {
+			<button type="button" class="flex btn bet pd-12" (click)="action(item.action.value, $index, item.action.type)">
+				<div class="grid gp-4 tx-left">
+					<p class="required tx-visible">{{ item.headerboard }}</p>
+
+					@if (item.action.type === 'ORDER') {
+						{{ item.action.value === 'asc' ? 'Ascendente' : 'Descendente' }}
+					} @else {
+						{{ item.title }}
+					}
+
+					<p class="tx-visible">{{ item.subtitle }}</p>
+				</div>
+
+				<app-component-button [type]="'ICON'" [icon]="item.icon" />
+			</button>
+
+			@if (data.items.length - 1 !== $index) {
+				<hr />
+			}
+		}
+	</section>
+</main>
+
+<footer class="w">
+	<button type="button" class="flex cen w" (click)="action(data.footer.action.value, 0, data.footer.action.type)">
+		<h2 class="tx-visible tx-center pd-8">{{ data.footer.text }}</h2>
+		<app-component-button color="var(--white)" [type]="'ICON'" [icon]="'navigate_next'" />
+	</button>
+</footer>
