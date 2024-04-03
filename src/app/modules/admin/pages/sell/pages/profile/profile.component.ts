@@ -9,6 +9,7 @@ import { AbstractControl, ReactiveFormsModule, UntypedFormControl, UntypedFormGr
 
 // * Components.
 import { ButtonComponent } from '@components/button/button.component';
+import { BtnInputComponent } from '@components/mat-input/mat-input.component';
 
 // * Services.
 import { CoreService } from '@services/core.service';
@@ -33,7 +34,8 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 		MatInputModule,
 		MatSlideToggleModule,
 		MatSelectModule,
-		ButtonComponent
+		ButtonComponent,
+		BtnInputComponent
 	],
 	templateUrl: './profile.component.html',
 	styleUrl: './profile.component.scss'

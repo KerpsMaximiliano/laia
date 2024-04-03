@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 
 // * Components.
 import { ButtonComponent } from '@components/button/button.component';
+import { BtnInputComponent } from '@components/mat-input/mat-input.component';
 
 // * Services.
 import { CoreService } from '@services/core.service';
@@ -22,7 +23,7 @@ import { data } from './mock';
 	selector: 'app-library-collection-filter',
 	standalone: true,
 	providers: [provideNativeDateAdapter()],
-	imports: [ButtonComponent, MatExpansionModule, MatFormFieldModule, MatDatepickerModule],
+	imports: [MatExpansionModule, MatFormFieldModule, MatDatepickerModule, ButtonComponent, BtnInputComponent],
 	templateUrl: './filter.component.html',
 	styleUrl: './filter.component.scss'
 })

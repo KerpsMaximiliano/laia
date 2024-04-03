@@ -1,0 +1,11 @@
+<button type="button" class="flex gp-4 w br-4 pd-16 bet" [style.color]="color" [class.disabled]="disabled">
+	@if (label) {
+		{{ label }}
+	} @else {
+		{{ placeholder }}
+	}
+
+	@if (icon) {
+		<app-component-button [type]="'ICON'" [icon]="icon" [color]="color" />
+	}
+</button>

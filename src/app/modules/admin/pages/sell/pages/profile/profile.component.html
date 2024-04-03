@@ -38,10 +38,7 @@
 			<mat-error>{{ getErrorMessage(form.get('title')!) }}</mat-error>
 		</mat-form-field>
 
-		<button type="button" class="btn--direction flex bet pd-16 br-4">
-			{{ address ?? 'Elige una dirección *' }}
-			<app-component-button [type]="'ICON'" [icon]="address ? 'map' : 'location_on'" [color]="'#9e9e9e'" />
-		</button>
+		<app-component-btn-input [placeholder]="'Elige una dirección *'" [label]="address" [icon]="address ? 'map' : 'location_on'" />
 
 		<mat-form-field appearance="outline">
 			<mat-label>Teléfono</mat-label>
