@@ -8,6 +8,7 @@
 	--grey: #7b7b7b;
 	--grey-light: #e0e0e3;
 	--white: #fff;
+	--rose: rgba(234, 221, 255, 1);
 }
 
 * {
@@ -371,6 +372,14 @@ p {
 	padding-bottom: 44px;
 }
 
+.relative {
+	position: relative;
+}
+
+.absolute {
+	position: absolute;
+}
+
 /* -------------------- MATERIAL -------------------- */
 
 html {
@@ -399,7 +408,7 @@ mat-panel-title {
 }
 
 .mat-expansion-panel-spacing {
-	margin: 0;
+	margin: 0 !important;
 }
 
 .mat-accordion .mat-expansion-panel:not(.mat-expanded),

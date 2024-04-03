@@ -1,0 +1,29 @@
+<div class="dialog--content">
+	<button type="button" class="flex bet gp-4 w" (click)="redirect()">
+		Agregar
+
+		<app-component-button [type]="'ICON'" [icon]="'cancel'" />
+	</button>
+
+	<button type="button" class="flex bet gp-4 w" (click)="redirect('ARTICLE')">
+		<p>Nuevo Artículo</p>
+
+		<app-component-button [type]="'ICON'" [icon]="'add_business'" />
+	</button>
+
+	<hr />
+
+	<button type="button" class="flex bet gp-4 w" (click)="redirect('ORDER')">
+		Nueva Venta (factura)
+
+		<app-component-button [type]="'ICON'" [icon]="'post_add'" />
+	</button>
+
+	<hr />
+
+	<button type="button" class="flex bet gp-4 w">
+		Nuevo Comprador
+
+		<app-component-button [type]="'ICON'" [icon]="'person_add'" />
+	</button>
+</div>

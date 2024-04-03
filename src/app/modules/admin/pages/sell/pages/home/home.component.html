@@ -1,123 +1,135 @@
-<header class="grid gp-16 pd-12">
-	<nav class="flex bet gp-8">
-		<div class="flex gp-8">
-			<app-component-button [type]="'MINI'" [icon]="'menu'" [color]="'#c3c3c3'" />
-			<h1>LAIA en la Industria Floral</h1>
-		</div>
-		<div class="flex gp-8">
-			<app-component-login />
-			<app-component-button [type]="'MINI'" [icon]="'share'" (click)="core.open('SHARE')" />
-		</div>
-	</nav>
+<div class="box--container">
+	<div>
+		<header class="grid gp-16 pd-12">
+			<nav class="flex bet gp-8">
+				<div class="flex gp-8">
+					<app-component-button [type]="'MINI'" [icon]="'menu'" [color]="'#c3c3c3'" />
+					<h1>LAIA en la Industria Floral</h1>
+				</div>
+				<div class="flex gp-8">
+					<app-component-login />
+					<app-component-button [type]="'MINI'" [icon]="'share'" (click)="core.open('SHARE')" />
+				</div>
+			</nav>
 
-	<article class="grid gp-8">
-		<div class="flex bet bd br-4 pd-12">
-			<div class="flex gp-8">
-				<app-component-button [type]="'ICON'" [icon]="'done_all'" color="#c3c3c3" />
-				<p class="disabled">ID</p>
-			</div>
-			<app-component-button [type]="'ICON'" [icon]="'mic'" [color]="'#c3c3c3'" />
-		</div>
-		<p class="tx-left tx-visible disabled">La Inteligencia Artificial para optimizar tu negocio.</p>
-	</article>
-</header>
+			<article class="grid gp-8">
+				<div class="flex bet bd br-4 pd-12">
+					<div class="flex gp-8">
+						<app-component-button [type]="'ICON'" [icon]="'done_all'" color="#c3c3c3" />
+						<p class="disabled">ID</p>
+					</div>
+					<app-component-button [type]="'ICON'" [icon]="'mic'" [color]="'#c3c3c3'" />
+				</div>
+				<p class="tx-left tx-visible disabled">La Inteligencia Artificial para optimizar tu negocio.</p>
+			</article>
+		</header>
 
-<main class="fle col gp-24 pd-12">
-	@defer (when !user().logged) {
-		@if (!user().logged) {
-			<section class="grid bd br-4">
-				<p class="pd-12" style="background-color: var(--grey-light)">¿Qué venderás?</p>
+		<main class="fle col gp-16 pd-12" style="padding-bottom: 80px !important">
+			@defer (when user().logged) {
+				@if (user().logged) {
+					<section class="grid bd br-4">
+						<p class="pd-12" style="background-color: var(--grey-light)">¿Qué venderás?</p>
 
-				<hr />
-
-				<button type="button" class="flex bet my-8 pd-12 btn" (click)="sell.redirect('article')">Artículos Propios</button>
-
-				<hr />
-
-				<button type="button" class="flex bet my-8 pd-12 btn">Artículos de Otros</button>
-			</section>
-
-			<section class="bd br-4 grid">
-				<p class="pd-12 disabled" style="background-color: var(--grey-light)">¿A quien le quieres comprar?</p>
-
-				@for (item of options; track $index) {
-					<button type="button" class="fle col my-8 gp-4 pd-12 btn disabled" (click)="action($index)">
-						{{ item.title }}
-						<p class="tx-visible">Venden: {{ item.sell }}</p>
-					</button>
-
-					@if ($index < options.length - 1) {
 						<hr />
-					}
-				}
-			</section>
-		}
-	}
 
-	@defer (when user().logged) {
-		@if (user().logged) {
-			<mat-accordion class="expansion-panel-pd grid gp-16">
-				<mat-expansion-panel [expanded]="true">
-					<mat-expansion-panel-header style="background-color: var(--grey-light); padding: 12px 20px 12px 12px; height: 48px">
-						<mat-panel-title>Sombrero del Emprendedor</mat-panel-title>
-					</mat-expansion-panel-header>
+						<button type="button" class="flex bet my-8 pd-12 btn" (click)="sell.redirect('article')">Artículos Propios</button>
 
-					<div class="grid bd br-bottom-4">
-						@for (item of entrepreneur; track $index) {
-							<button type="button" class="btn grid gp-4 my-8 pd-12 tx-left w">
-								@if (!item.status) {
-									<p style="color: var(--required)">Próximamente</p>
-								}
+						<hr />
 
+						<button type="button" class="flex bet my-8 pd-12 btn">Artículos de Otros</button>
+					</section>
+
+					<section class="bd br-4 grid">
+						<p class="pd-12 disabled" style="background-color: var(--grey-light)">¿A quien le quieres comprar?</p>
+
+						@for (item of options; track $index) {
+							<button type="button" class="fle col my-8 gp-4 pd-12 btn disabled" (click)="action($index)">
 								{{ item.title }}
-
-								<p class="tx-visible tx-left">{{ item.description }}</p>
+								<p class="tx-visible">Venden: {{ item.sell }}</p>
 							</button>
 
-							@if (!$last) {
+							@if ($index < options.length - 1) {
 								<hr />
 							}
 						}
-					</div>
-				</mat-expansion-panel>
+					</section>
+				}
+			}
 
-				<mat-expansion-panel>
-					<mat-expansion-panel-header style="background-color: var(--grey-light)">
-						<mat-panel-title class="fle bet"> Sombrero del Gerente </mat-panel-title>
-					</mat-expansion-panel-header>
-					<div class="grid bd br-bottom-4">
-						<button type="button" class="btn grid gp-4 my-8 pd-12 tx-left w">
-							Artículos
+			@defer (when !user().logged) {
+				@if (!user().logged) {
+					<mat-accordion class="expansion-panel-pd">
+						<mat-expansion-panel [expanded]="true">
+							<mat-expansion-panel-header style="background-color: var(--grey-light); padding: 12px 20px 12px 12px; height: 48px">
+								<mat-panel-title>Sombrero del Emprendedor</mat-panel-title>
+							</mat-expansion-panel-header>
 
-							<p class="tx-visible">40</p>
-						</button>
+							<div class="grid bd br-bottom-4">
+								@for (item of entrepreneur; track $index) {
+									<button type="button" class="btn grid gp-4 my-8 pd-12 tx-left w">
+										@if (!item.status) {
+											<p style="color: var(--required)">Próximamente</p>
+										}
 
-						<hr />
+										{{ item.title }}
 
-						<button type="button" class="btn grid gp-4 my-8 pd-12 tx-left w">
-							Ventas
+										<p class="tx-visible tx-left">{{ item.description }}</p>
+									</button>
 
-							<p class="tx-visible">Iniciadas 450. En Proceso 780.</p>
-						</button>
+									@if (!$last) {
+										<hr />
+									}
+								}
+							</div>
+						</mat-expansion-panel>
+					</mat-accordion>
 
-						<hr />
+					<mat-accordion class="expansion-panel-pd">
+						<mat-expansion-panel [expanded]="true">
+							<mat-expansion-panel-header style="background-color: var(--grey-light)">
+								<mat-panel-title class="fle bet"> Sombrero del Gerente </mat-panel-title>
+							</mat-expansion-panel-header>
+							<div class="grid bd br-bottom-4">
+								<button type="button" class="btn grid gp-4 my-8 pd-12 tx-left w">
+									Artículos
 
-						<button type="button" class="btn grid gp-4 my-8 pd-12 tx-left w">
-							Flujo de Caja
+									<p class="tx-visible">40</p>
+								</button>
 
-							<p class="tx-visible">Ingresos $0. Egresos $0. Beneficio $0.</p>
-						</button>
+								<hr />
 
-						<hr />
+								<button type="button" class="btn grid gp-4 my-8 pd-12 tx-left w">
+									Ventas
 
-						<button type="button" class="btn grid gp-4 my-8 pd-12 tx-left w">
-							Compradores
+									<p class="tx-visible">Iniciadas 450. En Proceso 780.</p>
+								</button>
 
-							<p class="tx-visible">> 4: 0. > 8: 0. > 16:0</p>
-						</button>
-					</div>
-				</mat-expansion-panel>
-			</mat-accordion>
-		}
-	}
-</main>
+								<hr />
+
+								<button type="button" class="btn grid gp-4 my-8 pd-12 tx-left w">
+									Flujo de Caja
+
+									<p class="tx-visible">Ingresos $0. Egresos $0. Beneficio $0.</p>
+								</button>
+
+								<hr />
+
+								<button type="button" class="btn grid gp-4 my-8 pd-12 tx-left w">
+									Compradores
+
+									<p class="tx-visible">> 4: 0. > 8: 0. > 16:0</p>
+								</button>
+							</div>
+						</mat-expansion-panel>
+					</mat-accordion>
+				}
+			}
+		</main>
+	</div>
+
+	<footer class="relative">
+		<div class="grid-place absolute br-4">
+			<app-component-button [type]="'MINI'" [icon]="'add'" [background]="'var(--rose)'" (click)="core.open('ADD')" class="pd-8" />
+		</div>
+	</footer>
+</div>

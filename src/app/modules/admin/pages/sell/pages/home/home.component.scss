@@ -1,0 +1,18 @@
+footer div {
+	bottom: 0;
+	right: 0;
+	background-color: var(--rose);
+	margin: 0 12px 12px 0;
+}
+
+.box--container {
+	height: var(--vh);
+	max-height: 950px;
+	display: grid;
+	grid-template-rows: 1fr max-content;
+
+	& > div {
+		min-height: 100%;
+		overflow-y: scroll;
+	}
+}

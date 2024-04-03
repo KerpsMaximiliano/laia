@@ -1,5 +1,6 @@
 export type Icon =
 	| 'abc'
+	| 'add_business'
 	| 'add_card'
 	| 'add_location_alt'
 	| 'add_shopping_cart'
@@ -51,6 +52,7 @@ export type Icon =
 	| 'person_add'
 	| 'person'
 	| 'picture_as_pdf'
+	| 'post_add'
 	| 'preview_off'
 	| 'preview'
 	| 'public'

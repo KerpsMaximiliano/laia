@@ -1,0 +1,11 @@
+.dialog--content button {
+	padding: 14px 12px;
+
+	&:first-child {
+		background-color: var(--grey-light);
+		border-radius: 12px 12px 0 0;
+		padding: 16px 12px;
+		font-weight: 600;
+		font-size: 17px;
+	}
+}

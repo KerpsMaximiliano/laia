@@ -13,12 +13,10 @@
 	}
 
 	&--content {
-		border-top-left-radius: 12px;
-		border-top-right-radius: 12px;
-		background-color: #fff;
+		border-radius: 12px 12px 0 0;
+		background-color: var(--white);
 		-webkit-animation: slide-in 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
 		animation: slide-in 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
-		padding-bottom: 24px;
 	}
 }
 

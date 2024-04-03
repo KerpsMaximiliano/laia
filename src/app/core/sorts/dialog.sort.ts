@@ -1,10 +1,27 @@
 // * DIALOGS.
-// * MODULE			   SUBMODULE			PAGE 			    DIALOG
-// * ADMIN			   SELL					 ARTICLE		    DELAY
+// * MODULE			   SUBMODULE			PAGE 			    CONTENT
+// * ADMIN			   SELL					  ARTICLE		    DELAY
 // * 							   												    HASHTAG
-// * 								  									 		    TAG
-// * SHARED		  		   											    SHARE
-// * TIME          SELL          DEL-TIME       TIME
-// * DATE-RANGE    SELL          REPORT-FILTER  DATE-RANGE
+// *                               							QUESTION <= Cambiar a página.
+// * ADMIN         SELL           HOME          ADD
+// *                                            SHARE
 
-export type IDialog = 'CALENDAR' | 'DATE-RANGE' | 'DELAY' | 'HASHTAG' | 'PAYMENT' | 'SHARE' | 'SORT' | 'TAG' | 'TIME';
+// ! TIME          SELL          DEL-TIME       TIME
+// ! DATE-RANGE    SELL          REPORT-FILTER  DATE-RANGE
+
+export type IDialog = 'ADD' | 'CALENDAR' | 'DATE-RANGE' | 'DELAY' | 'HASHTAG' | 'PAYMENT' | 'SHARE' | 'SORT' | 'TAG' | 'TIME';
+
+/**
+ * ADD.
+ * DELAY.
+ * HASHTAG.
+ * SHARE.
+ *
+ * ! Revisar los siguientes contenidos (de dialogo) para ver si realmente existen o deben ser eliminados.
+ * ! CALENDAR
+ * ! DATE-RANGE
+ * ! PAYMENT
+ * ! SORT
+ * ! TAG
+ * ! TIME
+ */

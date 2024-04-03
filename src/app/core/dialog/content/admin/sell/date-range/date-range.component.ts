@@ -50,7 +50,7 @@ export class DateRangeComponent implements OnInit, OnDestroy {
 	}
 
 	public onSelectedChange(date: Date): void {
-		if (this.selectedDateRange && this.selectedDateRange.start && date > this.selectedDateRange.start && !this.selectedDateRange.end) {
+		if (this.selectedDateRange?.start && date > this.selectedDateRange.start && !this.selectedDateRange.end) {
 			// Range days para determinar los dias que hay entre start y end date.
 			const rangeDays = Math.abs((date.getTime() - this.selectedDateRange.start.getTime()) / (1000 * 3600 * 24));
 			if (rangeDays > 13) {

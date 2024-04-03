@@ -3,7 +3,9 @@ import { INITIAL, LOADED } from '@consts/load.const';
 
 // * Interfaces.
 import { ILoadableEntity } from '@interfaces/load.interface';
-import { IArticle, ISell } from '@sell/interfaces/sell.interface';
+import { IArticle } from '@sell/interfaces/sell-article.interface';
+import { ISell } from '@sell/interfaces/sell.interface';
+import { IOrder } from '../interfaces/sell-order.interface';
 
 // * ADMIN SELL INITIAL ARTICLE.
 export const ARTICLE: ILoadableEntity<IArticle> = {
@@ -82,11 +84,58 @@ export const ARTICLE: ILoadableEntity<IArticle> = {
 	}
 };
 
+// * ADMIN SELL INITIAL ARTICLE.
+export const ORDER: ILoadableEntity<IOrder> = {
+	status: INITIAL,
+	data: {
+		user: {
+			id: null,
+			image: null,
+			email: null,
+			name: null,
+			phone: null,
+			surname: null
+		},
+		articles: [],
+		address: {
+			id: null,
+			code: null,
+			country: null,
+			state: null,
+			city: null,
+			street: null,
+			number: null,
+			ref: null,
+			note: null,
+			lat: null,
+			lng: null
+		},
+		calendar: {
+			id: 0,
+			from: '',
+			to: '',
+			reservation: '',
+			type: 'DELIVERY'
+		},
+		merchant: {
+			id: 0,
+			email: '',
+			phone: '',
+			title: ''
+		},
+		message: null,
+		payment: {
+			id: 0
+		}
+	}
+};
+
 // * ADMIN SELL INITIAL STATE.
 export const ADMIN_SELL_STATE: ISell = {
 	articles: {
 		status: INITIAL,
 		items: []
 	},
-	article: ARTICLE
+	article: ARTICLE,
+	order: ORDER
 };
