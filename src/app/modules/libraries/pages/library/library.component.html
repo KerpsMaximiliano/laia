@@ -49,16 +49,7 @@
 										(click)="item.config.checkbox ? check(item.items, $index, item.config.multiple) : ''"
 									>
 										@if (a.image) {
-											<div #content_image class="br-12 skeleton-loader">
-												<img
-													#img
-													style="display: none"
-													class="br-4 w h"
-													[src]="a.image"
-													[alt]="'Imagen sin texto alternativo.'"
-													(load)="loadImage(content_image, img)"
-												/>
-											</div>
+											<app-component-img [src]="a.image" [width]="'100px'" [height]="'100px'" />
 										} @else if (a.icon) {
 											@switch (a.icon) {
 												@case ('calendar_month') {

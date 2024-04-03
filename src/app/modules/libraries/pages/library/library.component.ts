@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, inject } from '@
 
 // * Components.
 import { ButtonComponent } from '@components/button/button.component';
+import { ImgComponent } from '@components/img/img.component';
 
 // * Interfaces.
 import { IItems, ILibrary, data } from '@sell/interfaces/sell.interface';
@@ -17,7 +18,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	selector: 'app-library',
 	standalone: true,
-	imports: [MatExpansionModule, ButtonComponent],
+	imports: [MatExpansionModule, ButtonComponent, ImgComponent],
 	templateUrl: './library.component.html',
 	styleUrl: './library.component.scss'
 })
@@ -40,11 +41,6 @@ export class LibraryComponent implements OnInit, OnDestroy {
 				}
 			});
 		}
-	}
-
-	public loadImage(value: HTMLDivElement, img: HTMLImageElement): void {
-		img.style.display = 'block';
-		value.style.background = 'none';
 	}
 
 	public ngOnDestroy(): void {
