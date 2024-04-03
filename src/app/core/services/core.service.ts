@@ -160,6 +160,9 @@ export class CoreService {
 					case 'TIME':
 						chunk = await import('@app/core/dialog/content/admin/sell/time/time.component');
 						break;
+					case 'ADD':
+						chunk = await import('@dialogs/content/admin/sell/add/add.component');
+						break;
 				}
 				const component = Object.values(chunk)[0] as ComponentType<unknown>;
 				return component;
