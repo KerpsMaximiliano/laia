@@ -1,14 +1,5 @@
 <div class="container">
 	<div class="container--scroll">
-		<!-- <header class="flex bet pd-12">
-			<div class="flex gp-4">
-				<app-component-button [type]="'MINI'" [icon]="'navigate_before'" (click)="core.back()" />
-				<h1>{{ library?.name }}</h1>
-			</div>
-
-			<app-component-button [type]="'MINI'" [icon]="'more_vert'" (click)="core.back()" />
-		</header> -->
-
 		<header class="grid gp-16 pd-12">
 			<nav class="flex bet gp-8">
 				<div class="flex gp-4">
@@ -16,7 +7,7 @@
 					<h1>{{ library?.name }}</h1>
 				</div>
 
-				<app-component-button [type]="'MINI'" [icon]="'more_vert'" (click)="core.back()" />
+				<app-component-button [type]="'MINI'" [icon]="'more_vert'" (click)="libraries.redirect('menu')" />
 			</nav>
 
 			<article class="grid gp-8">
@@ -40,49 +31,45 @@
 						</mat-expansion-panel-header>
 
 						<div class="dinamic bd">
-							<div class="grid">
+							<div>
 								@for (a of item.items; track $index) {
-									<button
-										type="button"
-										class="btn grid gp-8 pd-12"
-										[style]="a.image ? 'grid-template-columns: 108px 1fr 24px' : a.icon === null ? 'grid-template-columns: 1fr 24px' : ''"
-										(click)="item.config.checkbox ? check(item.items, $index, item.config.multiple) : ''"
-									>
-										@if (a.image) {
-											<div #content_image class="br-12 skeleton-loader">
-												<img
-													#img
-													style="display: none"
-													class="br-4 w h"
-													[src]="a.image"
-													[alt]="'Imagen sin texto alternativo.'"
-													(load)="loadImage(content_image, img)"
-												/>
-											</div>
-										} @else if (a.icon) {
-											@switch (a.icon) {
-												@case ('calendar_month') {
-													<app-component-button [type]="'ICON'" [icon]="'calendar_month'" class="pd-12" />
-												}
+									<article class="grid pd-12">
+										<button
+											type="button"
+											class="btn grid gp-8"
+											[style]="a.image || a.icon ? 'grid-template-columns: max-content 1fr' : 'grid-template-columns: 1fr'"
+											(click)="item.config.checkbox ? check(item.items, $index, item.config.multiple) : ''"
+										>
+											@if (a.image) {
+												<app-component-img [src]="a.image" [width]="'100px'" [height]="'100px'" />
 											}
-										}
 
-										<div class="grid gp-4 tx-left">
-											<p class="required tx-visible">{{ a.headerboard }}</p>
+											@if (a.icon) {
+												<app-component-button [type]="'ICON'" [icon]="'calendar_month'" class="pd-12" />
+											}
 
-											{{ a.title }}
+											<div class="grid tx-left h" [style]="a.cInfo" style="padding: 4px">
+												@if (a.headerboard) {
+													<p class="required tx-visible">{{ a.headerboard }}</p>
+												}
 
-											<p class="tx-visible">{{ a.subtitle }}</p>
-										</div>
+												{{ a.title }}
+
+												@if (a.subtitle) {
+													<p class="tx-visible">{{ a.subtitle }}</p>
+												}
+											</div>
+										</button>
 
 										@if (item.config.checkbox) {
 											<app-component-button
-												[type]="'ICON'"
+												[type]="'MINI'"
 												[icon]="a.check ? 'check_circle' : 'radio_button_unchecked'"
-												[color]="a.check ? 'var(--violet)' : ''"
+												[color]="'var(--violet)'"
+												(click)="item.config.checkbox ? check(item.items, $index, item.config.multiple) : null"
 											/>
 										}
-									</button>
+									</article>
 
 									@if (!$last) {
 										<hr />
@@ -108,19 +95,21 @@
 		</main>
 	</div>
 
-	<footer>
-		@defer (when false) {
-			@if (false) {
-				<div style="position: relative">
-					<button type="button" class="flex gp-8 br-4">
-						<app-component-button [type]="'ICON'" [icon]="'add'" />
+	@defer {
+		<footer>
+			@defer (when false) {
+				@if (false) {
+					<div style="position: relative">
+						<button type="button" class="flex gp-8 br-4">
+							<app-component-button [type]="'ICON'" [icon]="'add'" />
 
-						{{ 'Nuevo ' + library?.disminutive }}
-					</button>
-				</div>
+							{{ 'Nuevo ' + library?.disminutive }}
+						</button>
+					</div>
+				}
 			}
-		}
 
-		<h2 class="tx-visible tx-center pd-8">Título</h2>
-	</footer>
+			<h2 class="tx-visible tx-center pd-8">Título</h2>
+		</footer>
+	}
 </div>

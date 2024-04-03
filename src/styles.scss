@@ -450,6 +450,11 @@ mat-panel-title {
 .btn {
 	font-size: 17px;
 	font-weight: 600;
+	word-break: break-word;
+
+	& p {
+		word-break: break-word;
+	}
 }
 
 .disabled,
@@ -462,7 +467,7 @@ mat-panel-title {
 }
 
 .dinamic {
-	max-height: 231px;
+	max-height: 500px;
 	display: grid;
 	grid-template-rows: 1fr max-content;
 
@@ -475,32 +480,4 @@ mat-panel-title {
 
 .gmnoprint {
 	display: none;
-}
-
-/* ---------- SKELETON ---------- */
-
-.skeleton-loader {
-	background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-	width: 100px;
-	height: 100px;
-	background-size: 400% 100%;
-	animation: skeleton-loading 1.5s ease infinite;
-}
-
-@keyframes skeleton-loading {
-	0% {
-		background-position: 100% 0;
-	}
-	100% {
-		background-position: -100% 0;
-	}
-}
-
-@-webkit-keyframes skeleton-loading {
-	0% {
-		background-position: 100% 0;
-	}
-	100% {
-		background-position: -100% 0;
-	}
 }

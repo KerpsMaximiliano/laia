@@ -1,0 +1,12 @@
+<div [style.width]="width" [style.height]="height">
+	<div #content_image class="skeleton-loader br-12">
+		<img
+			#img
+			style="display: none"
+			class="br-4 w h"
+			[src]="src"
+			alt="Imagen sin texto alternativo."
+			(load)="loadImage(content_image, img)"
+		/>
+	</div>
+</div>
