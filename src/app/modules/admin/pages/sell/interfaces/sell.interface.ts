@@ -86,7 +86,16 @@ export interface IItems {
 	image: string | null;
 	icon: string | null;
 	check: number | null;
+	cInfo: string; // ? Ref(1)
 }
+
+/**
+ * ? Ref(1):
+ * Cantidad de filas de información.
+ * > (headerboard || title || subtitle): 1fr;
+ * > (headerboard && title || headerboard && subtitle || title && subtitle): 2fr;
+ * > headerboard && title && subtitle: max-content 1fr max-content;
+ */
 
 // Configuracion del expandible
 export interface IConfig {
@@ -106,13 +115,14 @@ export const data: ILibrary = {
 			header: 'Con Compras Recientes', // Header text
 			items: [
 				{
-					headerboard: 'Hola', // Cabecera
-					title: 'Hola', // Titulo
-					subtitle: 'Hola', // Subtitulo
+					headerboard: '1 paquete.', // Cabecera
+					title: 'Las Rosas', // Titulo
+					subtitle: '$15.000', // Subtitulo
 					image:
 						'https://firebasestorage.googleapis.com/v0/b/laia-c5d59.appspot.com/o/images%2Fprod_1.png?alt=media&token=388cefde-efc9-495f-81de-ba935b304132', // Imagen
 					icon: null,
-					check: null
+					check: null,
+					cInfo: 'grid-template-rows: max-content 1fr max-content'
 				},
 				{
 					headerboard: 'TExtoTExtoTExto TExtoTExtoTExto TExtoTExtoTE xto',
@@ -120,7 +130,8 @@ export const data: ILibrary = {
 					subtitle: 'TExtoTExtoTExto TExtoTExtoTExto TExtoTExtoTE xto',
 					icon: 'calendar_month',
 					image: null,
-					check: null
+					check: null,
+					cInfo: 'grid-template-rows: max-content 1fr max-content'
 				},
 				{
 					headerboard: null,
@@ -128,7 +139,8 @@ export const data: ILibrary = {
 					subtitle: 'Subtituloo',
 					icon: null,
 					check: null,
-					image: null
+					image: null,
+					cInfo: 'grid-template-rows: repeat(2, 1fr)'
 				},
 				{
 					headerboard: null,
@@ -136,7 +148,8 @@ export const data: ILibrary = {
 					subtitle: null,
 					icon: null,
 					check: null,
-					image: null
+					image: null,
+					cInfo: 'grid-template-rows: 1fr'
 				},
 				{
 					headerboard: 'Solo cabecera',
@@ -144,7 +157,8 @@ export const data: ILibrary = {
 					subtitle: null,
 					icon: null,
 					check: null,
-					image: null
+					image: null,
+					cInfo: 'grid-template-rows: 1fr'
 				},
 				{
 					headerboard: null,
@@ -152,7 +166,8 @@ export const data: ILibrary = {
 					subtitle: 'Solo subtitle',
 					icon: null,
 					check: null,
-					image: null
+					image: null,
+					cInfo: 'grid-template-rows: 1fr'
 				}
 			],
 			config: {

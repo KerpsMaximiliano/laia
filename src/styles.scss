@@ -450,6 +450,11 @@ mat-panel-title {
 .btn {
 	font-size: 17px;
 	font-weight: 600;
+	word-break: break-word;
+
+	& p {
+		word-break: break-word;
+	}
 }
 
 .disabled,
@@ -462,7 +467,7 @@ mat-panel-title {
 }
 
 .dinamic {
-	max-height: 231px;
+	max-height: 500px;
 	display: grid;
 	grid-template-rows: 1fr max-content;
 

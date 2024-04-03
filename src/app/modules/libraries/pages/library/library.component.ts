@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { Store } from '@ngrx/store';
 
 // * Components.
 import { ButtonComponent } from '@components/button/button.component';
@@ -8,8 +9,12 @@ import { ImgComponent } from '@components/img/img.component';
 import { IItems, ILibrary, data } from '@sell/interfaces/sell.interface';
 
 // * Services.
+import { LibrariesService } from '@libraries/services/libraries.service';
 import { SellService } from '@sell/services/sell.service';
 import { CoreService } from '@services/core.service';
+
+// * Actions.
+import { LIBRARY_LOAD } from '@libraries/state/libraries.actions';
 
 // * Material.
 import { MatExpansionModule } from '@angular/material/expansion';
@@ -25,10 +30,15 @@ import { MatExpansionModule } from '@angular/material/expansion';
 export class LibraryComponent implements OnInit, OnDestroy {
 	public readonly sell: SellService = inject(SellService);
 	public readonly core: CoreService = inject(CoreService);
+	public readonly libraries: LibrariesService = inject(LibrariesService);
 
 	public library?: ILibrary;
 
+	// eslint-disable-next-line @ngrx/use-consistent-global-store-name
+	private readonly _store: Store = inject(Store);
+
 	public ngOnInit(): void {
+		this._store.dispatch(LIBRARY_LOAD({ library: this.libraries.id('id') }));
 		this.library = data;
 	}
 
@@ -41,6 +51,10 @@ export class LibraryComponent implements OnInit, OnDestroy {
 				}
 			});
 		}
+	}
+
+	public redirect(id: number): void {
+		console.log('Acá va la redirección a los distintos elementos, ¿Cuál es la ruta? Depende de la biblioteca => ', id);
 	}
 
 	public ngOnDestroy(): void {

@@ -31,11 +31,6 @@ footer div button {
 	}
 }
 
-.btn {
-	grid-template-columns: 48px 1fr 24px;
-	word-break: break-word;
-
-	& p {
-		word-break: break-word;
-	}
+.dinamic > div article {
+	grid-template-columns: 1fr max-content;
 }
