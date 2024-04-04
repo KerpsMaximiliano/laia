@@ -11,7 +11,7 @@ import { INITIAL, LOADING } from '@consts/load.const';
 // * Interfaces.
 import { ILoadableEntities } from '@interfaces/load.interface';
 import { IState } from '@interfaces/state.interface';
-import { IArt } from '@sell/interfaces/sell.interface';
+import { IArt } from '@sell/interfaces/sell-article.interface';
 
 // * Pipes.
 import { currency } from '@pipes/currency.pipe';

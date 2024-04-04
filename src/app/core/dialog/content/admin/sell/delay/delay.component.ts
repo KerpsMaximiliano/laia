@@ -11,7 +11,7 @@ import { ButtonComponent } from '@components/button/button.component';
 
 // * Interfaces.
 import { IState } from '@interfaces/state.interface';
-import { IArticle } from '@sell/interfaces/sell.interface';
+import { IArticle } from '@sell/interfaces/sell-article.interface';
 
 // * Functions.
 import { id } from '@functions/id.function';

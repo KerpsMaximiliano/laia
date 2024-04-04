@@ -8,7 +8,7 @@ import { STATE } from '@consts/state.const';
 // * Interfaces.
 import { ILoadableEntities, ILoadableEntity } from '@interfaces/load.interface';
 import { IState } from '@interfaces/state.interface';
-import { IArt, IArticle } from '@sell/interfaces/sell.interface';
+import { IArt, IArticle } from '@sell/interfaces/sell-article.interface';
 
 // * ARTICLES.
 export const selectAdminSellArticles = (state: IState): ILoadableEntities<IArt> => {

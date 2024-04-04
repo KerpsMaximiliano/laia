@@ -20,7 +20,7 @@ export class LibraryMenuComponent {
 
 	// !AUX
 	public data: IConfig = data;
-	public edit: boolean = false;
+	public edit: boolean = true;
 
 	public action(value: string | null, index: number, action?: 'ORDER' | 'REDIRECT' | null): void {
 		if (!action) return;

@@ -36,6 +36,7 @@ export const ADMIN_SELL_REDUCERS = createReducer(
 	on(
 		ADMIN_SELL_ARTICLE_CREATED,
 		(state, { id, title, price, stock, medias }): ISell => ({
+			...state,
 			articles: {
 				status: COMPLETE,
 				items: [...state.articles.items, { status: COMPLETE, data: { ...state.article.data, id, medias, title, price, stock } }]

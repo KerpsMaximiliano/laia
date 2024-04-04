@@ -35,7 +35,7 @@ import { id } from '@functions/id.function';
 // * Interfaces.
 import { ILoadableEntity } from '@interfaces/load.interface';
 import { IState } from '@interfaces/state.interface';
-import { IArticle } from '@sell/interfaces/sell.interface';
+import { IArticle } from '@sell/interfaces/sell-article.interface';
 import { ILogin } from '@user/interfaces/user.interface';
 
 // * Pipes.

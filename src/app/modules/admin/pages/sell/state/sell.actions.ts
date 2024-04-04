@@ -2,7 +2,7 @@ import { createAction, props } from '@ngrx/store';
 
 // * Interfaces.
 import { ILoadableEntity } from '@interfaces/load.interface';
-import { IArticle } from '@sell/interfaces/sell.interface';
+import { IArticle } from '@sell/interfaces/sell-article.interface';
 
 // * CREATE ARTICLE.
 export const ADMIN_SELL_ARTICLE_CREATE = createAction(
