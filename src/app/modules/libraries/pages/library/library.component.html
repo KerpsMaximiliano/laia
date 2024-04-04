@@ -33,7 +33,7 @@
 						<div class="dinamic bd">
 							<div>
 								@for (a of item.items; track $index) {
-									<article class="grid pd-12">
+									<article class="grid">
 										<button
 											type="button"
 											class="btn grid gp-8"
@@ -66,6 +66,7 @@
 												[type]="'MINI'"
 												[icon]="a.check ? 'check_circle' : 'radio_button_unchecked'"
 												[color]="'var(--violet)'"
+												class="grid-place h pd-12"
 												(click)="item.config.checkbox ? check(item.items, $index, item.config.multiple) : null"
 											/>
 										}

@@ -33,4 +33,8 @@ footer div button {
 
 .dinamic > div article {
 	grid-template-columns: 1fr max-content;
+
+	& .btn {
+		padding: 12px 0 12px 12px;
+	}
 }
