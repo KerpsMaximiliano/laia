@@ -29,7 +29,7 @@ export class UserEffects {
 					map((res) => {
 						if (res.sqqCheck.status === 0) this._core.redirect('auth/first');
 						if (res.sqqCheck.status === 1 && action.google) this._core.origin();
-						if (res.sqqCheck.status === 0 || (res.sqqCheck.status === 1 && action.google)) this._core.set('user', res.sqqCheck.userId);
+						if (res.sqqCheck.status === 0 || (res.sqqCheck.status === 1 && action.google)) this._core.uLocal('user', res.sqqCheck.userId);
 						return SQQ_CHECKED({
 							id: res.sqqCheck.userId,
 							email: action.email,
@@ -55,7 +55,7 @@ export class UserEffects {
 					map((res) => {
 						if (res.sqqLogin.status === 1) {
 							this._core.origin();
-							this._core.set('user', action.user);
+							this._core.uLocal('user', action.user);
 							return SQQ_LOGIN_SUCCESS({ phone: res.sqqLogin.phone, image: res.sqqLogin.image });
 						} else {
 							return SQQ_LOGIN_ERROR();

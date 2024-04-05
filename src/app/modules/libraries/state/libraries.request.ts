@@ -1,4 +1,4 @@
-export interface IInvoiceRequest {
+export interface IgAdminSellLibraryRequest {
 	userId: number;
 	libraryId: number;
 }

@@ -21,10 +21,10 @@
 	scrollbar-width: none;
 	scrollbar-color: var(--white) var(--white);
 	/* color: var(--black); */
-	user-select: none;
 	-webkit-user-select: none;
 	-moz-user-select: none;
 	-ms-user-select: none;
+	user-select: none;
 
 	&::-webkit-scrollbar {
 		width: 0px;

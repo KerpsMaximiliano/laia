@@ -58,8 +58,5 @@
 	],
 	"id": "laia-ia",
 	"description": "Laia es una plataforma con Inteligencia Artificial Integrada. Permite tener en un momento un asistente personalizado, acceso a distintos comercios y realizar propuestas de negocio directamente con el comerciante, propietario de una tienda (dentro de la plataforma).",
-	"categories": ["shopping"],
-	"share_target": {
-		"method": "GET"
-	}
+	"categories": ["shopping"]
 }

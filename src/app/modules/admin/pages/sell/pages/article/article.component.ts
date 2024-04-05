@@ -133,8 +133,8 @@ export class ArticleComponent implements OnInit, AfterViewInit, OnDestroy {
 
 	public constructor() {
 		afterNextRender(() => {
-			const product: string | undefined = this.core.get('product');
-			const user: string | undefined = this.core.get('user');
+			const product: string | undefined = this.core.gLocal('product');
+			const user: string | undefined = this.core.gLocal('user');
 			if (user && product) {
 				this.core
 					.mutation(MUTATION_ADMIN_SELL_ASSOCIATION, { user, product })

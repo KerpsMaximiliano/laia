@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, Signal, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
 
 // * Components.
@@ -6,7 +6,7 @@ import { ButtonComponent } from '@components/button/button.component';
 import { ImgComponent } from '@components/img/img.component';
 
 // * Interfaces.
-import { IItems, ILibrary, data } from '@sell/interfaces/sell.interface';
+import { IItems } from '@sell/interfaces/sell.interface';
 
 // * Services.
 import { LibrariesService } from '@libraries/services/libraries.service';
@@ -14,32 +14,40 @@ import { SellService } from '@sell/services/sell.service';
 import { CoreService } from '@services/core.service';
 
 // * Actions.
-import { LIBRARY_LOAD } from '@libraries/state/libraries.actions';
+import { LIBRARY_LOAD, LIBRARY_SELECT_ELEMENT } from '@libraries/state/libraries.actions';
 
 // * Material.
 import { MatExpansionModule } from '@angular/material/expansion';
+import { LoadingComponent } from '../../../../core/components/loading/loading.component';
+import { COMPLETE } from '../../../../core/constants/load.const';
+import { IState } from '../../../../core/interfaces/state.interface';
+import { ILoading } from '../../../../core/sorts/loading.sort';
+import { ILibraries } from '../../interfaces/libraries.interface';
+import { selectLibrary } from '../../state/libraries.selectors';
 
 @Component({
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	selector: 'app-library',
 	standalone: true,
-	imports: [MatExpansionModule, ButtonComponent, ImgComponent],
+	imports: [MatExpansionModule, ButtonComponent, ImgComponent, LoadingComponent],
 	templateUrl: './library.component.html',
 	styleUrl: './library.component.scss'
 })
-export class LibraryComponent implements OnInit, OnDestroy {
+export class LibraryComponent<K extends keyof ILibraries> implements OnInit {
 	public readonly sell: SellService = inject(SellService);
 	public readonly core: CoreService = inject(CoreService);
 	public readonly libraries: LibrariesService = inject(LibrariesService);
-
-	public library?: ILibrary;
+	public readonly complete: ILoading = COMPLETE;
 
 	// eslint-disable-next-line @ngrx/use-consistent-global-store-name
-	private readonly _store: Store = inject(Store);
+	private readonly _store: Store<IState> = inject(Store);
+
+	// eslint-disable-next-line @typescript-eslint/member-ordering
+	public readonly library: Signal<ILibraries[K]> = this._store.selectSignal(selectLibrary(this._library()));
 
 	public ngOnInit(): void {
-		this._store.dispatch(LIBRARY_LOAD({ library: this.libraries.id('id') }));
-		this.library = data;
+		const library = this.libraries.id('library');
+		if (library > 0) this._store.dispatch(LIBRARY_LOAD({ library }));
 	}
 
 	public check(value: IItems[], index: number, multiple: number): void {
@@ -54,10 +62,22 @@ export class LibraryComponent implements OnInit, OnDestroy {
 	}
 
 	public redirect(id: number): void {
-		console.log('Acá va la redirección a los distintos elementos, ¿Cuál es la ruta? Depende de la biblioteca => ', id);
+		this.core.redirect(`admin/sell/library/${this.library().id}/collection/${id}`);
 	}
 
-	public ngOnDestroy(): void {
-		console.log(this.library);
+	public select(id: number | null): void {
+		const library: K = this._library();
+		if (id && id !== this.library().selected) this._store.dispatch(LIBRARY_SELECT_ELEMENT({ id, library }));
+	}
+
+	private _library(): K {
+		const library = this.libraries.id('library');
+
+		switch (library) {
+			case 1:
+				return 'buyers' as K;
+			default:
+				return 'buyers' as K;
+		}
 	}
 }

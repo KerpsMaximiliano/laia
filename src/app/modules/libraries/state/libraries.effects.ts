@@ -1,31 +1,47 @@
 import { inject, Injectable } from '@angular/core';
-import { Actions } from '@ngrx/effects';
-
-// * Env.
-import { environment } from '@env/environment';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { catchError, exhaustMap, map, of } from 'rxjs';
 
 // * Consts.
-import { LOADED, LOADING } from '@consts/load.const';
+import { LOADED } from '@consts/load.const';
 
-// * Interfaces.
+// * Requests.
+import { IgAdminSellLibraryRequest } from './libraries.request';
+
+// * Responses.
+import { IgAdminSellLibraryResponse } from './libraries.response';
 
 // * Services.
 import { CoreService } from '@services/core.service';
 
+// * Sorts.
 import { ILoading } from '@sorts/loading.sort';
 
 // * Actions.
-
-// * Graphql.
+import { LIBRARY_LOAD, LIBRARY_LOADED } from './libraries.actions';
 
 @Injectable({ providedIn: 'root' })
-export class SellEffects {
+export class Librariesffects {
 	private readonly _actions$: Actions = inject(Actions);
 	private readonly _core: CoreService = inject(CoreService);
 	private readonly _loaded: ILoading = LOADED;
-	private readonly _loading: ILoading = LOADING;
-	private readonly _api: string = environment.api;
 
-	// ! ARTICLES.
+	// ! LIBRARY.
 	// eslint-disable-next-line @typescript-eslint/member-ordering
+	public readonly library$ = createEffect(() => {
+		return this._actions$.pipe(
+			ofType(LIBRARY_LOAD),
+			exhaustMap((action) =>
+				this._core
+					.get<IgAdminSellLibraryResponse, IgAdminSellLibraryRequest>('/library/gAdminSellLibrary', {
+						userId: 1, // ! Esta hardcodeado el user ID.
+						libraryId: action.library
+					})
+					.pipe(
+						map((res) => LIBRARY_LOADED({ id: action.library, res })),
+						catchError(() => of({ type: '[ERROR_LIBRARY]: GET LIBRARY' }))
+					)
+			)
+		);
+	});
 }

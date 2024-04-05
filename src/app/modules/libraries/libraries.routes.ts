@@ -2,7 +2,7 @@ import { Routes } from '@angular/router';
 
 export const LIBRARIES_ROUTES: Routes = [
 	{
-		path: ':type',
+		path: ':library',
 		loadComponent: async () => import('./libraries.component').then((c) => c.LibrariesComponent),
 		children: [
 			{

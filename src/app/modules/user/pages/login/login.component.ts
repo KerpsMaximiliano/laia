@@ -69,7 +69,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 	public ngOnInit(): void {
 		this.auth.init();
 
-		if (this.core.get('user')) {
+		if (this.core.gLocal('user')) {
 			this.core.back();
 			return;
 		}

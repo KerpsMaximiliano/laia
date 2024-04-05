@@ -1,6 +1,6 @@
 import { ComponentType } from '@angular/cdk/portal';
 import { Location } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { BehaviorSubject, Observable, from, map } from 'rxjs';
 
@@ -46,7 +46,7 @@ export class CoreService {
 	 * @param key string;
 	 * @returns string | undefined.
 	 */
-	public get(key: string): string | undefined {
+	public gLocal(key: string): string | undefined {
 		return localStorage.getItem(key) ?? undefined;
 	}
 
@@ -55,7 +55,7 @@ export class CoreService {
 	 * @param key string;
 	 * @param value number | string;
 	 */
-	public set(key: string, value: number | string): void {
+	public uLocal(key: string, value: number | string): void {
 		localStorage.setItem(key, `${value}`);
 	}
 
@@ -64,8 +64,8 @@ export class CoreService {
 	}
 
 	public origin(): void {
-		if (this.get('origin')) {
-			void this._router.navigate([this.get('origin')]);
+		if (this.gLocal('origin')) {
+			void this._router.navigate([this.gLocal('origin')]);
 			return;
 		} else {
 			void this._router.navigate(['']);
@@ -74,7 +74,7 @@ export class CoreService {
 	}
 
 	public redirect(url: string, id?: number | string): void {
-		if (url === 'auth') this.set('origin', window.location.pathname);
+		if (url === 'auth') this.uLocal('origin', window.location.pathname);
 
 		if (id) {
 			void this._router.navigate([`${url}/${id}`], { relativeTo: this._route });
@@ -102,6 +102,16 @@ export class CoreService {
 				variables
 			})
 			.pipe(map((res) => res.data as T));
+	}
+
+	public get<T, R extends object>(point: string, params: R): Observable<T> {
+		let httpParams = new HttpParams();
+		for (const key in params) {
+			if (Object.prototype.hasOwnProperty.call(params, key)) {
+				httpParams = httpParams.append(key, String(params[key]));
+			}
+		}
+		return this._http.get<T>(`${this._api}${point}`, { params: httpParams });
 	}
 
 	public post<T>(point: string, body: unknown): Observable<T> {
