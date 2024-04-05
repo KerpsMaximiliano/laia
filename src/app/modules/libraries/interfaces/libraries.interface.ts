@@ -5,21 +5,18 @@ import { ILoadableEntity } from '@interfaces/load.interface';
 import { TCollection, TMiniature } from '@libraries/sorts/libraries.sort';
 import { ILoading } from '@sorts/loading.sort';
 
-// * LIBRARIES INTERFACE.
-export interface ILibraries {
-	buyers: ILibrary;
-}
-
 // * LIBRARY INTERFACE.
 export interface ILibrary {
 	status: ILoading;
 	id: number;
 	title: string;
-	modified: number;
-	disminutive: string;
-	multimedias: number;
+	multimedia: number;
 	collections: ILoadableEntity<ICollection>[];
+	default: number | null;
 	selected: number | null;
+	count: number;
+	button: ILibraryButton[];
+	type: number;
 }
 
 // * COLLECTION INTERFACE.
@@ -29,6 +26,7 @@ export interface ICollection {
 	miniature: IMinuature;
 	conf: IConf | null;
 	elements: TCollection[];
+	count: number;
 }
 
 // * LIBRARY BUYER INTERFACE.
@@ -42,6 +40,12 @@ export interface IBuyer {
 }
 
 // * LIBRARY ... INTERFACE.
+
+export interface ILibraryButton {
+	label: string;
+	action: string;
+	visibility: boolean;
+}
 
 interface IMinuature {
 	headerboard: TMiniature[];
@@ -70,4 +74,12 @@ interface IConf {
 	 *  => eliminar
 	 *  => modificar
 	 */
+}
+
+// * LIBRARY CONFIRMATION INTERFACE.
+export interface ILibraryConf {
+	status: ILoading;
+	title: string;
+	default: number | null;
+	button: ILibraryButton;
 }

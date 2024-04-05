@@ -126,6 +126,7 @@ button {
 /* -------------------- VIEWPORT --------------------  */
 
 .box {
+	min-height: 100%;
 	height: var(--vh);
 	max-height: 950px;
 	display: grid;

@@ -5,26 +5,25 @@ import { IResponse } from '@interfaces/response.interface';
 export type IKeywordsWatchResponse = IResponse<{ wAdminSellKeyWords: string[] }>;
 
 export interface IgAdminSellLibraryResponse {
+	id: number;
 	collections: {
 		id: number;
 		title: string;
-		miniature: string;
-		// ! Puede ser un string o un string[]. Ambas son válidas.
-		// miniatureHeaderboard: string; // ! <= MEJORA.
-		// miniatureTitle: string; // ! <= MEJORA.
-		// miniatureSubtitle: string; // ! <= MEJORA.
+		miniatureHeader: string[];
+		miniatureTitle: string[];
+		miniatureSubtitle: string[];
 		items: {
 			id: number | null;
-			media: string | null; // ! <= Falta en el servicio.
+			media: string | null;
 			phone: string | null;
 			surname: string | null;
 			name: string | null;
 			email: string | null;
 		}[];
+		count: number;
 	}[];
-	conf: number;
+	multimedia: number;
 	title: string;
 	type: number;
-	// ! MULTIMEDIA.
-	// ! ID.
+	count: number;
 }

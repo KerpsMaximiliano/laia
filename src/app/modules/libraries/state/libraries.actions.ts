@@ -1,13 +1,32 @@
-import { createAction, props } from '@ngrx/store';
+import { ActionCreator, createAction, props } from '@ngrx/store';
+import { TypedAction } from '@ngrx/store/src/models';
 
 // * Interfaces.
-import { TLibrary } from '../sorts/libraries.sort';
 import { IgAdminSellLibraryResponse } from './libraries.response';
 
 // * LOAD LIBRARY.
-export const LIBRARY_LOAD = createAction('[Library] Load Library', props<{ library: number }>());
-export const LIBRARY_LOADED = createAction('[Library] Loaded Library', props<{ id: number; res: IgAdminSellLibraryResponse }>());
+export const LIBRARY_LOAD: ActionCreator<
+	'[Library] Load Library',
+	(props: { library: number }) => TypedAction<'[Library] Load Library'> & {
+		library: number;
+	}
+> = createAction('[Library] Load Library', props<{ library: number }>());
+export const LIBRARY_LOADED: ActionCreator<
+	'[Library] Loaded Library',
+	(props: { res: IgAdminSellLibraryResponse }) => TypedAction<'[Library] Loaded Library'> & {
+		res: IgAdminSellLibraryResponse;
+	}
+> = createAction('[Library] Loaded Library', props<{ res: IgAdminSellLibraryResponse }>());
 
-export const LIBRARY_SELECT_ELEMENT = createAction('[Library] Select Element', props<{ id: number; library: TLibrary }>());
+// * SELECT ELEMENT.
+export const LIBRARY_SELECT_ELEMENT: ActionCreator<
+	'[Library] Select Element',
+	(props: { library: number; element: number }) => TypedAction<'[Library] Select Element'> & {
+		library: number;
+		element: number;
+	}
+> = createAction('[Library] Select Element', props<{ library: number; element: number }>());
 
-// export const LIBRARY_LOADED = createAction('[Library] Loaded Library', props<{ library: ILibraryAux; tLibrary: TLibrary }>());
+// * LOAD LIBRARY CONF.
+export const LIBRARY_CONF_LOAD = createAction('[Library] Load Library Conf', props<{ library: number; title: boolean }>());
+export const LIBRARY_CONF_LOADED = createAction('[Library] Loaded Library Conf', props<{ library: number }>());

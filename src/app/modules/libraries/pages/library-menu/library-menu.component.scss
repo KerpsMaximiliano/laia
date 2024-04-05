@@ -1,17 +1,11 @@
-h1 {
-	font-size: 17px;
-	line-height: normal;
-	font-weight: 600;
-}
-
-h2 {
-	color: var(--white);
-	font-size: 17px;
-	font-weight: 400;
-}
-
 footer {
-	position: absolute;
-	bottom: 0;
-	background-color: #000;
+	background-color: var(--black);
+
+	& button {
+		color: var(--white);
+	}
+}
+
+.btn {
+	grid-template-columns: 1fr max-content;
 }

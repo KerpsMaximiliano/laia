@@ -38,7 +38,7 @@ export class Librariesffects {
 						libraryId: action.library
 					})
 					.pipe(
-						map((res) => LIBRARY_LOADED({ id: action.library, res })),
+						map((res) => LIBRARY_LOADED({ res })),
 						catchError(() => of({ type: '[ERROR_LIBRARY]: GET LIBRARY' }))
 					)
 			)

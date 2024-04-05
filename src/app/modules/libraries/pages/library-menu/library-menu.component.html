@@ -1,43 +1,89 @@
-<header class="flex gp-4 pd-12">
-	<app-component-button [type]="'MINI'" [icon]="'navigate_before'" (click)="core.back()" />
+<div class="box three">
+	<header class="flex gp-4 pd-12">
+		<app-component-button [type]="'MINI'" [icon]="'navigate_before'" (click)="back()" />
 
-	<h1>Menu de {{ data.name }}</h1>
-</header>
-
-<main class="grid gp-16 pd-12">
-	<section class="grid bd br-4">
-		@for (item of data.items; track $index) {
-			<button type="button" class="flex btn bet pd-12" (click)="action(item.action.value, $index, item.action.type)">
-				<div class="grid gp-4 tx-left">
-					@if (item.headerboard) {
-						<p class="required tx-visible">{{ item.headerboard }}</p>
-					}
-
-					@if (item.action.type === 'ORDER') {
-						{{ item.action.value === 'asc' ? 'Ascendente' : 'Descendente' }}
-					} @else {
-						{{ item.title }}
-					}
-
-					@if (item.subtitle) {
-						<p class="tx-visible">{{ item.subtitle }}</p>
-					}
-				</div>
-
-				<app-component-button [type]="'ICON'" [icon]="item.icon" />
-			</button>
-
-			@if (!$last) {
-				<hr />
-			}
+		@if (conf().title) {
+			<h1>{{ 'Menu de ' + conf().title }}</h1>
+		} @else {
+			<h1>Cargando...</h1>
 		}
-	</section>
-</main>
+	</header>
 
-<footer class="w">
-	<button type="button" class="flex cen w" (click)="action(data.footer.action.value, 0, data.footer.action.type)">
-		<h2 class="tx-visible tx-center pd-8">{{ data.footer.text }}</h2>
+	<main class="fle col gp-30 pd-12">
+		@defer (when conf().status === complete) {
+			<form [formGroup]="form">
+				<mat-form-field appearance="outline" class="w">
+					<mat-label>Título de la biblioteca</mat-label>
 
-		<app-component-button color="var(--white)" [type]="'ICON'" [icon]="'navigate_next'" />
-	</button>
-</footer>
+					<div class="flex">
+						<input #input type="text" matInput placeholder="Ingrese un título de la biblioteca" formControlName="title" maxlength="21" />
+
+						@if (form.get('title')?.value) {
+							<app-component-button [type]="'ICON'" [icon]="'delete'" [suffix]="true" (click)="form.get('title')?.setValue(null)" />
+						}
+					</div>
+
+					<mat-hint [align]="'end'">{{ 20 - form.get('title')?.value?.length }}</mat-hint>
+
+					<mat-error>{{ getErrorMessage(form.get('title')!) }}</mat-error>
+				</mat-form-field>
+			</form>
+
+			<section class="grid bd br-4">
+				<button type="button" class="btn grid pd-12 tx-left">
+					Nuevo {{ conf().button.label }}
+
+					<app-component-button [type]="'ICON'" [icon]="'add'" />
+				</button>
+
+				<hr />
+
+				<button type="button" class="btn grid pd-12 tx-left disabled">
+					Enlace directo de acceso rápido
+
+					<app-component-button [type]="'ICON'" [icon]="'offline_share'" />
+				</button>
+
+				<hr />
+
+				<button type="button" class="btn grid pd-12 tx-left disabled">
+					Descargar PDF
+
+					<app-component-button [type]="'ICON'" [icon]="'picture_as_pdf'" />
+				</button>
+
+				<hr />
+
+				<button type="button" class="btn grid pd-12 tx-left">
+					Personaliza tu propio filtro
+
+					<app-component-button [type]="'ICON'" [icon]="'filter_alt'" />
+				</button>
+
+				<hr />
+
+				<button type="button" class="btn grid pd-12 tx-left">
+					<div class="grid gp-4">
+						<p class="required tx-visible">Vista de las miniaturas</p>
+
+						Clásica
+					</div>
+
+					<app-component-button [type]="'ICON'" [icon]="'edit'" />
+				</button>
+			</section>
+		} @placeholder {
+			<div class="h">
+				<app-component-loading />
+			</div>
+		}
+	</main>
+
+	<footer>
+		<button type="button" class="flex bet w pd-8">
+			Déjanos saber si necesitas algo
+
+			<app-component-button [type]="'ICON'" [icon]="'chat'" [color]="'var(--white)'" />
+		</button>
+	</footer>
+</div>

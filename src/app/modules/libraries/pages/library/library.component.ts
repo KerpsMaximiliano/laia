@@ -4,9 +4,17 @@ import { Store } from '@ngrx/store';
 // * Components.
 import { ButtonComponent } from '@components/button/button.component';
 import { ImgComponent } from '@components/img/img.component';
+import { LoadingComponent } from '@components/loading/loading.component';
+
+// * Conts.
+import { COMPLETE, LOADING } from '@consts/load.const';
 
 // * Interfaces.
-import { IItems } from '@sell/interfaces/sell.interface';
+import { IState } from '@interfaces/state.interface';
+import { ILibrary } from '@libraries/interfaces/libraries.interface';
+
+// * Sorts.
+import { ILoading } from '@sorts/loading.sort';
 
 // * Services.
 import { LibrariesService } from '@libraries/services/libraries.service';
@@ -14,16 +22,13 @@ import { SellService } from '@sell/services/sell.service';
 import { CoreService } from '@services/core.service';
 
 // * Actions.
-import { LIBRARY_LOAD, LIBRARY_SELECT_ELEMENT } from '@libraries/state/libraries.actions';
+
+// * Selectors.
+import { selectLibrary } from '@libraries/state/libraries.selectors';
 
 // * Material.
 import { MatExpansionModule } from '@angular/material/expansion';
-import { LoadingComponent } from '../../../../core/components/loading/loading.component';
-import { COMPLETE } from '../../../../core/constants/load.const';
-import { IState } from '../../../../core/interfaces/state.interface';
-import { ILoading } from '../../../../core/sorts/loading.sort';
-import { ILibraries } from '../../interfaces/libraries.interface';
-import { selectLibrary } from '../../state/libraries.selectors';
+import { LIBRARY_LOAD } from '../../state/libraries.actions';
 
 @Component({
 	changeDetection: ChangeDetectionStrategy.OnPush,
@@ -33,7 +38,7 @@ import { selectLibrary } from '../../state/libraries.selectors';
 	templateUrl: './library.component.html',
 	styleUrl: './library.component.scss'
 })
-export class LibraryComponent<K extends keyof ILibraries> implements OnInit {
+export class LibraryComponent implements OnInit {
 	public readonly sell: SellService = inject(SellService);
 	public readonly core: CoreService = inject(CoreService);
 	public readonly libraries: LibrariesService = inject(LibrariesService);
@@ -43,21 +48,12 @@ export class LibraryComponent<K extends keyof ILibraries> implements OnInit {
 	private readonly _store: Store<IState> = inject(Store);
 
 	// eslint-disable-next-line @typescript-eslint/member-ordering
-	public readonly library: Signal<ILibraries[K]> = this._store.selectSignal(selectLibrary(this._library()));
+	public readonly library: Signal<ILibrary> = this._store.selectSignal(selectLibrary(this.libraries.id('library')));
 
 	public ngOnInit(): void {
-		const library = this.libraries.id('library');
-		if (library > 0) this._store.dispatch(LIBRARY_LOAD({ library }));
-	}
-
-	public check(value: IItems[], index: number, multiple: number): void {
-		value[index].check = value[index].check === 1 ? 0 : 1;
-		if (multiple === 1) {
-			value.forEach((item, i) => {
-				if (i !== index) {
-					item.check = 0;
-				}
-			});
+		if (this.library().status === LOADING) {
+			const LIBRARY: number = this.libraries.id('library');
+			if (LIBRARY > 0) this._store.dispatch(LIBRARY_LOAD({ library: LIBRARY }));
 		}
 	}
 
@@ -66,18 +62,8 @@ export class LibraryComponent<K extends keyof ILibraries> implements OnInit {
 	}
 
 	public select(id: number | null): void {
-		const library: K = this._library();
-		if (id && id !== this.library().selected) this._store.dispatch(LIBRARY_SELECT_ELEMENT({ id, library }));
-	}
-
-	private _library(): K {
-		const library = this.libraries.id('library');
-
-		switch (library) {
-			case 1:
-				return 'buyers' as K;
-			default:
-				return 'buyers' as K;
+		if (id) {
+			// this._store.dispatch(LIBRARY_SELECT_ELEMENT({ id: }));
 		}
 	}
 }
