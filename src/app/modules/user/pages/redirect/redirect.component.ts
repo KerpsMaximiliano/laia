@@ -31,7 +31,7 @@ export class RedirectComponent implements OnInit, OnDestroy {
 	private readonly _destroy$: Subject<void> = new Subject<void>();
 
 	public ngOnInit(): void {
-		if (this._core.get('user')) {
+		if (this._core.gLocal('user')) {
 			this._core.back();
 			return;
 		}

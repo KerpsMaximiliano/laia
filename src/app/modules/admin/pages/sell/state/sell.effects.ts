@@ -40,36 +40,34 @@ export class SellEffects {
 	public readonly articles$ = createEffect(() => {
 		return this._actions$.pipe(
 			ofType(ADMIN_SELL_ARTICLES_LOAD),
-			exhaustMap((action) => {
-				return this._core
-					.query<IArticlesResponse['data']>(QUERY_ADMIN_SELL_ARTICLES, { page: action.page ?? 1, merchant: action.merchant })
-					.pipe(
-						map((res) =>
-							ADMIN_SELL_ARTICLES_LOADED({
-								articles: res.products.map((article) => {
-									return {
-										status: this._loaded,
-										data: {
-											id: article.id,
-											price: { amount: article.price, type: 'USD' },
-											stock: { quantity: article.stock, type: article.typeOfSale },
-											title: article.title,
-											commissions: { status: this._loading, items: [], total: 0 },
-											hashtag: null,
-											investments: { status: this._loading, items: [], total: 0 },
-											keywords: { status: this._loading, items: [], count: 0 },
-											manufacturing: { time: null, type: 'MINUTE' },
-											medias: article.frontPage ? [{ url: article.frontPage, type: 'IMAGE' }] : [],
-											questions: { count: 0, items: [], status: 'INITIAL' },
-											segments: { count: 0, items: [], status: 'INITIAL' }
-										}
-									};
-								})
+			exhaustMap((action) =>
+				this._core.query<IArticlesResponse['data']>(QUERY_ADMIN_SELL_ARTICLES, { page: action.page ?? 1, merchant: action.merchant }).pipe(
+					map((res) =>
+						ADMIN_SELL_ARTICLES_LOADED({
+							articles: res.products.map((article) => {
+								return {
+									status: this._loaded,
+									data: {
+										id: article.id,
+										price: { amount: article.price, type: 'USD' },
+										stock: { quantity: article.stock, type: article.typeOfSale },
+										title: article.title,
+										commissions: { status: this._loading, items: [], total: 0 },
+										hashtag: null,
+										investments: { status: this._loading, items: [], total: 0 },
+										keywords: { status: this._loading, items: [], count: 0 },
+										manufacturing: { time: null, type: 'MINUTE' },
+										medias: article.frontPage ? [{ url: article.frontPage, type: 'IMAGE' }] : [],
+										questions: { count: 0, items: [], status: 'INITIAL' },
+										segments: { count: 0, items: [], status: 'INITIAL' }
+									}
+								};
 							})
-						),
-						catchError(() => of({ type: '[ERROR_ADMIN_SELL_ARTICLES]: QUERY_ADMIN_SELL_ARTICLES' }))
-					);
-			})
+						})
+					),
+					catchError(() => of({ type: '[ERROR_ADMIN_SELL_ARTICLES]: QUERY_ADMIN_SELL_ARTICLES' }))
+				)
+			)
 		);
 	});
 
@@ -79,7 +77,7 @@ export class SellEffects {
 		return this._actions$.pipe(
 			ofType(ADMIN_SELL_ARTICLE_CREATE),
 			exhaustMap((action) => {
-				const user: string | undefined = this._core.get('user');
+				const user: string | undefined = this._core.gLocal('user');
 
 				const body: FormData = new FormData();
 				body.append('status', '1');
@@ -122,9 +120,9 @@ export class SellEffects {
 
 				return this._core.post<ICreateArticle>('/product/create-aux', body).pipe(
 					map((res) => {
-						const user: string | undefined = this._core.get('user');
+						const user: string | undefined = this._core.gLocal('user');
 						if (!user) {
-							this._core.set('product', res.productId);
+							this._core.uLocal('product', res.productId);
 							this._core.redirect('auth');
 						}
 						return ADMIN_SELL_ARTICLE_CREATED({

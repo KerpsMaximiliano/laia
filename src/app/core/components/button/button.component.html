@@ -4,13 +4,13 @@
 			@if (loading) {
 				<app-component-loading />
 			} @else {
-				<mat-icon [style.color]="color" matSuffix aria-label="continuar" aria-hidden="false">{{ icon }}</mat-icon>
+				<mat-icon [style.color]="color" matSuffix aria-label="continuar" aria-hidden="false" [title]="icon">{{ icon }}</mat-icon>
 			}
 		} @else {
 			@if (loading) {
 				<app-component-loading />
 			} @else {
-				<mat-icon [style.color]="color" aria-hidden="false">{{ icon }}</mat-icon>
+				<mat-icon [style.color]="color" aria-hidden="false" [title]="icon">{{ icon }}</mat-icon>
 			}
 		}
 	} @else {
@@ -36,6 +36,7 @@
 						[matBadgeColor]="'warn'"
 						matBadgeSize="small"
 						aria-hidden="false"
+						[title]="icon"
 					>
 						{{ icon }}
 					</mat-icon>
@@ -43,7 +44,7 @@
 					@if (loading) {
 						<app-component-loading />
 					} @else {
-						<mat-icon [style.color]="color">{{ icon }}</mat-icon>
+						<mat-icon [style.color]="color" [title]="icon">{{ icon }}</mat-icon>
 					}
 				}
 			} @else {
