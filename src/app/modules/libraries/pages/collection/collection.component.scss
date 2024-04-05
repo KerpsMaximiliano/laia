@@ -1,0 +1,60 @@
+h1 {
+	font-size: 17px;
+	line-height: normal;
+	font-weight: 600;
+}
+
+h2 {
+	color: var(--white);
+	font-size: 17px;
+	font-weight: 400;
+}
+
+.din {
+	max-height: 500px;
+	display: grid;
+	grid-template-rows: 1fr max-content;
+
+	& > div {
+		overflow-y: scroll;
+	}
+}
+
+.din > div article {
+	grid-template-columns: 1fr max-content;
+
+	& .btn {
+		padding: 12px 0 12px 12px;
+	}
+}
+
+.add {
+	position: absolute;
+	bottom: 0;
+	padding: 12px 16px;
+	margin: 12px;
+	background-color: rgba(234, 221, 255, 1);
+	box-shadow: 0px 4px 8px 3px rgba(0, 0, 0, 0.15);
+	font-size: 16px;
+}
+
+footer {
+	position: absolute;
+	bottom: 0;
+	background-color: #000;
+}
+
+@keyframes laia-animation {
+	0% {
+		opacity: 0;
+		transform: translateY(10px);
+	}
+	100% {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+.laia-animation {
+	animation: laia-animation 300ms ease-in-out;
+}
