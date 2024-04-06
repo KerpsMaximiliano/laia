@@ -1,0 +1,125 @@
+<div class="box three">
+	<header class="grid gp-16 pd-12">
+		<nav class="flex bet gp-8">
+			<div class="flex gp-4">
+				<!-- ! FIX THIS ROUTE -->
+				<app-component-button [type]="'MINI'" [icon]="'navigate_before'" (click)="libraries.redirect('menu')" />
+
+				@defer (when library().status !== loading) {
+					<h1>{{ library().title }}</h1>
+				} @placeholder {
+					<h1>Cargando...</h1>
+				}
+			</div>
+
+			<app-component-button [type]="'MINI'" [icon]="'more_vert'" (click)="libraries.redirect('menu')" />
+		</nav>
+	</header>
+
+	<main class="fle col gp-12 pd-12">
+		@defer (when library().status === complete) {
+			<article class="grid gp-8 disabled">
+				<div class="flex bet bd br-4 pd-12">
+					<div class="flex gp-8">
+						<app-component-button [type]="'ICON'" [icon]="'done_all'" color="#c3c3c3" />
+						<p class="disabled">ID</p>
+					</div>
+					<app-component-button [type]="'ICON'" [icon]="'mic'" [color]="'#c3c3c3'" />
+				</div>
+				<p class="tx-left tx-visible disabled">La Inteligencia Artificial para optimizar tu negocio.</p>
+			</article>
+
+			@if (library().count > 0) {
+				@for (collection of library().collections; track $index) {
+					@if (collection.data.count > 0) {
+						<mat-accordion class="expansion-panel-pd grid gp-16">
+							<mat-expansion-panel [expanded]="true">
+								<mat-expansion-panel-header style="background-color: var(--grey-light); padding: 12px 20px 12px 12px; height: 48px">
+									<mat-panel-title>{{ collection.data.title }}</mat-panel-title>
+								</mat-expansion-panel-header>
+
+								<div class="dinamic bd">
+									<div>
+										@for (element of collection.data.elements; track $index) {
+											<button
+												type="button"
+												class="grid w pd-12"
+												[style]="element.media ? 'grid-template-columns: max-content 1fr' : 'grid-template-columns: 1fr'"
+											>
+												@if (element.media) {
+													<app-component-img [src]="element.media" [width]="'100px'" [height]="'100px'" />
+												}
+
+												<div class="element__text grid gp-4 tx-left" [style]="collection.data.miniature.style">
+													@if (collection.data.miniature.headerboard.length > 0) {
+														<p class="element__text--header tx-visible">
+															@for (item of collection.data.miniature.headerboard; track $index) {
+																{{ (element[item] ?? alias[item]) + '. ' }}
+															}
+														</p>
+													}
+
+													@if (collection.data.miniature.title.length > 0) {
+														<p class="element__text--title tx-visible">
+															@for (item of collection.data.miniature.title; track $index) {
+																{{ (element[item] ?? alias[item]) + '. ' }}
+															}
+														</p>
+													}
+
+													@if (collection.data.miniature.subtitle.length > 0) {
+														<p class="tx-visible">
+															@for (item of collection.data.miniature.subtitle; track $index) {
+																{{ (element[item] ?? alias[item]) + '. ' }}
+															}
+														</p>
+													}
+												</div>
+											</button>
+
+											@if (!$last) {
+												<hr />
+											}
+										}
+									</div>
+
+									<button type="button" class="expansion-footer" style="justify-content: flex-end" (click)="redirect(collection.data.id)">
+										<app-component-button [type]="'ICON'" [icon]="'navigate_next'" />
+									</button>
+								</div>
+							</mat-expansion-panel>
+						</mat-accordion>
+					}
+				}
+			}
+		} @placeholder {
+			<div class="grid h">
+				<div>
+					<app-component-loading />
+					<br />
+					<h3 class="tx-center" style="color: var(--violet)">Cargando Biblioteca</h3>
+				</div>
+			</div>
+		}
+	</main>
+
+	<footer>
+		<div class="relative">
+			@defer (when library().status === complete) {
+				<button type="button" class="absolute flex gp-8 br-4">
+					<app-component-button [type]="'ICON'" [icon]="'add'" />
+
+					{{ library().button.label }}
+				</button>
+			} @placeholder {
+				<app-component-loading class="absolute br-4" />
+			}
+		</div>
+
+		@defer (when library().status === complete) {
+			<h2 class="tx-visible tx-center pd-8">{{ library().count }}{{ library().footer }}</h2>
+		} @placeholder {
+			<h2 class="tx-visible tx-center pd-8">Cargando...</h2>
+		}
+	</footer>
+</div>

@@ -75,7 +75,7 @@ export const SELL_ROUTES: Routes = [
 			},
 			{
 				path: 'library',
-				loadChildren: async () => import('@libraries/libraries.routes').then((r) => r.LIBRARIES_ROUTES)
+				loadChildren: async () => import('@common/routes/libraries.routes').then((r) => r.LIBRARIES_ROUTES)
 			},
 			{
 				path: '**',
