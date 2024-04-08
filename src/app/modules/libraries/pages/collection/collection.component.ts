@@ -56,9 +56,11 @@ export class CollectionComponent implements OnInit {
 	public options: string[] = ['One', 'Two', 'Three', 'Three', 'Three', 'Three', 'Three'];
 	public data?: IConfig;
 	public initialData?: IConfig;
-	public laia: boolean = false;
-	public asd: boolean = true;
-	public change: boolean = false;
+	// * Son variables distintas por las animaciones *
+	public laia: boolean = false; // Variable para mostrar o no laia.
+	public view: boolean = true; // Variable para mostrar o no la seccion, se oculta al estar laia habilitado.
+	public change: boolean = false; // Variable para saber si hubo algun cambio y habilitar el boton flotante.
+
 	private _cdr: ChangeDetectorRef = inject(ChangeDetectorRef);
 
 	public ngOnInit(): void {
@@ -80,7 +82,7 @@ export class CollectionComponent implements OnInit {
 				item.check = 0;
 			}
 		});
-		this.id = this.data.items[index].id;
+		this.id = this.data.items[index].check ? this.data.items[index].id : undefined;
 		this.change = this.changeCheck();
 	}
 
@@ -104,11 +106,11 @@ export class CollectionComponent implements OnInit {
 			this.animation = true;
 		} else {
 			this.animation = false;
-			this.asd = false;
+			this.view = false;
 		}
 		setTimeout(() => {
 			if (!this.laia) {
-				this.asd = true;
+				this.view = true;
 			} else {
 				this.input?.nativeElement.focus();
 			}
@@ -117,7 +119,7 @@ export class CollectionComponent implements OnInit {
 	}
 
 	public save(): void {
-		this.initialData = this.data;
+		this.initialData = JSON.parse(JSON.stringify(this.data));
 		this.id = undefined;
 	}
 

@@ -34,7 +34,7 @@
 	</header>
 
 	<main class="fle col gp-12 pd-12">
-		@if (asd) {
+		@if (view) {
 			<div class="din bd" [class.laia-animation]="animation">
 				<div>
 					@for (a of data?.items; track $index) {
@@ -69,14 +69,12 @@
 						}
 					}
 				</div>
-				@if (change) {
-					@if (id) {
-						<div class="flex cen add" style="position: relative">
-							<button type="button" class="flex gp-8 br-4" (click)="save()">
-								{{ 'Adicionar ' + id + ' como el Comprador' }}
-							</button>
-						</div>
-					}
+				@if (change && id) {
+					<div class="flex cen add" style="position: relative">
+						<button type="button" class="flex gp-8 br-4" (click)="save()">
+							{{ 'Adicionar ' + id + ' como el Comprador' }}
+						</button>
+					</div>
 				}
 				<button type="button" class="expansion-footer bet">
 					@for (item of data?.footerItems; track $index) {
