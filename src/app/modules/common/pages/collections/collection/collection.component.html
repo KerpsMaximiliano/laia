@@ -1,0 +1,99 @@
+<div class="box three">
+	<header class="grid gp-16 pd-12">
+		<nav class="flex bet gp-4">
+			<div class="flex gp-4">
+				<app-component-button [type]="'MINI'" [icon]="'navigate_before'" (click)="core.back()" />
+
+				@defer (when collection().status !== loading) {
+					<h1>{{ collection().data.title }}</h1>
+				} @placeholder {
+					<h1>Cargando...</h1>
+				}
+			</div>
+
+			<div class="flex gp-8">
+				<app-component-button [type]="'MINI'" [icon]="'done_all'" />
+
+				<app-component-button [type]="'MINI'" [icon]="'more_vert'" />
+			</div>
+		</nav>
+	</header>
+
+	<main class="pd-12">
+		<section class="bd br-4">
+			@if (collection().data.count > 0) {
+				@for (element of collection().data.elements; track $index) {
+					<article class="grid">
+						<button
+							type="button"
+							class="btn grid gp-8"
+							[style]="element.media ? 'grid-template-columns: max-content 1fr' : 'grid-template-columns: 1fr'"
+						>
+							@if (element.media) {
+								<app-component-img [src]="element.media" [width]="'100px'" [height]="'100px'" />
+							}
+
+							<div class="grid tx-left h" [style]="collection().data.miniature.style">
+								@if (collection().data.miniature.headerboard.length > 0) {
+									<p class="required tx-visible">
+										@for (item of collection().data.miniature.headerboard; track $index) {
+											{{ element[item] }}
+										}
+									</p>
+								}
+
+								@if (collection().data.miniature.title.length > 0) {
+									@for (item of collection().data.miniature.title; track $index) {
+										{{ element[item] }}
+									}
+								}
+
+								@if (collection().data.miniature.subtitle.length > 0) {
+									<p class="tx-visible">
+										@for (item of collection().data.miniature.subtitle; track $index) {
+											{{ element[item] }}
+										}
+									</p>
+								}
+							</div>
+						</button>
+
+						<app-component-button
+							[type]="'MINI'"
+							[icon]="selected() !== null && selected() === element.id ? 'check_circle' : 'radio_button_unchecked'"
+							[color]="'var(--violet)'"
+							class="grid pd-12 h"
+							(click)="select(element.id)"
+						/>
+					</article>
+
+					@if (!$last) {
+						<hr />
+					}
+				}
+			}
+		</section>
+	</main>
+
+	<footer>
+		<div class="relative">
+			@defer (when collection().status !== loading) {
+				@if (false) {
+					<button type="button" class="absolute flex gp-8 br-4">
+						<app-component-button [type]="'ICON'" [icon]="'add'" />
+
+						{{ collection().data.button.label }}
+					</button>
+				}
+			} @placeholder {
+				<app-component-loading class="absolute br-4" />
+			}
+		</div>
+
+		@defer (when collection().status !== loading) {
+			<h2 class="tx-visible tx-center pd-8">{{ collection().data.count }}{{ collection().data.footer }}</h2>
+		} @placeholder {
+			<h2 class="tx-visible tx-center pd-8">Cargando...</h2>
+		}
+	</footer>
+</div>

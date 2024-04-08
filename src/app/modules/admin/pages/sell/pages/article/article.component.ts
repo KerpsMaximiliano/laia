@@ -186,41 +186,41 @@ export class ArticleComponent implements OnInit, AfterViewInit, OnDestroy {
 
 	// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
 	public onFileSelected(event: any): void {
-		const input = event.target;
+		const INPUT = event.target;
 
-		if (input.files && input.files.length > 0) {
-			const files: File[] = input.files;
+		if (INPUT.files && INPUT.files.length > 0) {
+			const FILES: File[] = INPUT.files;
 
 			let fail: { status: boolean; num: number[] } = { status: false, num: [] };
 
 			if (this.images.length === 0) {
-				const length = files.length > 9 ? 9 : files.length;
-				for (let i = 0; i < length; i++) {
-					if (!files[i].type.match('image.*')) {
+				const LENGTH = FILES.length > 9 ? 9 : FILES.length;
+				for (let i = 0; i < LENGTH; i++) {
+					if (!FILES[i].type.match('image.*')) {
 						fail = { status: true, num: [...fail.num, i] };
 					} else {
-						this.images.push(URL.createObjectURL(files[i]));
-						this._blobs.push(files[i]);
+						this.images.push(URL.createObjectURL(FILES[i]));
+						this._blobs.push(FILES[i]);
 					}
 				}
 			} else {
-				const max: number = 9 - this.images.length;
-				if (files.length > max) {
-					for (let i = 0; i < max; i++) {
-						if (!files[i].type.match('image.*')) {
+				const MAX: number = 9 - this.images.length;
+				if (FILES.length > MAX) {
+					for (let i = 0; i < MAX; i++) {
+						if (!FILES[i].type.match('image.*')) {
 							fail = { status: true, num: [...fail.num, i] };
 						} else {
-							this.images.push(URL.createObjectURL(files[i]));
-							this._blobs.push(files[i]);
+							this.images.push(URL.createObjectURL(FILES[i]));
+							this._blobs.push(FILES[i]);
 						}
 					}
 				} else {
-					for (let i = 0; i < files.length; i++) {
-						if (!files[i].type.match('image.*')) {
+					for (let i = 0; i < FILES.length; i++) {
+						if (!FILES[i].type.match('image.*')) {
 							fail = { status: true, num: [...fail.num, i] };
 						} else {
-							this.images.push(URL.createObjectURL(files[i]));
-							this._blobs.push(files[i]);
+							this.images.push(URL.createObjectURL(FILES[i]));
+							this._blobs.push(FILES[i]);
 						}
 					}
 				}

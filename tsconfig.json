@@ -15,17 +15,17 @@
 			"@sorts/*": ["src/app/core/sorts/*"],
 			"@validators/*": ["src/app/core/validators/*"],
 
-			"@user/*": ["src/app/modules/user/*"],
-
-			"@ecommerce/*": ["src/app/modules/ecommerce/*"],
-
 			"@admin/*": ["src/app/modules/admin/*"],
 
 			"@buy/*": ["src/app/modules/admin/pages/buy/*"],
 			"@sell/*": ["src/app/modules/admin/pages/sell/*"],
 			"@negotiation/*": ["src/app/modules/admin/pages/negotiation/*"],
 
-			"@libraries/*": ["src/app/modules/libraries/*"]
+			"@common/*": ["src/app/modules/common/*"],
+
+			"@ecommerce/*": ["src/app/modules/ecommerce/*"],
+
+			"@user/*": ["src/app/modules/user/*"]
 		},
 		"baseUrl": "./",
 		"outDir": "./dist/out-tsc",

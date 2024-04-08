@@ -47,6 +47,7 @@ export type Icon =
 	| 'navigate_before'
 	| 'navigate_next'
 	| 'next_plan'
+	| 'offline_share'
 	| 'open_in_new'
 	| 'payments'
 	| 'person_add'
