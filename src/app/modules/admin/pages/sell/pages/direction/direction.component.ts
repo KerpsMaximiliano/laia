@@ -1,15 +1,20 @@
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild, inject } from '@angular/core';
+import { BehaviorSubject, Subject, filter, takeUntil } from 'rxjs';
+import { environment } from '../../../../../../../environment/environment';
+
+// * Cdks.
+import { CdkTextareaAutosize, TextFieldModule } from '@angular/cdk/text-field';
+
+// * Forms.
 import { ReactiveFormsModule, UntypedFormControl, UntypedFormGroup } from '@angular/forms';
-import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
+
+// * Validators.
+import { getErrorMessage, notOnlySpaces } from '@validators/character.validators';
 
 // * Components.
 import { ButtonComponent } from '@components/button/button.component';
-import { Store } from '@ngrx/store';
-import { BehaviorSubject, Subject, filter, takeUntil } from 'rxjs';
-import { environment } from '../../../../../../../environment/environment';
-import { IState } from '../../../../../../core/interfaces/state.interface';
-import { CoreService } from '../../../../../../core/services/core.service';
-import { getErrorMessage, notOnlySpaces } from '../../../../../../core/validators/character.validators';
+import { CoreService } from '@services/core.service';
 
 // * Interfaces.
 interface IPrediction {
@@ -23,31 +28,59 @@ interface IMap {
 	zoom: number;
 	options: google.maps.MapOptions;
 }
-
 // * Material.
-// * Maps.
-import { GoogleMapsModule } from '@angular/google-maps';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatAutocompleteModule, MatAutocompleteTrigger } from '@angular/material/autocomplete';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 
+// * Maps.
+import { HttpClient } from '@angular/common/http';
+import { GoogleMapsModule } from '@angular/google-maps';
+import { IDirection, data } from './directions.interface';
+
 @Component({
 	changeDetection: ChangeDetectionStrategy.OnPush,
-	selector: 'app-admin-sell-direction',
+	selector: 'app-admin-sell-direction2',
 	standalone: true,
-	imports: [GoogleMapsModule, ReactiveFormsModule, MatAutocompleteModule, MatFormFieldModule, MatInputModule, ButtonComponent],
+	imports: [
+		CdkTextareaAutosize,
+		TextFieldModule,
+		GoogleMapsModule,
+		ReactiveFormsModule,
+		MatAutocompleteModule,
+		MatFormFieldModule,
+		MatInputModule,
+		ButtonComponent,
+		AsyncPipe
+	],
 	templateUrl: './direction.component.html',
 	styleUrl: './direction.component.scss'
 })
 export class DirectionComponent implements OnInit, OnDestroy {
+	@ViewChild('autosize') public autosize?: CdkTextareaAutosize;
 	@ViewChild(MatAutocompleteTrigger) public trigger?: MatAutocompleteTrigger;
 	@ViewChild('input') public input?: ElementRef<HTMLInputElement>;
-	@ViewChild('markerElem') public markerElem?: ElementRef<HTMLInputElement>;
+	// * Mock de datos * //
+	public data?: IDirection;
 
-	public form: UntypedFormGroup = new UntypedFormGroup({ address: new UntypedFormControl(null, notOnlySpaces()) });
+	// * Formulario * //
+	public form: UntypedFormGroup = new UntypedFormGroup({
+		address: new UntypedFormControl(this.data?.address, notOnlySpaces()),
+		postalCode: new UntypedFormControl(this.data?.postalCode, notOnlySpaces()),
+		country: new UntypedFormControl(this.data?.country, notOnlySpaces()),
+		state: new UntypedFormControl(this.data?.state, notOnlySpaces()),
+		city: new UntypedFormControl(this.data?.city, notOnlySpaces()),
+		street: new UntypedFormControl(this.data?.street, notOnlySpaces()),
+		streetNumber: new UntypedFormControl(this.data?.streetNumber, notOnlySpaces()),
+		ref: new UntypedFormControl(this.data?.ref, notOnlySpaces()),
+		note: new UntypedFormControl(this.data?.note, notOnlySpaces())
+	});
 
 	public readonly getErrorMessage = getErrorMessage;
 
+	public regex: RegExp = /\b\d{2,}\b/g;
+
+	// * Configuracion del mapa * //
 	public config: IMap = {
 		center: { lat: 18.735693, lng: -70.162651 },
 		zoom: 17,
@@ -57,8 +90,21 @@ export class DirectionComponent implements OnInit, OnDestroy {
 			clickableIcons: true
 		}
 	};
-	public autocompleteResults: BehaviorSubject<IPrediction[]> = new BehaviorSubject<IPrediction[]>([]);
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	public addressResults: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	public countryResults: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	public stateResults: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	public cityResults: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	public streetResults: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	public streetNumberResults: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
+
 	// public autocompleteResults: Signal<IPrediction[]> = signal([]);
+
 	public currentPosition?: GeolocationPosition;
 
 	public marker: google.maps.LatLngLiteral = {
@@ -66,17 +112,23 @@ export class DirectionComponent implements OnInit, OnDestroy {
 		lng: 0
 	};
 
-	// eslint-disable-next-line @ngrx/use-consistent-global-store-name
-	private readonly _store: Store<IState> = inject(Store);
+	// Variable para almacenar el nombre corto del pais, para poder hacer las busquedas por ciudad del pais ingresado.
+	public shortCountry: string = '';
+	public readonly core: CoreService = inject(CoreService);
+
+	private readonly _http: HttpClient = inject(HttpClient);
+
 	private readonly _cdr: ChangeDetectorRef = inject(ChangeDetectorRef);
-	private readonly _core: CoreService = inject(CoreService);
 
 	private readonly _destroy$: Subject<void> = new Subject<void>();
 
-	// eslint-disable-next-line @typescript-eslint/member-ordering
-	// public readonly user: Signal<{ id: number; logged: boolean }> = this._store.selectSignal(selectEcommerceUserLogin);
-
 	public ngOnInit(): void {
+		this.data = JSON.parse(JSON.stringify(data));
+		this.changeInput();
+	}
+
+	// Te ubica en la posicion actual que te encuentras.
+	public position(): void {
 		navigator.geolocation.getCurrentPosition((position) => {
 			const currentPosition = {
 				lat: position.coords.latitude,
@@ -90,20 +142,12 @@ export class DirectionComponent implements OnInit, OnDestroy {
 		});
 	}
 
-	public add(update: boolean): void {
-		console.log('add => update: ', update);
-		// if (!this.form.get('address')?.value || this.marker.lat === 0 || this.marker.lng === 0) return;
-		// const address: string | undefined = this.form.get('address')?.value;
-		// if (address && this.marker.lat !== 0 && this.marker.lng !== 0) {
-		// 	this._ref.close();
-		// 	if (update && !this.user().logged) {
-		// 		this._core.redirect('auth');
-		// 		return;
-		// 	}
-		// 	this._store.dispatch(ADD_USER_ADDRESS({ lat: `${this.marker.lat}`, lng: `${this.marker.lng}`, direction: address, update }));
-		// }
+	// * Verificar si hay cambios * //
+	public checkForChanges(): boolean {
+		return JSON.stringify(this.form.value) !== JSON.stringify(this.data);
 	}
 
+	// * Metodo que se ejecuta al seleccion una opcion del autocompletado, te ubica en el mapa * //
 	// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
 	public selectPlace(prediction: any): void {
 		const geocoder = new google.maps.Geocoder();
@@ -116,9 +160,8 @@ export class DirectionComponent implements OnInit, OnDestroy {
 	}
 
 	public search(query: string): void {
-		const autocompleteService = new google.maps.places.AutocompleteService();
 		if (!query.trim()) {
-			this.autocompleteResults.next([]);
+			this.addressResults.next([]);
 			return;
 		}
 		let current: google.maps.LatLngLiteral | undefined = undefined;
@@ -140,29 +183,83 @@ export class DirectionComponent implements OnInit, OnDestroy {
 				}
 			};
 		}
-		void autocompleteService.getPlacePredictions(request, (predictions, status) => {
-			if (status === google.maps.places.PlacesServiceStatus.OK) {
-				if (predictions) {
-					this.autocompleteResults.next(predictions);
-				}
-			} else {
-				console.error('Error fetching autocomplete predictions:', status);
-				this.autocompleteResults.next([]);
-			}
-		});
+		this._request(request, this.addressResults);
 	}
 
-	public clear(): void {
-		this.form.reset();
-		this.autocompleteResults.next([]);
-		this.marker = { lat: 0, lng: 0 };
+	// Busca paises
+	public searchCountries(query: string): void {
+		const request: google.maps.places.AutocompletionRequest = {
+			input: query,
+			types: ['(regions)']
+		};
+
+		this._request(request, this.countryResults);
 	}
 
-	public selectFirst(): void {
-		this.autocompleteResults
+	// Búsqueda provincias dentro de un país
+	public searchStateByCountry(query: string): void {
+		if (!this.form.get('country')?.value) return;
+
+		const request = {
+			input: query,
+			componentRestrictions: {
+				country: this.shortCountry
+			},
+			types: ['administrative_area_level_1']
+		};
+
+		this._request(request, this.stateResults);
+	}
+
+	// Búsqueda de ciudades dentro de una provincia
+	public searchCityByState(query: string): void {
+		if (!this.form.get('state')?.value) return;
+
+		const request = {
+			input: 'Provincia de ' + this.form.get('state')?.value + ', ' + query,
+			componentRestrictions: {
+				country: this.shortCountry
+			},
+			types: ['locality']
+		};
+
+		this._request(request, this.cityResults);
+	}
+
+	// Búsqueda de calles dentro de una ciudad
+	public searchStreetByCity(query: string): void {
+		if (!this.form.get('city')?.value || !query) return;
+
+		const request: google.maps.places.AutocompletionRequest = {
+			input: 'Provincia de ' + this.form.get('state')?.value + ', ' + this.form.get('city')?.value + ', ' + query,
+			types: ['address']
+		};
+
+		this._request(request, this.streetResults);
+	}
+
+	// Búsqueda por numero de calle
+	public searchStreetNumber(query: string): void {
+		if (!this.form.get('street')?.value) return;
+
+		const request = {
+			input: this.form.get('city')?.value + ',' + this.form.get('state')?.value + ', ' + this.form.get('street')?.value + ' ' + query,
+			componentRestrictions: {
+				country: this.shortCountry
+			},
+			types: ['address']
+		};
+
+		this._request(request, this.streetNumberResults);
+	}
+
+	// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
+	public selectFirst(data: any): void {
+		data
 			.pipe(
 				takeUntil(this._destroy$),
-				filter((predictions) => predictions.length > 0)
+				// eslint-disable-next-line @typescript-eslint/no-explicit-any
+				filter((predictions: any) => predictions.length > 0)
 			)
 			.subscribe((predictions: IPrediction[]) => {
 				this.selectPlace(predictions[0]);
@@ -178,8 +275,7 @@ export class DirectionComponent implements OnInit, OnDestroy {
 		}
 	}
 
-	// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-	public setAddress(cords: any): void {
+	public setAddress(cords: google.maps.LatLng | { lat: number; lng: number }): void {
 		const geocoder = new google.maps.Geocoder();
 		void geocoder.geocode({ location: cords }, (results, status) => {
 			if (status === 'OK') {
@@ -190,6 +286,10 @@ export class DirectionComponent implements OnInit, OnDestroy {
 					const city = results[0].address_components.find((component) => component.types.includes('locality'))?.short_name ?? '';
 					const province =
 						results[0].address_components.find((component) => component.types.includes('administrative_area_level_1'))?.short_name ?? '';
+					const postalCode = results[0].address_components.find((component) => component.types.includes('postal_code'))?.short_name ?? '';
+					const country = results[0].address_components.find((component) => component.types.includes('country'))?.long_name ?? '';
+
+					this.shortCountry = results[0].address_components.find((component) => component.types.includes('country'))?.short_name ?? '';
 
 					let address = '';
 
@@ -197,16 +297,65 @@ export class DirectionComponent implements OnInit, OnDestroy {
 					address += city ? (address ? ', ' + city : city) : '';
 					address += province ? ', ' + province : '';
 
+					console.log(postalCode);
+					console.log(province);
+					console.log(city);
+
 					this.form.get('address')?.setValue(address);
+					this.form.get('postalCode')?.setValue(postalCode);
+					this.form.get('country')?.setValue(country);
+					this.form.get('state')?.setValue(province);
+					this.form.get('city')?.setValue(city);
+					this.form.get('street')?.setValue(streetName);
+					this.form.get('streetNumber')?.setValue(streetNumber);
 				}
 			}
 		});
 	}
 
+	public changeInput(): void {
+		this._reset('postalCode', ['country', 'state', 'city', 'street', 'streetNumber']);
+		this._reset('country', ['state', 'city', 'street', 'streetNumber']);
+		this._reset('state', ['city', 'street', 'streetNumber']);
+		this._reset('city', ['street', 'streetNumber']);
+		this._reset('street', ['streetNumber']);
+	}
+
+	public save(): void {
+		this.data = this.form.value;
+	}
+
 	public ngOnDestroy(): void {
-		this.autocompleteResults.unsubscribe();
+		this.addressResults.unsubscribe();
+		this.countryResults.unsubscribe();
+		this.stateResults.unsubscribe();
+		this.cityResults.unsubscribe();
+		this.streetResults.unsubscribe();
+		this.streetNumberResults.unsubscribe();
 		this._destroy$.next();
 		this._destroy$.complete();
+	}
+
+	private _reset(triggerField: string, dependentFields: string[]): void {
+		this.form.get(triggerField)?.valueChanges.subscribe((value) => {
+			if (!value) {
+				dependentFields.forEach((field) => this.form.get(field)?.reset(null));
+			}
+		});
+	}
+
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any
+	private _request(request: google.maps.places.AutocompletionRequest, data: any): void {
+		const autocompleteService = new google.maps.places.AutocompleteService();
+		void autocompleteService.getPlacePredictions(request, (predictions, status) => {
+			if (status === google.maps.places.PlacesServiceStatus.OK && predictions) {
+				data.next(predictions);
+				console.log(predictions);
+			} else {
+				// console.error('Error', status);
+				data.next([]);
+			}
+		});
 	}
 
 	// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any

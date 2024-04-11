@@ -37,6 +37,7 @@ export type Icon =
 	| 'link'
 	| 'local_shipping'
 	| 'location_on'
+	| 'location_searching'
 	| 'lock_open'
 	| 'logout'
 	| 'mail'
