@@ -65,6 +65,10 @@ export const SELL_ROUTES: Routes = [
 				path: 'profile',
 				loadComponent: async () => import('./pages/profile/profile.component').then((c) => c.ProfileComponent)
 			},
+			{
+				path: 'landing',
+				loadComponent: async () => import('./pages/landing/landing.component').then((c) => c.LandingComponent)
+			},
 			// {
 			// 	path: 'segment',
 			// 	loadComponent: async () => import('./pages/segment/segment.component').then((c) => c.SegmentComponent)

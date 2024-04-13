@@ -1,0 +1,70 @@
+<div
+	class="box"
+	[style]="
+		data.item[selected].btype === 'IMAGE'
+			? 'background-image:url( https://firebasestorage.googleapis.com/v0/b/laia-c5d59.appspot.com/o/images%2Fprod_3.png?alt=media&token=c06be23a-a579-4e9b-a693-7477d7a832b4 )'
+			: ''
+	"
+	[class.img]="data.item[selected].btype === 'IMAGE'"
+>
+	<header class="flex bet pd-12">
+		@if (data.config.header.type !== 'NONE') {
+			@if (data.config.header.type === 'LOGO-TITLE') {
+				<button type="button" class="btn grid" style="grid-template-columns: 48px 1fr">
+					<img [src]="data.config.header.merchantLogo" alt="Imagen del comerciante" class="img--profile br-50 w h" />
+
+					<p>{{ data.config.header.merchantName }}</p>
+				</button>
+			}
+		} @else {
+			<div></div>
+		}
+
+		<div class="flex bet gp-12">
+			<app-component-button
+				color="#fff"
+				[type]="'MINI'"
+				[icon]="muted ? 'volume_off' : 'volume_up'"
+				(click)="muted = !muted"
+				style="background: #000; width: 38px; height: 38px; border: 1px solid black; border-radius: 50%"
+			/>
+			<app-component-button color="#000" [type]="'ICON'" [icon]="'more_vert'" />
+		</div>
+	</header>
+
+	<main class="pd-12" style="overflow-y: hidden" (touchstart)="onTouchStart($event)" (touchend)="onTouchEnd($event)">
+		@for (item of data.item; track $index) {
+			<section
+				class="grid gp-24 h"
+				style="grid-template-rows: 1fr max-content"
+				[style]="$index === selected ? 'display: grid' : 'display:none'"
+			>
+				@if (item.btype === 'VIDEO') {
+					<div class="video-container">
+						<video muted [muted]="muted" [volume]="item.bvideo?.volumen" autoplay [loop]="item.bvideo?.loop">
+							<source [src]="item.bvideo?.src" />
+						</video>
+					</div>
+				}
+
+				@if (data.baudio) {
+					<audio muted [muted]="muted" [volume]="data.baudio?.volumen" autoplay [loop]="data.baudio?.loop">
+						<source [src]="data.baudio?.src" />
+					</audio>
+				}
+
+				<div class="ts tx-center">
+					<h2 [style]="'color:' + data.config.color">{{ item.title }}</h2>
+					<p [style]="'color:' + data.config.color">{{ item.subtitle }}</p>
+				</div>
+
+				<app-component-button [type]="'XR'" [label]="data.config.button.label" />
+			</section>
+		}
+		<div class="indicators pd-12">
+			@for (item of data.item; track $index) {
+				<span [class.active]="$index === selected"></span>
+			}
+		</div>
+	</main>
+</div>

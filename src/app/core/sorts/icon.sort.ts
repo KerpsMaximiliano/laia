@@ -74,4 +74,6 @@ export type Icon =
 	| 'storefront'
 	| 'sync'
 	| 'unfold_more'
+	| 'volume_off'
+	| 'volume_up'
 	| 'wysiwyg';
