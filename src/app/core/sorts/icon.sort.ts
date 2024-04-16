@@ -62,6 +62,7 @@ export type Icon =
 	| 'radio_button_unchecked'
 	| 'redeem'
 	| 'remove'
+	| 'restart_alt'
 	| 'schedule'
 	| 'settings'
 	| 'share_location'

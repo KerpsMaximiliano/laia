@@ -1,56 +1,57 @@
 <div
 	class="box"
-	[style]="
-		data.item[selected].btype === 'IMAGE'
-			? 'background-image:url( https://firebasestorage.googleapis.com/v0/b/laia-c5d59.appspot.com/o/images%2Fprod_3.png?alt=media&token=c06be23a-a579-4e9b-a693-7477d7a832b4 )'
-			: ''
-	"
+	[style]="data.item[selected].btype === 'IMAGE' ? 'background-image:url(' + data.item[selected].bimage + ');' : ''"
 	[class.img]="data.item[selected].btype === 'IMAGE'"
 >
+	@if (data.baudio) {
+		<audio #audio muted [muted]="muted" [volume]="data.baudio.volumen" autoplay [loop]="data.baudio.loop">
+			<source [src]="data.baudio.src" />
+		</audio>
+	}
 	<header class="flex bet pd-12">
 		@if (data.config.header.type !== 'NONE') {
-			@if (data.config.header.type === 'LOGO-TITLE') {
-				<button type="button" class="btn grid" style="grid-template-columns: 48px 1fr">
+			<button type="button" class="btn grid" [style.grid-template-columns]="data.config.header.type === 'TITLE' ? '1fr 48px' : '48px 1fr'">
+				@if (data.config.header.type === 'LOGO' || data.config.header.type === 'LOGO-TITLE') {
 					<img [src]="data.config.header.merchantLogo" alt="Imagen del comerciante" class="img--profile br-50 w h" />
-
+				}
+				@if (data.config.header.type === 'TITLE' || data.config.header.type === 'LOGO-TITLE') {
 					<p>{{ data.config.header.merchantName }}</p>
-				</button>
-			}
+				}
+			</button>
 		} @else {
 			<div></div>
 		}
 
 		<div class="flex bet gp-12">
-			<app-component-button
-				color="#fff"
-				[type]="'MINI'"
-				[icon]="muted ? 'volume_off' : 'volume_up'"
-				(click)="muted = !muted"
-				style="background: #000; width: 38px; height: 38px; border: 1px solid black; border-radius: 50%"
-			/>
-			<app-component-button color="#000" [type]="'ICON'" [icon]="'more_vert'" />
+			@if (data.config.type !== 'NONE' || data.baudio?.loop === false) {
+				<app-component-button color="#fff" [type]="'MINI'" icon="restart_alt" (click)="replay()" class="button-icon" />
+			}
+			@if (data.config.type !== 'NONE') {
+				<app-component-button
+					color="#fff"
+					[type]="'MINI'"
+					[icon]="muted ? 'volume_off' : 'volume_up'"
+					(click)="muted = !muted"
+					class="button-icon"
+				/>
+			}
+			<app-component-button color="#fff" [type]="'ICON'" [icon]="'more_vert'" class="button-icon" />
 		</div>
 	</header>
 
-	<main class="pd-12" style="overflow-y: hidden" (touchstart)="onTouchStart($event)" (touchend)="onTouchEnd($event)">
+	<main class="pd-12" style="overflow-y: hidden">
 		@for (item of data.item; track $index) {
-			<section
+			<article
 				class="grid gp-24 h"
 				style="grid-template-rows: 1fr max-content"
-				[style]="$index === selected ? 'display: grid' : 'display:none'"
+				[style]="$index === selected ? 'display: grid; align-items:' + item.position : 'display:none; align-items:' + item.position"
 			>
 				@if (item.btype === 'VIDEO') {
 					<div class="video-container">
-						<video muted [muted]="muted" [volume]="item.bvideo?.volumen" autoplay [loop]="item.bvideo?.loop">
+						<video #video muted [muted]="muted" [volume]="item.bvideo?.volumen" autoplay [loop]="item.bvideo?.loop">
 							<source [src]="item.bvideo?.src" />
 						</video>
 					</div>
-				}
-
-				@if (data.baudio) {
-					<audio muted [muted]="muted" [volume]="data.baudio?.volumen" autoplay [loop]="data.baudio?.loop">
-						<source [src]="data.baudio?.src" />
-					</audio>
 				}
 
 				<div class="ts tx-center">
@@ -59,12 +60,31 @@
 				</div>
 
 				<app-component-button [type]="'XR'" [label]="data.config.button.label" />
-			</section>
+			</article>
 		}
-		<div class="indicators pd-12">
-			@for (item of data.item; track $index) {
-				<span [class.active]="$index === selected"></span>
-			}
-		</div>
+		@if (data.item.length > 1) {
+			<div class="indicators pd-12">
+				@for (item of data.item; track $index) {
+					<span [class.active]="$index === selected"></span>
+				}
+			</div>
+		}
 	</main>
 </div>
+<section class="pd-12" style="background-color: #fff">
+	<article class="desc grid gp-16">
+		@for (item of data.desc; track $index) {
+			<div class="grid gp-8">
+				<h2>{{ item.title }}</h2>
+				@if (item.desc) {
+					<p>
+						{{ item.desc }}
+					</p>
+				}
+				@if (item.src) {
+					<app-component-img [src]="item.src" width="100%" height="100%" />
+				}
+			</div>
+		}
+	</article>
+</section>

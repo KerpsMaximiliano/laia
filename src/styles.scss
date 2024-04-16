@@ -146,8 +146,8 @@ button {
 	grid-template-rows: max-content 1fr;
 
 	& main {
-		min-height: 100%;
 		overflow-y: scroll;
+		min-height: 100%;
 	}
 }
 
