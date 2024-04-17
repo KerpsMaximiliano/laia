@@ -1,0 +1,23 @@
+footer {
+	background-color: var(--black);
+
+	& button {
+		color: var(--white);
+	}
+}
+
+.btn {
+	grid-template-columns: 1fr max-content;
+}
+
+.collection--header {
+	padding: 12px 12px 0 12px;
+	font-size: 17px;
+	font-weight: 600;
+}
+
+.collection--body button p {
+	font-size: 15px;
+	font-weight: 600;
+	padding-left: 8px;
+}

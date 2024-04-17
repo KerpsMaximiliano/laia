@@ -2,7 +2,7 @@ import { ComponentType } from '@angular/cdk/portal';
 import { Location } from '@angular/common';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { BehaviorSubject, Observable, from, map } from 'rxjs';
+import { BehaviorSubject, Observable, filter, from, map } from 'rxjs';
 
 // * Env.
 import { environment } from '@env/environment';
@@ -11,7 +11,7 @@ import { environment } from '@env/environment';
 import { Apollo, gql } from 'apollo-angular';
 
 // * Routing.
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 
 // * Sorts.
 import { IDialog } from '@sorts/dialog.sort';
@@ -30,11 +30,20 @@ export class CoreService {
 	private readonly _http: HttpClient = inject(HttpClient);
 	private readonly _api: string = environment.api;
 
-	// eslint-disable-next-line @typescript-eslint/member-ordering
-	public gHeight: Observable<number> = this._height.asObservable();
+	private _previous: string = '';
+	private _current: string = '';
 
-	public get height(): BehaviorSubject<number> {
-		return this._height;
+	public constructor() {
+		this._router.events
+			.pipe(filter((event): event is NavigationEnd => event instanceof NavigationEnd))
+			.subscribe((event: NavigationEnd) => {
+				this._previous = this._current;
+				this._current = event.urlAfterRedirects;
+			});
+	}
+
+	public get previous(): string {
+		return this._previous;
 	}
 
 	public set height(height: number) {
@@ -74,6 +83,8 @@ export class CoreService {
 	}
 
 	public redirect(url: string, id?: number | string): void {
+		console.log('redirect');
+
 		if (url === 'auth') this.uLocal('origin', window.location.pathname);
 
 		if (id) {
@@ -114,7 +125,7 @@ export class CoreService {
 		return this._http.get<T>(`${this._api}${point}`, { params: httpParams });
 	}
 
-	public post<T>(point: string, body: unknown): Observable<T> {
+	public post<T, R extends object>(point: string, body: R): Observable<T> {
 		return this._http.post<T>(`${this._api}${point}`, body, { headers: { accept: '*/*' } });
 	}
 

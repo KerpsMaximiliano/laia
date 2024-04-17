@@ -74,10 +74,6 @@ export const SELL_ROUTES: Routes = [
 				loadComponent: async () => import('./pages/wire-transfer/wire-transfer.component').then((c) => c.WireTransferComponent)
 			},
 			{
-				path: 'library',
-				loadChildren: async () => import('@common/routes/libraries.routes').then((r) => r.LIBRARIES_ROUTES)
-			},
-			{
 				path: '**',
 				redirectTo: '',
 				pathMatch: 'full'

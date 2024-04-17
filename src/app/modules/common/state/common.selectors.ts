@@ -4,79 +4,100 @@ import { MemoizedSelector, createSelector } from '@ngrx/store';
 import { STATE } from '@consts/state.const';
 
 // * Consts.
-import { COLLECTION } from '@common/constants/collection.const';
-import { AUX_LIBRARY, AUX_LIBRARY_CONFIGURATION } from '@common/constants/library.const';
 
 // * Interfaces.
 // * COMMON.
-import { ICollection } from '@common/interfaces/collection.interface';
-import { ILibrary, ILibraryConf } from '@common/interfaces/libraries.interface';
+import { ILibrary } from '@common/interfaces/libraries.interface';
 // * CORE.
-import { ILoadableEntity } from '@interfaces/load.interface';
 import { IState } from '@interfaces/state.interface';
 
-// * LIBRARY.
-export const selectLibrary = (id: number): MemoizedSelector<IState, ILibrary> =>
-	createSelector(STATE, (state: IState): ILibrary => {
-		if (!Array.isArray(state.common) || state.common.length === 0) return AUX_LIBRARY;
+// * Sorts.
+import { TLibraries } from '@common/sorts/common.sort';
+import { AUX_COLLECTION } from '../constants/collection.const';
+import { ICollection } from '../interfaces/collection.interface';
 
-		if (id === 0) return AUX_LIBRARY;
+// * LIBRARY INFORMATION.
+export const selectLibraryInformation = (tLibrary: TLibraries): MemoizedSelector<IState, ILibrary['information']> =>
+	createSelector(STATE, (state: IState): ILibrary['information'] => state.common[tLibrary].information);
 
-		const INDEX: number = state.common.findIndex((library: ILibrary) => library.id === id);
+// * LIBRARY VIEW.
+export const selectLibraryView = (tLibrary: TLibraries): MemoizedSelector<IState, ILibrary['view']> =>
+	createSelector(STATE, (state: IState): ILibrary['view'] => state.common[tLibrary].view);
 
-		if (INDEX === -1) return AUX_LIBRARY;
+// * LIBRARY MENU.
+export const selectLibraryMenu = (tLibrary: TLibraries): MemoizedSelector<IState, ILibrary['menu']> =>
+	createSelector(STATE, (state: IState): ILibrary['menu'] => state.common[tLibrary].menu);
 
-		return state.common[INDEX];
-	});
+// * LIBRARY MINIATURES.
+export const selectLibraryMiniatures = (tLibrary: TLibraries): MemoizedSelector<IState, ILibrary['miniatures']> =>
+	createSelector(STATE, (state: IState): ILibrary['miniatures'] => state.common[tLibrary].miniatures);
 
-// * LIBRARY CONFIGURATION.
-export const selectLibraryConfiguration = (id: number): MemoizedSelector<IState, ILibraryConf> =>
-	createSelector(STATE, (state: IState): ILibraryConf => {
-		if (!Array.isArray(state.common) || state.common.length === 0) return AUX_LIBRARY_CONFIGURATION;
+// * LIBRARY SELECTED.
+export const selectLibrarySelected = (tLibrary: TLibraries): MemoizedSelector<IState, number | null> =>
+	createSelector(STATE, (state: IState): number | null => state.common[tLibrary].information.selected);
 
-		if (id === 0) return AUX_LIBRARY_CONFIGURATION;
+// * COLLECTION INFORMATION.
+export const selectCollectionInformation = (query: {
+	tLibrary: TLibraries;
+	collection: number;
+}): MemoizedSelector<IState, ICollection['information']> =>
+	createSelector(STATE, (state: IState): ICollection['information'] => {
+		if (!Array.isArray(state.common[query.tLibrary].view.collections) || state.common[query.tLibrary].view.collections.length === 0)
+			return AUX_COLLECTION['information'];
 
-		const INDEX: number = state.common.findIndex((library: ILibrary) => library.id === id);
-
-		if (INDEX === -1) return AUX_LIBRARY_CONFIGURATION;
-
-		return {
-			status: state.common[INDEX].status,
-			title: state.common[INDEX].title,
-			conf: state.common[INDEX].conf
-		};
-	});
-
-// * COLLECTION.
-export const selectCollection = (library: number, collection: number): MemoizedSelector<IState, ILoadableEntity<ICollection>> =>
-	createSelector(STATE, (state: IState): ILoadableEntity<ICollection> => {
-		if (!Array.isArray(state.common) || state.common.length === 0) return COLLECTION;
-
-		const INDEX_LIBRARY: number = state.common.findIndex((lib: ILibrary) => lib.id === library);
-
-		if (INDEX_LIBRARY === -1) return COLLECTION;
-
-		if (!Array.isArray(state.common[INDEX_LIBRARY].collections) || state.common[INDEX_LIBRARY].collections.length === 0) return COLLECTION;
-
-		const LIBRARIES: ILibrary[] = [...state.common];
-
-		const INDEX_COLLECTION: number = LIBRARIES[INDEX_LIBRARY].collections.findIndex(
-			(col: ILoadableEntity<ICollection>) => col.data.id === collection
+		const INDEX: number = state.common[query.tLibrary].view.collections.findIndex(
+			(collection) => collection.information.id === query.collection
 		);
 
-		if (INDEX_COLLECTION === -1) return COLLECTION;
+		if (INDEX === -1) return AUX_COLLECTION['information'];
 
-		return LIBRARIES[INDEX_LIBRARY].collections[INDEX_COLLECTION];
+		return state.common[query.tLibrary].view.collections[INDEX]['information'];
 	});
 
-// * ELEMENT SELECTED.
-export const selectElementSelected = (library: number): MemoizedSelector<IState, number | null> =>
-	createSelector(STATE, (state: IState): number | null => {
-		if (!Array.isArray(state.common) || state.common.length === 0) return null;
+// * COLLECTION VIEW.
+export const selectCollectionView = (query: { tLibrary: TLibraries; collection: number }): MemoizedSelector<IState, ICollection['view']> =>
+	createSelector(STATE, (state: IState): ICollection['view'] => {
+		if (!Array.isArray(state.common[query.tLibrary].view.collections) || state.common[query.tLibrary].view.collections.length === 0)
+			return AUX_COLLECTION['view'];
 
-		const INDEX_LIBRARY: number = state.common.findIndex((lib: ILibrary) => lib.id === library);
+		const INDEX: number = state.common[query.tLibrary].view.collections.findIndex(
+			(collection) => collection.information.id === query.collection
+		);
 
-		if (INDEX_LIBRARY === -1) return null;
+		if (INDEX === -1) return AUX_COLLECTION['view'];
 
-		return state.common[INDEX_LIBRARY].selected;
+		return state.common[query.tLibrary].view.collections[INDEX]['view'];
+	});
+
+// * COLLECTION MENU.
+export const selectCollectionMenu = (query: { tLibrary: TLibraries; collection: number }): MemoizedSelector<IState, ICollection['menu']> =>
+	createSelector(STATE, (state: IState): ICollection['menu'] => {
+		if (!Array.isArray(state.common[query.tLibrary].view.collections) || state.common[query.tLibrary].view.collections.length === 0)
+			return AUX_COLLECTION['menu'];
+
+		const INDEX: number = state.common[query.tLibrary].view.collections.findIndex(
+			(collection) => collection.information.id === query.collection
+		);
+
+		if (INDEX === -1) return AUX_COLLECTION['menu'];
+
+		return state.common[query.tLibrary].view.collections[INDEX]['menu'];
+	});
+
+// * COLLECTION MINIATURES.
+export const selectCollectionMiniatures = (query: {
+	tLibrary: TLibraries;
+	collection: number;
+}): MemoizedSelector<IState, ICollection['miniatures']> =>
+	createSelector(STATE, (state: IState): ICollection['miniatures'] => {
+		if (!Array.isArray(state.common[query.tLibrary].view.collections) || state.common[query.tLibrary].view.collections.length === 0)
+			return AUX_COLLECTION['miniatures'];
+
+		const INDEX: number = state.common[query.tLibrary].view.collections.findIndex(
+			(collection) => collection.information.id === query.collection
+		);
+
+		if (INDEX === -1) return AUX_COLLECTION['miniatures'];
+
+		return state.common[query.tLibrary].view.collections[INDEX]['miniatures'];
 	});

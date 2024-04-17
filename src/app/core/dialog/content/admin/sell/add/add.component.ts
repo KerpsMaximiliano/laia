@@ -31,8 +31,7 @@ export class AddComponent {
 					this._core.redirect('admin/sell/order');
 					break;
 				case 'BUYER':
-					// this.core.redirect('admin/sell/buyer');
-					console.log('Ingresar ruta => AddComponent');
+					this._core.redirect('libraries/buyers/1');
 					break;
 			}
 		}

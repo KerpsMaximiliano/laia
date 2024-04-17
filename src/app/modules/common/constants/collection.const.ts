@@ -1,51 +1,90 @@
-import { LOADING } from '../../../core/constants/load.const';
-import { ILoadableEntity } from '../../../core/interfaces/load.interface';
-import { ICollection } from '../interfaces/collection.interface';
-import { IButton } from '../interfaces/util.interface';
-import { TCollection } from '../sorts/common.sort';
+// * Consts.
+import { LOADING } from '@consts/load.const';
 
-export const COLLECTION: ILoadableEntity<ICollection> = {
-	status: LOADING,
-	data: {
+// * Interfaces.
+import { ICollection } from '@common/interfaces/collection.interface';
+
+// * Sorts.
+import { TCollections } from '@common/sorts/common.sort';
+
+export const AUX_COLLECTION: ICollection = {
+	information: {
+		status: LOADING,
 		id: 0,
 		title: '',
-		miniature: {
-			headerboard: [],
-			title: [],
-			subtitle: [],
-			style: ''
-		},
-		conf: null,
+		open: false
+	},
+	view: {
+		status: LOADING,
 		elements: [],
 		button: {
 			label: '',
-			action: ''
+			action: '',
+			icon: null,
+			visibility: false
 		},
 		count: 0,
 		footer: ''
+	},
+	menu: {
+		status: LOADING,
+		button: {
+			label: '',
+			action: '',
+			icon: null,
+			visibility: false
+		},
+		filter: {
+			id: 0,
+			alias: ''
+		},
+		order: {
+			alias: '',
+			type: 0
+		},
+		default: 0
+	},
+	miniatures: {
+		status: LOADING,
+		props: [],
+		header: [],
+		title: [],
+		subtitle: [],
+		style: ''
+	},
+	order: {
+		status: LOADING,
+		type: 0,
+		props: []
+	},
+	filter: {
+		status: LOADING,
+		items: []
 	}
 };
 
-export const COLLECTION_BTNS: IButton[][] = [
-	[
-		{
-			label: 'Seleccionar Comprador',
-			action: 'ADD-BUYER'
-		},
-		{
-			label: 'Nuevo Comprador',
-			action: 'NEW-BUYER'
-		}
-	]
-];
-
-export const COLLECTION_FOOTER: string[] = [' Compradores'];
-
-export const COLLECTION_ALIAS: { [key in keyof TCollection]: string } = {
+export const COLLECTION_ALIAS: { [key in keyof TCollections]: string } = {
 	id: '',
 	media: '',
 	name: 'Sin nombre',
 	surname: 'Sin apellido',
 	email: 'Sin correo electrónico',
-	phone: 'Sin teléfono'
+	phone: 'Sin teléfono',
+	date: '',
+	count: '',
+	// eslint-disable-next-line @typescript-eslint/naming-convention
+	count_article: '',
+	// eslint-disable-next-line @typescript-eslint/naming-convention
+	count_article_total: '',
+	total: '',
+	// eslint-disable-next-line @typescript-eslint/naming-convention
+	total_max: ''
+};
+
+export const COLLECTION_ORDER_ALIAS: { [key: string]: string } = {
+	name: 'Por nombre',
+	surname: 'Por apellido',
+	email: 'Por correo electrónico',
+	phone: 'Por teléfono',
+	date: 'Por fecha'
 };

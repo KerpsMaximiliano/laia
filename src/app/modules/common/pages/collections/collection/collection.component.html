@@ -2,98 +2,146 @@
 	<header class="grid gp-16 pd-12">
 		<nav class="flex bet gp-4">
 			<div class="flex gp-4">
-				<app-component-button [type]="'MINI'" [icon]="'navigate_before'" (click)="core.back()" />
+				<app-component-button [type]="'MINI'" [icon]="'navigate_before'" (click)="libraries.redirect('HOME')" />
 
-				@defer (when collection().status !== loading) {
-					<h1>{{ collection().data.title }}</h1>
-				} @placeholder {
-					<h1>Cargando...</h1>
+				@if (information) {
+					@defer (when information().status !== loading) {
+						<h1>{{ information().title }}</h1>
+					}
 				}
 			</div>
 
 			<div class="flex gp-8">
-				<app-component-button [type]="'MINI'" [icon]="'done_all'" />
+				<app-component-button [type]="'MINI'" [icon]="'done_all'" class="disabled" />
 
-				<app-component-button [type]="'MINI'" [icon]="'more_vert'" />
+				<app-component-button [type]="'MINI'" [icon]="'more_vert'" (click)="collections.redirect('MENU')" />
 			</div>
 		</nav>
 	</header>
 
-	<main class="pd-12">
-		<section class="bd br-4">
-			@if (collection().data.count > 0) {
-				@for (element of collection().data.elements; track $index) {
-					<article class="grid">
-						<button
-							type="button"
-							class="btn grid gp-8"
-							[style]="element.media ? 'grid-template-columns: max-content 1fr' : 'grid-template-columns: 1fr'"
-						>
-							@if (element.media) {
-								<app-component-img [src]="element.media" [width]="'100px'" [height]="'100px'" />
-							}
+	<main class="fle col gp-16 pd-12" [class.pd-b-72]="view && view().button.visibility">
+		@if (view) {
+			@defer (when view().status === loaded || view().status === complete) {
+				<article class="grid gp-8">
+					<div class="flex bet bd br-4 pd-12">
+						<div class="flex gp-8">
+							<app-component-button [type]="'ICON'" [icon]="'search'" color="#c3c3c3" class="disabled" />
 
-							<div class="grid tx-left h" [style]="collection().data.miniature.style">
-								@if (collection().data.miniature.headerboard.length > 0) {
-									<p class="required tx-visible">
-										@for (item of collection().data.miniature.headerboard; track $index) {
-											{{ element[item] }}
-										}
-									</p>
-								}
+							<p class="tx-visible required">Próximamente</p>
+						</div>
+						<app-component-button [type]="'ICON'" [icon]="'mic'" [color]="'#c3c3c3'" />
+					</div>
 
-								@if (collection().data.miniature.title.length > 0) {
-									@for (item of collection().data.miniature.title; track $index) {
-										{{ element[item] }}
+					<p class="tx-left tx-visible disabled">La Inteligencia Artificial para optimizar tu negocio.</p>
+				</article>
+
+				<section class="bd br-4">
+					@if (view().count > 0) {
+						@for (element of view().elements; track $index) {
+							<div class="grid">
+								<button
+									type="button"
+									class="grid w pd-12"
+									[style]="element.media ? 'grid-template-columns: max-content 1fr' : 'grid-template-columns: 1fr'"
+									appContentView
+									(elementVisible)="getPage()"
+									[isTargetElement]="$index === view().elements.length - 5"
+								>
+									@if (element.media) {
+										<app-component-img [src]="element.media" [width]="'100px'" [height]="'100px'" />
 									}
-								}
 
-								@if (collection().data.miniature.subtitle.length > 0) {
-									<p class="tx-visible">
-										@for (item of collection().data.miniature.subtitle; track $index) {
-											{{ element[item] }}
-										}
-									</p>
-								}
+									@if (miniatures) {
+										<div class="element__text grid gp-4 tx-left" [style]="miniatures().style">
+											@if (miniatures().header.length > 0) {
+												<p class="element__text--header tx-visible">
+													@for (item of miniatures().header; track $index) {
+														{{ (element[item] ?? alias[item]) + '. ' }}
+													}
+												</p>
+											}
+
+											@if (miniatures().title.length > 0) {
+												<p class="element__text--title tx-visible">
+													@for (item of miniatures().title; track $index) {
+														{{ (element[item] ?? alias[item]) + '. ' }}
+													}
+												</p>
+											}
+
+											@if (miniatures().subtitle.length > 0) {
+												<p class="tx-visible">
+													@for (item of miniatures().subtitle; track $index) {
+														{{ (element[item] ?? alias[item]) + '. ' }}
+													}
+												</p>
+											}
+										</div>
+									}
+								</button>
+
+								<app-component-button
+									[type]="'MINI'"
+									[icon]="selected && selected() !== null && selected() === element.id ? 'check_circle' : 'radio_button_unchecked'"
+									[color]="'var(--violet)'"
+									class="grid pd-12 h"
+									(click)="select(element.id)"
+								/>
 							</div>
-						</button>
 
-						<app-component-button
-							[type]="'MINI'"
-							[icon]="selected() !== null && selected() === element.id ? 'check_circle' : 'radio_button_unchecked'"
-							[color]="'var(--violet)'"
-							class="grid pd-12 h"
-							(click)="select(element.id)"
-						/>
-					</article>
+							@if (!$last) {
+								<hr />
+							}
+						}
 
-					@if (!$last) {
-						<hr />
+						@if (view().status === updating) {
+							<hr />
+
+							<span class="grid gp-12 pd-12" style="height: fit-content">
+								<app-component-loading />
+
+								<p class="tx-center" style="color: var(--violet); font-weight: 600">Cargando más elementos...</p>
+							</span>
+						}
 					}
-				}
+				</section>
+			} @placeholder {
+				<div class="grid h">
+					<div>
+						<app-component-loading />
+						<br />
+						<h3 class="tx-center" style="color: var(--violet)">Cargando colección...</h3>
+					</div>
+				</div>
 			}
-		</section>
+		}
 	</main>
 
 	<footer>
-		<div class="relative">
-			@defer (when collection().status !== loading) {
-				@if (false) {
-					<button type="button" class="absolute flex gp-8 br-4">
-						<app-component-button [type]="'ICON'" [icon]="'add'" />
+		@if (view && view().button.visibility) {
+			<div class="relative">
+				@defer (when view().status !== loading) {
+					@if (selected && selected()) {
+						<button type="button" class="absolute flex gp-8 br-4">
+							@if (view().button.icon) {
+								<app-component-button [type]="'ICON'" [icon]="view().button.icon!" />
+							}
 
-						{{ collection().data.button.label }}
-					</button>
+							{{ view().button.label }}
+						</button>
+					}
+				} @placeholder {
+					<app-component-loading class="absolute br-4" />
 				}
-			} @placeholder {
-				<app-component-loading class="absolute br-4" />
-			}
-		</div>
+			</div>
+		}
 
-		@defer (when collection().status !== loading) {
-			<h2 class="tx-visible tx-center pd-8">{{ collection().data.count }}{{ collection().data.footer }}</h2>
-		} @placeholder {
-			<h2 class="tx-visible tx-center pd-8">Cargando...</h2>
+		@if (view) {
+			@defer (when view().status !== loading) {
+				<h2 class="tx-visible tx-center pd-8">{{ view().count }}{{ view().footer }}</h2>
+			} @placeholder {
+				<h2 class="tx-visible tx-center pd-8">...</h2>
+			}
 		}
 	</footer>
 </div>

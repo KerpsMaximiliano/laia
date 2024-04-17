@@ -1,0 +1,30 @@
+h1 {
+	font-size: 21px;
+}
+
+main button {
+	background-color: var(--rose);
+	width: 50%;
+	margin: 0 auto;
+	font-size: 17px;
+	letter-spacing: 1px;
+	font-weight: 600;
+	color: var(--violet);
+}
+
+footer button {
+	&:first-child {
+		font-size: 17px;
+		font-weight: 400;
+		font-style: italic;
+	}
+
+	&:last-child {
+		background-color: var(--black);
+		color: var(--white);
+	}
+}
+
+.box {
+	grid-template-rows: 150px 1fr max-content;
+}

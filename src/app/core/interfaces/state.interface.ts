@@ -2,7 +2,7 @@ import { ILoadableEntity } from './load.interface';
 
 // * Interfaces.
 import { IAdmin } from '@admin/interfaces/admin.interface';
-import { ILibrary } from '@common/interfaces/libraries.interface';
+import { ILibraries } from '@common/interfaces/libraries.interface';
 import { IUser } from '@user/interfaces/user.interface';
 
 // * STATE.
@@ -10,7 +10,7 @@ export interface IState {
 	// * ADMIN.
 	admin: IAdmin;
 	// * COMMON.
-	common: ILibrary[];
+	common: ILibraries;
 	// * USER.
 	user: ILoadableEntity<IUser>;
 }

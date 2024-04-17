@@ -1,36 +1,43 @@
 // * Interfaces.
-// * COMMON.
 import { ICollection } from './collection.interface';
 import { IButton } from './util.interface';
-// * CORE.
-import { ILoadableEntity } from '@interfaces/load.interface';
 
 // * Sorts.
+// * COMMON.
+import { TMiniature } from '@common/sorts/common.sort';
+// * CORE.
 import { ILoading } from '@sorts/loading.sort';
+
+// * LIBRARIES.
+export interface ILibraries {
+	buyers: ILibrary;
+}
 
 // * LIBRARY.
 export interface ILibrary {
-	status: ILoading;
-	id: number;
-	title: string;
-	collections: ILoadableEntity<ICollection>[];
-	conf: {
-		default: number;
+	information: {
+		status: ILoading;
+		id: number;
+		title: string;
+		selected: number | null;
+	};
+	view: {
+		status: ILoading;
+		collections: ICollection[];
 		button: IButton;
-	} | null;
-	selected: number | null;
-	count: number;
-	button: IButton;
-	footer: string;
-}
-
-// ! AUX.
-// * LIBRARY CONFIGURATION.
-export interface ILibraryConf {
-	status: ILoading;
-	title: string;
-	conf: {
-		default: number;
+		count: number;
+		footer: string;
+	};
+	menu: {
+		status: ILoading;
 		button: IButton;
-	} | null;
+		default: number;
+	};
+	miniatures: {
+		status: ILoading;
+		props: TMiniature[];
+		header: TMiniature[];
+		title: TMiniature[];
+		subtitle: TMiniature[];
+	};
 }
