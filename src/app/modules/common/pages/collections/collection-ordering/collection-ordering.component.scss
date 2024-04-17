@@ -1,0 +1,18 @@
+.box main {
+	padding-bottom: 0 !important;
+
+	& section {
+		& p {
+			background-color: var(--grey-light);
+		}
+
+		& article div {
+			padding-left: 12px;
+		}
+	}
+}
+
+.section--hero {
+	min-height: auto;
+	border-radius: 4px 4px 0 0;
+}

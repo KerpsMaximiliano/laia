@@ -7,10 +7,22 @@ h2 {
 }
 
 main {
-	padding-bottom: 72px !important;
+	padding-bottom: 12px !important;
 
 	& article {
 		padding-bottom: 16px;
+	}
+
+	& section > div {
+		grid-template-columns: 1fr max-content;
+
+		& button {
+			padding: 12px 0 12px 12px;
+
+			& div {
+				padding: 4px;
+			}
+		}
 	}
 }
 
@@ -36,7 +48,12 @@ footer div app-component-loading {
 	right: 0;
 	padding: 12px 16px;
 	margin: 0 12px 12px 0;
-	background-color: rgba(234, 221, 255, 1);
-	box-shadow: 0px 4px 8px 3px rgba(0, 0, 0, 0.15);
-	font-size: 16px;
+	background-color: var(--rose);
+	box-shadow: var(--shadow);
+	font-size: 17px;
+	font-weight: 600;
+}
+
+.pd-b-72 {
+	padding-bottom: 72px !important;
 }

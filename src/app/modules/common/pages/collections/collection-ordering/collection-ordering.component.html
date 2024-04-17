@@ -1,0 +1,53 @@
+<div class="box pd-12 gp-12">
+	<header class="flex gp-4">
+		<app-component-button [type]="'MINI'" [icon]="'navigate_before'" />
+
+		<h1>Ordenamiento</h1>
+	</header>
+
+	<main class="fle col gp-12">
+		<section class="grid bd br-4">
+			<p class="pd-12">Ordenar de forma</p>
+
+			<button type="button" class="flex bet pd-12" (click)="order.type === 1 ? (order.type = 0) : (order.type = 1)">
+				Ascendente
+
+				<app-component-button
+					[type]="'ICON'"
+					[icon]="order.type === 1 ? 'check_circle' : 'radio_button_unchecked'"
+					[color]="'var(--violet)'"
+				/>
+			</button>
+
+			<hr />
+
+			<button type="button" class="flex bet pd-12" (click)="order.type === 0 ? (order.type = 1) : (order.type = 0)">
+				Descendente
+
+				<app-component-button
+					[type]="'ICON'"
+					[icon]="order.type === 0 ? 'check_circle' : 'radio_button_unchecked'"
+					[color]="'var(--violet)'"
+				/>
+			</button>
+		</section>
+
+		<section class="bd br-4">
+			<p class="pd-12">Ordenar por</p>
+
+			<article class="limit" cdkDropList (cdkDropListDropped)="drop($event)">
+				@for (item of order.props; track $index) {
+					<div class="flex bet bw" style="background-color: var(--white)" cdkDrag cdkDragBoundary=".limit">
+						{{ item }}
+
+						<app-component-button [type]="'ICON'" [icon]="'drag_indicator'" [color]="'var(--violet)'" cdkDragHandle class="pd-12" />
+					</div>
+
+					@if (!$last) {
+						<hr />
+					}
+				}
+			</article>
+		</section>
+	</main>
+</div>

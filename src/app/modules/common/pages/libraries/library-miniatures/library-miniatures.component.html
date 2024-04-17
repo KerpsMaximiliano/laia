@@ -1,0 +1,114 @@
+<div class="box gp-16">
+	<header class="grid gp-12">
+		<nav class="flex gp-4">
+			<app-component-button [type]="'MINI'" [icon]="'navigate_before'" (click)="libraries.redirect('MENU')" />
+
+			@if (information) {
+				@defer (when information().status !== loading) {
+					<h1>Miniaturas de {{ information().title }}</h1>
+				} @placeholder {
+					<h1>Cargando...</h1>
+				}
+			}
+		</nav>
+	</header>
+
+	@if (miniatures) {
+		@defer (when miniatures().status !== loading) {
+			<main class="fle col gp-12">
+				@defer (when miniatures().status === complete) {
+					<article class="bd br-4 gp-8">
+						<button type="button" class="grid gp-8 tx-left w" (click)="mode = 'header'">
+							<p class="tx-visible required">
+								@if (miniatures().header.length > 0) {
+									@for (item of miniatures().header; track $index) {
+										{{ alias[item] + '. ' }}
+									}
+								} @else {
+									Cabecera
+								}
+							</p>
+
+							<app-component-button
+								[type]="'ICON'"
+								[icon]="'edit'"
+								[color]="'var(--grey)'"
+								[style]="mode === 'header' ? 'background-color: var(--grey-light)' : ''"
+								class="pd-8"
+								[class.br-50]="mode === 'header'"
+							/>
+						</button>
+
+						<button type="button" class="grid gp-8 tx-left w" (click)="mode = 'title'">
+							<p class="tx-visible btn">
+								@if (miniatures().title.length > 0) {
+									@for (item of miniatures().title; track $index) {
+										{{ alias[item] + '. ' }}
+									}
+								} @else {
+									Título
+								}
+							</p>
+
+							<app-component-button
+								[type]="'ICON'"
+								[icon]="'edit'"
+								[color]="'var(--grey)'"
+								[style]="mode === 'title' ? 'background-color: var(--grey-light)' : ''"
+								class="pd-8"
+								[class.br-50]="mode === 'title'"
+							/>
+						</button>
+
+						<button type="button" class="grid gp-8 tx-left w" (click)="mode = 'subtitle'">
+							<p class="tx-visible">
+								@if (miniatures().subtitle.length > 0) {
+									@for (item of miniatures().subtitle; track $index) {
+										{{ alias[item] + '. ' }}
+									}
+								} @else {
+									Descripción
+								}
+							</p>
+
+							<app-component-button
+								[type]="'ICON'"
+								[icon]="'edit'"
+								[color]="'var(--grey)'"
+								[style]="mode === 'subtitle' ? 'background-color: var(--grey-light)' : ''"
+								class="pd-8"
+								[class.br-50]="mode === 'subtitle'"
+							/>
+						</button>
+					</article>
+				}
+
+				<section class="bd br-4">
+					@for (item of miniatures().props; track $index) {
+						<button type="button" class="flex bet gp-8 w pd-12" (click)="select(item)">
+							{{ alias[item] }}
+
+							<app-component-button
+								[type]="'ICON'"
+								[icon]="check(item) ? 'check_circle' : 'radio_button_unchecked'"
+								[color]="'var(--violet)'"
+							/>
+						</button>
+
+						@if (!$last) {
+							<hr />
+						}
+					}
+				</section>
+			</main>
+		} @placeholder {
+			<div class="grid h">
+				<div>
+					<app-component-loading />
+					<br />
+					<h3 class="tx-center" style="color: var(--violet)">Cargando filtro...</h3>
+				</div>
+			</div>
+		}
+	}
+</div>

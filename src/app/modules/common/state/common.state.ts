@@ -1,5 +1,10 @@
+// * Consts.
+import { AUX_LIBRARY } from '@common/constants/library.const';
+
 // * Interfaces.
-import { ILibrary } from '@common/interfaces/libraries.interface';
+import { ILibraries } from '@common/interfaces/libraries.interface';
 
 // * LIBRARIES.
-export const COMMON_STATE: ILibrary[] = [];
+export const COMMON_STATE: ILibraries = {
+	buyers: AUX_LIBRARY
+};

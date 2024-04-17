@@ -2,20 +2,21 @@ import { Routes } from '@angular/router';
 
 export const LIBRARIES_ROUTES: Routes = [
 	{
-		path: ':library',
+		path: ':tLibrary/:library',
 		loadComponent: async () => import('@common/views/libraries.component').then((c) => c.LibrariesComponent),
 		children: [
 			{
-				path: '',
+				path: 'home',
 				loadComponent: async () => import('@common/pages/libraries/library/library.component').then((c) => c.LibraryComponent)
 			},
 			{
 				path: 'menu',
-				loadComponent: async () => import('@common/pages/libraries/menu/menu.component').then((c) => c.MenuComponent)
+				loadComponent: async () => import('@common/pages/libraries/menu/library-menu.component').then((c) => c.LibraryMenuComponent)
 			},
 			{
 				path: 'miniatures',
-				loadComponent: async () => import('@common/pages/collections/miniatures/miniatures.component').then((c) => c.MiniaturesComponent)
+				loadComponent: async () =>
+					import('@common/pages/libraries/library-miniatures/library-miniatures.component').then((c) => c.LibraryMiniaturesComponent)
 			},
 			{
 				path: 'collection',
@@ -23,14 +24,9 @@ export const LIBRARIES_ROUTES: Routes = [
 			},
 			{
 				path: '**',
-				redirectTo: '',
-				pathMatch: 'full'
+				pathMatch: 'full',
+				redirectTo: 'home'
 			}
 		]
-	},
-	{
-		path: '**',
-		redirectTo: '',
-		pathMatch: 'full'
 	}
 ];

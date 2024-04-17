@@ -8,8 +8,8 @@ import { provideClientHydration } from '@angular/platform-browser';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 // * Routing.
-// import { provideRouter, withViewTransitions } from '@angular/router';
-import { provideRouter } from '@angular/router';
+import { provideRouter, withViewTransitions } from '@angular/router';
+// import { provideRouter } from '@angular/router';
 
 // * Service worker.
 import { provideServiceWorker } from '@angular/service-worker';
@@ -35,8 +35,8 @@ import { GRAPHQL_PROVIDER } from '@app/app.graphql';
 export const appConfig: ApplicationConfig = {
 	providers: [
 		provideAnimationsAsync(),
-		// provideRouter(APP_ROUTES, withViewTransitions()),
-		provideRouter(APP_ROUTES),
+		provideRouter(APP_ROUTES, withViewTransitions()),
+		// provideRouter(APP_ROUTES),
 		provideHttpClient(withFetch()),
 		provideOAuthClient(),
 		GRAPHQL_PROVIDER,

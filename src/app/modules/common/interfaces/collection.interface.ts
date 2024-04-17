@@ -2,45 +2,55 @@
 import { IButton } from './util.interface';
 
 // * Sorts.
-import { TCollection, TMiniature } from '@common/sorts/common.sort';
+// * COMMON.
+import { TCollections, TMiniature } from '@common/sorts/common.sort';
+// * CORE.
+import { ILoading } from '@sorts/loading.sort';
 
 // * COLLECTION INTERFACE.
 export interface ICollection {
-	id: number;
-	title: string;
-	miniature: IMinuature;
-	conf: {
-		default: number;
+	// * COMMON.
+	information: {
+		status: ILoading;
+		id: number;
+		title: string;
+		open: boolean;
+	};
+	view: {
+		status: ILoading;
+		elements: TCollections[];
+		button: IButton;
+		count: number;
+		footer: string;
+	};
+	menu: {
+		status: ILoading;
+		button: IButton;
 		order: {
-			title: string;
+			alias: string;
 			type: number;
 		};
-	} | null;
-	elements: TCollection[];
-	count: number;
-	button: IButton;
-	footer: string;
+		filter: {
+			id: number;
+			alias: string;
+		};
+		default: number;
+	};
+	miniatures: {
+		status: ILoading;
+		props: TMiniature[];
+		header: TMiniature[];
+		title: TMiniature[];
+		subtitle: TMiniature[];
+		style: string;
+	};
+	order: {
+		status: ILoading;
+		type: number;
+		props: TMiniature[];
+	};
+	filter: {
+		status: ILoading;
+		items: { key: string; value: number | string | null }[];
+	};
 }
-
-// ! UTIL.
-interface IMinuature {
-	headerboard: TMiniature[];
-	title: TMiniature[];
-	subtitle: TMiniature[];
-	style: string;
-}
-
-/**
- * ! Las opciones de filtrado depende de la colección.
- * ! Si la colección es por defecto, esta solo se puede duplicar.
- * ! Las colecciones personalizadas también se pueden duplicar,
- * ! pero además se puede modificar su filtrado, orden, tipo de orden y además de eliminarla.
- * ! Hablar esto con Ignacio.
- * filter: {
- *   title: string;
- * }
- * acciones:
- *  => duplicar
- *  => eliminar
- *  => modificar
- */
